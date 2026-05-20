@@ -11,6 +11,8 @@ const getAlumniDirectory = catchAsync(async (req: Request, res: Response) => {
     profession: req.query.profession as string,
     company: req.query.company as string,
     isFeatured: req.query.isFeatured as string,
+    page: req.query.page as string,
+    limit: req.query.limit as string,
   };
 
   const result = await AlumniService.getAlumniDirectory(filters);

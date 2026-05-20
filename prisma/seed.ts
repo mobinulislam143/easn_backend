@@ -32,16 +32,26 @@ async function main() {
     }
   }
 
-  // 2. Create Default Admin User
+  // 2. Create or Update Default Admin User
   const adminEmail = process.env.ADMIN_EMAIL || "mahi@gmail.com";
   const adminPassword = process.env.ADMIN_PASSWORD || "admin12345";
+  const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
-  const existingAdmin = await prisma.user.findUnique({
-    where: { email: adminEmail },
+  const existingAdmin = await prisma.user.findFirst({
+    where: { role: "SUPER_ADMIN" },
   });
 
-  if (!existingAdmin) {
-    const hashedPassword = await bcrypt.hash(adminPassword, 10);
+  if (existingAdmin) {
+    const admin = await prisma.user.update({
+      where: { id: existingAdmin.id },
+      data: {
+        email: adminEmail,
+        password: hashedPassword,
+        isVerified: true,
+      },
+    });
+    console.log(`Updated Admin User credentials to: ${admin.email}`);
+  } else {
     const admin = await prisma.user.create({
       data: {
         email: adminEmail,
@@ -51,8 +61,6 @@ async function main() {
       },
     });
     console.log(`Created Admin User: ${admin.email}`);
-  } else {
-    console.log(`Admin User ${adminEmail} already exists.`);
   }
 
   console.log("Seeding completed successfully!");

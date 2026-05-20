@@ -4,12 +4,12 @@
   "description": "EASN Alumni & Batch Management Platform Backend",
   "main": "dist/server.js",
   "scripts": {
+    "start": "node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
-    "prisma:generate": "prisma generate",
-    "prisma:db:push": "prisma db push",
-    "prisma:seed": "ts-node prisma/seed.ts"
+    "generate": "ts-node src/generate-module.ts",
+    "postinstall": "prisma generate",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@prisma/client": "6.19.0",

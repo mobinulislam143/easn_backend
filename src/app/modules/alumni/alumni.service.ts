@@ -69,7 +69,20 @@ const getAlumniDirectory = async (filters: any) => {
     results = results.filter((res) => res.isFeatured === true);
   }
 
-  return results;
+  const page = Number(filters.page) || 1;
+  const limit = Number(filters.limit) || 10;
+  const skip = (page - 1) * limit;
+  const paginatedResults = results.slice(skip, skip + limit);
+
+  return {
+    meta: {
+      page,
+      limit,
+      total: results.length,
+      totalPage: Math.ceil(results.length / limit),
+    },
+    data: paginatedResults,
+  };
 };
 
 const getAlumniProfile = async (id: string) => {

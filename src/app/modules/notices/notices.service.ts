@@ -13,7 +13,11 @@ const getAllNotices = async (filters: any) => {
     ];
   }
 
-  return await prisma.notice.findMany({
+  const page = Number(filters.page) || 1;
+  const limit = Number(filters.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const data = await prisma.notice.findMany({
     where: whereConditions,
     include: {
       createdBy: {
@@ -23,11 +27,27 @@ const getAllNotices = async (filters: any) => {
         },
       },
     },
+    skip,
+    take: limit,
     orderBy: [
       { isPinned: "desc" },
       { createdAt: "desc" },
     ],
   });
+
+  const total = await prisma.notice.count({
+    where: whereConditions,
+  });
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+      totalPage: Math.ceil(total / limit),
+    },
+    data,
+  };
 };
 
 const getNoticeById = async (id: string) => {

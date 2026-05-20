@@ -19,6 +19,8 @@ const getApprovedStudents = catchAsync(async (req: Request, res: Response) => {
     sscBatch: req.query.sscBatch as string,
     group: req.query.group as string,
     search: req.query.search as string,
+    page: req.query.page as string,
+    limit: req.query.limit as string,
   };
 
   const result = await StudentService.getApprovedStudents(filters);

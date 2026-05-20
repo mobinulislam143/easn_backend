@@ -86,8 +86,8 @@ model Student {
   id                String            @id @default(auto()) @map("_id") @db.ObjectId
   userId            String            @unique @db.ObjectId
   fullName          String
-  fatherName        String
-  motherName        String
+  fatherName        String?
+  motherName        String?
   phone             String
   sscBatch          String            // e.g. "2020"
   batchId           String            @db.ObjectId
@@ -97,7 +97,7 @@ model Student {
   currentProfession String
   currentAddress    String
   profileImage      String
-  shortBio          String
+  shortBio          String?
   facebookProfile   String?
   linkedInProfile   String?
   status            StudentStatus     @default(PENDING)

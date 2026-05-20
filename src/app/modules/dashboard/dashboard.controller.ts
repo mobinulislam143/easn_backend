@@ -69,6 +69,14 @@ const exportTeachersCsv = catchAsync(async (req: Request, res: Response) => {
   res.status(200).send(csvData);
 });
 
+const exportEventParticipantsCsv = catchAsync(async (req: Request, res: Response) => {
+  const csvData = await DashboardService.getEventParticipantsExportData(req.params.id);
+
+  res.setHeader("Content-Type", "text/csv");
+  res.setHeader("Content-Disposition", `attachment; filename=event_participants_${req.params.id}.csv`);
+  res.status(200).send(csvData);
+});
+
 export const DashboardController = {
   getAdminSummary,
   getStudentSummary,
@@ -76,4 +84,5 @@ export const DashboardController = {
   markNotificationRead,
   exportStudentsCsv,
   exportTeachersCsv,
+  exportEventParticipantsCsv,
 };

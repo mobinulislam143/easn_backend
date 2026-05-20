@@ -15,7 +15,11 @@ const getAllPhotos = async (filters: any) => {
     whereConditions.eventId = eventId;
   }
 
-  return await prisma.gallery.findMany({
+  const page = Number(filters.page) || 1;
+  const limit = Number(filters.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const data = await prisma.gallery.findMany({
     where: whereConditions,
     include: {
       uploadedBy: {
@@ -36,8 +40,24 @@ const getAllPhotos = async (filters: any) => {
         orderBy: { createdAt: "desc" },
       },
     },
+    skip,
+    take: limit,
     orderBy: { createdAt: "desc" },
   });
+
+  const total = await prisma.gallery.count({
+    where: whereConditions,
+  });
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+      totalPage: Math.ceil(total / limit),
+    },
+    data,
+  };
 };
 
 const uploadPhoto = async (userId: string, payload: any) => {

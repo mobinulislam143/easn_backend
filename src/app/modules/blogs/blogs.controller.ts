@@ -9,6 +9,8 @@ const getAllBlogs = catchAsync(async (req: Request, res: Response) => {
     search: req.query.search as string,
     tag: req.query.tag as string,
     isFeatured: req.query.isFeatured as string,
+    page: req.query.page as string,
+    limit: req.query.limit as string,
   };
 
   const result = await BlogService.getAllBlogs(filters);

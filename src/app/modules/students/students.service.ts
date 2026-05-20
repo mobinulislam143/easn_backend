@@ -25,10 +25,31 @@ const getApprovedStudents = async (filters: any) => {
     ];
   }
 
-  return await prisma.student.findMany({
+  const page = Number(filters.page) || 1;
+  const limit = Number(filters.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const data = await prisma.student.findMany({
     where: whereConditions,
     include: { user: { select: { email: true } }, batch: true },
+    skip,
+    take: limit,
+    orderBy: { fullName: "asc" },
   });
+
+  const total = await prisma.student.count({
+    where: whereConditions,
+  });
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+      totalPage: Math.ceil(total / limit),
+    },
+    data,
+  };
 };
 
 const getStudentById = async (id: string) => {
@@ -71,11 +92,13 @@ const updateStudentProfile = async (userId: string, payload: any) => {
     where: { userId },
     data: {
       fullName: payload.fullName,
+      fatherName: payload.fatherName || null,
+      motherName: payload.motherName || null,
       phone: payload.phone,
       currentProfession: payload.currentProfession,
       currentAddress: payload.currentAddress,
       profileImage: payload.profileImage,
-      shortBio: payload.shortBio,
+      shortBio: payload.shortBio || null,
       facebookProfile: payload.facebookProfile || null,
       linkedInProfile: payload.linkedInProfile || null,
     },

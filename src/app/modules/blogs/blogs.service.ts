@@ -21,7 +21,11 @@ const getAllBlogs = async (filters: any) => {
     ];
   }
 
-  return await prisma.blog.findMany({
+  const page = Number(filters.page) || 1;
+  const limit = Number(filters.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const data = await prisma.blog.findMany({
     where: whereConditions,
     include: {
       author: {
@@ -32,8 +36,24 @@ const getAllBlogs = async (filters: any) => {
       },
       comments: true,
     },
+    skip,
+    take: limit,
     orderBy: { createdAt: "desc" },
   });
+
+  const total = await prisma.blog.count({
+    where: whereConditions,
+  });
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+      totalPage: Math.ceil(total / limit),
+    },
+    data,
+  };
 };
 
 const getBlogById = async (id: string) => {

@@ -8,6 +8,8 @@ const getAllTeachers = catchAsync(async (req: Request, res: Response) => {
     subject: req.query.subject as string,
     status: req.query.status as any,
     search: req.query.search as string,
+    page: req.query.page as string,
+    limit: req.query.limit as string,
   };
 
   const result = await TeacherService.getAllTeachers(filters);

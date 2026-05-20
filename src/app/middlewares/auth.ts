@@ -15,7 +15,7 @@ declare global {
 
 const auth = (...roles: string[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization?.split(" ")[1];
+    const token = req.headers.authorization?.split(" ")[1] || (req.query.token as string);
 
     if (!token) {
       throw new AppError(401, "You are not authorized to access this resource!");

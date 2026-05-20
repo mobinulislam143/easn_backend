@@ -40,4 +40,10 @@ router.get(
   DashboardController.exportTeachersCsv
 );
 
+router.get(
+  "/export/events/:id/participants",
+  auth("SUPER_ADMIN", "BATCH_ADMIN"),
+  DashboardController.exportEventParticipantsCsv
+);
+
 export const DashboardRoutes = router;

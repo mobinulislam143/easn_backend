@@ -4282,8 +4282,8 @@ export namespace Prisma {
     id: string
     userId: string
     fullName: string
-    fatherName: string
-    motherName: string
+    fatherName: string | null
+    motherName: string | null
     phone: string
     sscBatch: string
     batchId: string
@@ -4293,7 +4293,7 @@ export namespace Prisma {
     currentProfession: string
     currentAddress: string
     profileImage: string
-    shortBio: string
+    shortBio: string | null
     facebookProfile: string | null
     linkedInProfile: string | null
     status: $Enums.StudentStatus
@@ -4389,8 +4389,8 @@ export namespace Prisma {
       id: string
       userId: string
       fullName: string
-      fatherName: string
-      motherName: string
+      fatherName: string | null
+      motherName: string | null
       phone: string
       sscBatch: string
       batchId: string
@@ -4400,7 +4400,7 @@ export namespace Prisma {
       currentProfession: string
       currentAddress: string
       profileImage: string
-      shortBio: string
+      shortBio: string | null
       facebookProfile: string | null
       linkedInProfile: string | null
       status: $Enums.StudentStatus
@@ -20723,8 +20723,8 @@ export namespace Prisma {
     id?: StringFilter<"Student"> | string
     userId?: StringFilter<"Student"> | string
     fullName?: StringFilter<"Student"> | string
-    fatherName?: StringFilter<"Student"> | string
-    motherName?: StringFilter<"Student"> | string
+    fatherName?: StringNullableFilter<"Student"> | string | null
+    motherName?: StringNullableFilter<"Student"> | string | null
     phone?: StringFilter<"Student"> | string
     sscBatch?: StringFilter<"Student"> | string
     batchId?: StringFilter<"Student"> | string
@@ -20734,7 +20734,7 @@ export namespace Prisma {
     currentProfession?: StringFilter<"Student"> | string
     currentAddress?: StringFilter<"Student"> | string
     profileImage?: StringFilter<"Student"> | string
-    shortBio?: StringFilter<"Student"> | string
+    shortBio?: StringNullableFilter<"Student"> | string | null
     facebookProfile?: StringNullableFilter<"Student"> | string | null
     linkedInProfile?: StringNullableFilter<"Student"> | string | null
     status?: EnumStudentStatusFilter<"Student"> | $Enums.StudentStatus
@@ -20778,8 +20778,8 @@ export namespace Prisma {
     OR?: StudentWhereInput[]
     NOT?: StudentWhereInput | StudentWhereInput[]
     fullName?: StringFilter<"Student"> | string
-    fatherName?: StringFilter<"Student"> | string
-    motherName?: StringFilter<"Student"> | string
+    fatherName?: StringNullableFilter<"Student"> | string | null
+    motherName?: StringNullableFilter<"Student"> | string | null
     phone?: StringFilter<"Student"> | string
     sscBatch?: StringFilter<"Student"> | string
     batchId?: StringFilter<"Student"> | string
@@ -20789,7 +20789,7 @@ export namespace Prisma {
     currentProfession?: StringFilter<"Student"> | string
     currentAddress?: StringFilter<"Student"> | string
     profileImage?: StringFilter<"Student"> | string
-    shortBio?: StringFilter<"Student"> | string
+    shortBio?: StringNullableFilter<"Student"> | string | null
     facebookProfile?: StringNullableFilter<"Student"> | string | null
     linkedInProfile?: StringNullableFilter<"Student"> | string | null
     status?: EnumStudentStatusFilter<"Student"> | $Enums.StudentStatus
@@ -20833,8 +20833,8 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Student"> | string
     userId?: StringWithAggregatesFilter<"Student"> | string
     fullName?: StringWithAggregatesFilter<"Student"> | string
-    fatherName?: StringWithAggregatesFilter<"Student"> | string
-    motherName?: StringWithAggregatesFilter<"Student"> | string
+    fatherName?: StringNullableWithAggregatesFilter<"Student"> | string | null
+    motherName?: StringNullableWithAggregatesFilter<"Student"> | string | null
     phone?: StringWithAggregatesFilter<"Student"> | string
     sscBatch?: StringWithAggregatesFilter<"Student"> | string
     batchId?: StringWithAggregatesFilter<"Student"> | string
@@ -20844,7 +20844,7 @@ export namespace Prisma {
     currentProfession?: StringWithAggregatesFilter<"Student"> | string
     currentAddress?: StringWithAggregatesFilter<"Student"> | string
     profileImage?: StringWithAggregatesFilter<"Student"> | string
-    shortBio?: StringWithAggregatesFilter<"Student"> | string
+    shortBio?: StringNullableWithAggregatesFilter<"Student"> | string | null
     facebookProfile?: StringNullableWithAggregatesFilter<"Student"> | string | null
     linkedInProfile?: StringNullableWithAggregatesFilter<"Student"> | string | null
     status?: EnumStudentStatusWithAggregatesFilter<"Student"> | $Enums.StudentStatus
@@ -22111,8 +22111,8 @@ export namespace Prisma {
   export type StudentCreateInput = {
     id?: string
     fullName: string
-    fatherName: string
-    motherName: string
+    fatherName?: string | null
+    motherName?: string | null
     phone: string
     sscBatch: string
     roll?: string | null
@@ -22121,7 +22121,7 @@ export namespace Prisma {
     currentProfession: string
     currentAddress: string
     profileImage: string
-    shortBio: string
+    shortBio?: string | null
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
@@ -22136,8 +22136,8 @@ export namespace Prisma {
     id?: string
     userId: string
     fullName: string
-    fatherName: string
-    motherName: string
+    fatherName?: string | null
+    motherName?: string | null
     phone: string
     sscBatch: string
     batchId: string
@@ -22147,7 +22147,7 @@ export namespace Prisma {
     currentProfession: string
     currentAddress: string
     profileImage: string
-    shortBio: string
+    shortBio?: string | null
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
@@ -22158,8 +22158,8 @@ export namespace Prisma {
 
   export type StudentUpdateInput = {
     fullName?: StringFieldUpdateOperationsInput | string
-    fatherName?: StringFieldUpdateOperationsInput | string
-    motherName?: StringFieldUpdateOperationsInput | string
+    fatherName?: NullableStringFieldUpdateOperationsInput | string | null
+    motherName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: StringFieldUpdateOperationsInput | string
     sscBatch?: StringFieldUpdateOperationsInput | string
     roll?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22168,7 +22168,7 @@ export namespace Prisma {
     currentProfession?: StringFieldUpdateOperationsInput | string
     currentAddress?: StringFieldUpdateOperationsInput | string
     profileImage?: StringFieldUpdateOperationsInput | string
-    shortBio?: StringFieldUpdateOperationsInput | string
+    shortBio?: NullableStringFieldUpdateOperationsInput | string | null
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
@@ -22182,8 +22182,8 @@ export namespace Prisma {
   export type StudentUncheckedUpdateInput = {
     userId?: StringFieldUpdateOperationsInput | string
     fullName?: StringFieldUpdateOperationsInput | string
-    fatherName?: StringFieldUpdateOperationsInput | string
-    motherName?: StringFieldUpdateOperationsInput | string
+    fatherName?: NullableStringFieldUpdateOperationsInput | string | null
+    motherName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: StringFieldUpdateOperationsInput | string
     sscBatch?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
@@ -22193,7 +22193,7 @@ export namespace Prisma {
     currentProfession?: StringFieldUpdateOperationsInput | string
     currentAddress?: StringFieldUpdateOperationsInput | string
     profileImage?: StringFieldUpdateOperationsInput | string
-    shortBio?: StringFieldUpdateOperationsInput | string
+    shortBio?: NullableStringFieldUpdateOperationsInput | string | null
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
@@ -22206,8 +22206,8 @@ export namespace Prisma {
     id?: string
     userId: string
     fullName: string
-    fatherName: string
-    motherName: string
+    fatherName?: string | null
+    motherName?: string | null
     phone: string
     sscBatch: string
     batchId: string
@@ -22217,7 +22217,7 @@ export namespace Prisma {
     currentProfession: string
     currentAddress: string
     profileImage: string
-    shortBio: string
+    shortBio?: string | null
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
@@ -22227,8 +22227,8 @@ export namespace Prisma {
 
   export type StudentUpdateManyMutationInput = {
     fullName?: StringFieldUpdateOperationsInput | string
-    fatherName?: StringFieldUpdateOperationsInput | string
-    motherName?: StringFieldUpdateOperationsInput | string
+    fatherName?: NullableStringFieldUpdateOperationsInput | string | null
+    motherName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: StringFieldUpdateOperationsInput | string
     sscBatch?: StringFieldUpdateOperationsInput | string
     roll?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22237,7 +22237,7 @@ export namespace Prisma {
     currentProfession?: StringFieldUpdateOperationsInput | string
     currentAddress?: StringFieldUpdateOperationsInput | string
     profileImage?: StringFieldUpdateOperationsInput | string
-    shortBio?: StringFieldUpdateOperationsInput | string
+    shortBio?: NullableStringFieldUpdateOperationsInput | string | null
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
@@ -22248,8 +22248,8 @@ export namespace Prisma {
   export type StudentUncheckedUpdateManyInput = {
     userId?: StringFieldUpdateOperationsInput | string
     fullName?: StringFieldUpdateOperationsInput | string
-    fatherName?: StringFieldUpdateOperationsInput | string
-    motherName?: StringFieldUpdateOperationsInput | string
+    fatherName?: NullableStringFieldUpdateOperationsInput | string | null
+    motherName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: StringFieldUpdateOperationsInput | string
     sscBatch?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
@@ -22259,7 +22259,7 @@ export namespace Prisma {
     currentProfession?: StringFieldUpdateOperationsInput | string
     currentAddress?: StringFieldUpdateOperationsInput | string
     profileImage?: StringFieldUpdateOperationsInput | string
-    shortBio?: StringFieldUpdateOperationsInput | string
+    shortBio?: NullableStringFieldUpdateOperationsInput | string | null
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
@@ -26342,8 +26342,8 @@ export namespace Prisma {
   export type StudentCreateWithoutUserInput = {
     id?: string
     fullName: string
-    fatherName: string
-    motherName: string
+    fatherName?: string | null
+    motherName?: string | null
     phone: string
     sscBatch: string
     roll?: string | null
@@ -26352,7 +26352,7 @@ export namespace Prisma {
     currentProfession: string
     currentAddress: string
     profileImage: string
-    shortBio: string
+    shortBio?: string | null
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
@@ -26365,8 +26365,8 @@ export namespace Prisma {
   export type StudentUncheckedCreateWithoutUserInput = {
     id?: string
     fullName: string
-    fatherName: string
-    motherName: string
+    fatherName?: string | null
+    motherName?: string | null
     phone: string
     sscBatch: string
     batchId: string
@@ -26376,7 +26376,7 @@ export namespace Prisma {
     currentProfession: string
     currentAddress: string
     profileImage: string
-    shortBio: string
+    shortBio?: string | null
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
@@ -26808,8 +26808,8 @@ export namespace Prisma {
 
   export type StudentUpdateWithoutUserInput = {
     fullName?: StringFieldUpdateOperationsInput | string
-    fatherName?: StringFieldUpdateOperationsInput | string
-    motherName?: StringFieldUpdateOperationsInput | string
+    fatherName?: NullableStringFieldUpdateOperationsInput | string | null
+    motherName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: StringFieldUpdateOperationsInput | string
     sscBatch?: StringFieldUpdateOperationsInput | string
     roll?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26818,7 +26818,7 @@ export namespace Prisma {
     currentProfession?: StringFieldUpdateOperationsInput | string
     currentAddress?: StringFieldUpdateOperationsInput | string
     profileImage?: StringFieldUpdateOperationsInput | string
-    shortBio?: StringFieldUpdateOperationsInput | string
+    shortBio?: NullableStringFieldUpdateOperationsInput | string | null
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
@@ -26830,8 +26830,8 @@ export namespace Prisma {
 
   export type StudentUncheckedUpdateWithoutUserInput = {
     fullName?: StringFieldUpdateOperationsInput | string
-    fatherName?: StringFieldUpdateOperationsInput | string
-    motherName?: StringFieldUpdateOperationsInput | string
+    fatherName?: NullableStringFieldUpdateOperationsInput | string | null
+    motherName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: StringFieldUpdateOperationsInput | string
     sscBatch?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
@@ -26841,7 +26841,7 @@ export namespace Prisma {
     currentProfession?: StringFieldUpdateOperationsInput | string
     currentAddress?: StringFieldUpdateOperationsInput | string
     profileImage?: StringFieldUpdateOperationsInput | string
-    shortBio?: StringFieldUpdateOperationsInput | string
+    shortBio?: NullableStringFieldUpdateOperationsInput | string | null
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
@@ -27618,8 +27618,8 @@ export namespace Prisma {
   export type StudentCreateWithoutBatchInput = {
     id?: string
     fullName: string
-    fatherName: string
-    motherName: string
+    fatherName?: string | null
+    motherName?: string | null
     phone: string
     sscBatch: string
     roll?: string | null
@@ -27628,7 +27628,7 @@ export namespace Prisma {
     currentProfession: string
     currentAddress: string
     profileImage: string
-    shortBio: string
+    shortBio?: string | null
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
@@ -27642,8 +27642,8 @@ export namespace Prisma {
     id?: string
     userId: string
     fullName: string
-    fatherName: string
-    motherName: string
+    fatherName?: string | null
+    motherName?: string | null
     phone: string
     sscBatch: string
     roll?: string | null
@@ -27652,7 +27652,7 @@ export namespace Prisma {
     currentProfession: string
     currentAddress: string
     profileImage: string
-    shortBio: string
+    shortBio?: string | null
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
@@ -27794,8 +27794,8 @@ export namespace Prisma {
     id?: StringFilter<"Student"> | string
     userId?: StringFilter<"Student"> | string
     fullName?: StringFilter<"Student"> | string
-    fatherName?: StringFilter<"Student"> | string
-    motherName?: StringFilter<"Student"> | string
+    fatherName?: StringNullableFilter<"Student"> | string | null
+    motherName?: StringNullableFilter<"Student"> | string | null
     phone?: StringFilter<"Student"> | string
     sscBatch?: StringFilter<"Student"> | string
     batchId?: StringFilter<"Student"> | string
@@ -27805,7 +27805,7 @@ export namespace Prisma {
     currentProfession?: StringFilter<"Student"> | string
     currentAddress?: StringFilter<"Student"> | string
     profileImage?: StringFilter<"Student"> | string
-    shortBio?: StringFilter<"Student"> | string
+    shortBio?: StringNullableFilter<"Student"> | string | null
     facebookProfile?: StringNullableFilter<"Student"> | string | null
     linkedInProfile?: StringNullableFilter<"Student"> | string | null
     status?: EnumStudentStatusFilter<"Student"> | $Enums.StudentStatus
@@ -30202,8 +30202,8 @@ export namespace Prisma {
   export type StudentCreateWithoutApprovalHistoryInput = {
     id?: string
     fullName: string
-    fatherName: string
-    motherName: string
+    fatherName?: string | null
+    motherName?: string | null
     phone: string
     sscBatch: string
     roll?: string | null
@@ -30212,7 +30212,7 @@ export namespace Prisma {
     currentProfession: string
     currentAddress: string
     profileImage: string
-    shortBio: string
+    shortBio?: string | null
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
@@ -30226,8 +30226,8 @@ export namespace Prisma {
     id?: string
     userId: string
     fullName: string
-    fatherName: string
-    motherName: string
+    fatherName?: string | null
+    motherName?: string | null
     phone: string
     sscBatch: string
     batchId: string
@@ -30237,7 +30237,7 @@ export namespace Prisma {
     currentProfession: string
     currentAddress: string
     profileImage: string
-    shortBio: string
+    shortBio?: string | null
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
@@ -30324,8 +30324,8 @@ export namespace Prisma {
 
   export type StudentUpdateWithoutApprovalHistoryInput = {
     fullName?: StringFieldUpdateOperationsInput | string
-    fatherName?: StringFieldUpdateOperationsInput | string
-    motherName?: StringFieldUpdateOperationsInput | string
+    fatherName?: NullableStringFieldUpdateOperationsInput | string | null
+    motherName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: StringFieldUpdateOperationsInput | string
     sscBatch?: StringFieldUpdateOperationsInput | string
     roll?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30334,7 +30334,7 @@ export namespace Prisma {
     currentProfession?: StringFieldUpdateOperationsInput | string
     currentAddress?: StringFieldUpdateOperationsInput | string
     profileImage?: StringFieldUpdateOperationsInput | string
-    shortBio?: StringFieldUpdateOperationsInput | string
+    shortBio?: NullableStringFieldUpdateOperationsInput | string | null
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
@@ -30347,8 +30347,8 @@ export namespace Prisma {
   export type StudentUncheckedUpdateWithoutApprovalHistoryInput = {
     userId?: StringFieldUpdateOperationsInput | string
     fullName?: StringFieldUpdateOperationsInput | string
-    fatherName?: StringFieldUpdateOperationsInput | string
-    motherName?: StringFieldUpdateOperationsInput | string
+    fatherName?: NullableStringFieldUpdateOperationsInput | string | null
+    motherName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: StringFieldUpdateOperationsInput | string
     sscBatch?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
@@ -30358,7 +30358,7 @@ export namespace Prisma {
     currentProfession?: StringFieldUpdateOperationsInput | string
     currentAddress?: StringFieldUpdateOperationsInput | string
     profileImage?: StringFieldUpdateOperationsInput | string
-    shortBio?: StringFieldUpdateOperationsInput | string
+    shortBio?: NullableStringFieldUpdateOperationsInput | string | null
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
@@ -30907,8 +30907,8 @@ export namespace Prisma {
     id?: string
     userId: string
     fullName: string
-    fatherName: string
-    motherName: string
+    fatherName?: string | null
+    motherName?: string | null
     phone: string
     sscBatch: string
     roll?: string | null
@@ -30917,7 +30917,7 @@ export namespace Prisma {
     currentProfession: string
     currentAddress: string
     profileImage: string
-    shortBio: string
+    shortBio?: string | null
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
@@ -30963,8 +30963,8 @@ export namespace Prisma {
 
   export type StudentUpdateWithoutBatchInput = {
     fullName?: StringFieldUpdateOperationsInput | string
-    fatherName?: StringFieldUpdateOperationsInput | string
-    motherName?: StringFieldUpdateOperationsInput | string
+    fatherName?: NullableStringFieldUpdateOperationsInput | string | null
+    motherName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: StringFieldUpdateOperationsInput | string
     sscBatch?: StringFieldUpdateOperationsInput | string
     roll?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30973,7 +30973,7 @@ export namespace Prisma {
     currentProfession?: StringFieldUpdateOperationsInput | string
     currentAddress?: StringFieldUpdateOperationsInput | string
     profileImage?: StringFieldUpdateOperationsInput | string
-    shortBio?: StringFieldUpdateOperationsInput | string
+    shortBio?: NullableStringFieldUpdateOperationsInput | string | null
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
@@ -30986,8 +30986,8 @@ export namespace Prisma {
   export type StudentUncheckedUpdateWithoutBatchInput = {
     userId?: StringFieldUpdateOperationsInput | string
     fullName?: StringFieldUpdateOperationsInput | string
-    fatherName?: StringFieldUpdateOperationsInput | string
-    motherName?: StringFieldUpdateOperationsInput | string
+    fatherName?: NullableStringFieldUpdateOperationsInput | string | null
+    motherName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: StringFieldUpdateOperationsInput | string
     sscBatch?: StringFieldUpdateOperationsInput | string
     roll?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30996,7 +30996,7 @@ export namespace Prisma {
     currentProfession?: StringFieldUpdateOperationsInput | string
     currentAddress?: StringFieldUpdateOperationsInput | string
     profileImage?: StringFieldUpdateOperationsInput | string
-    shortBio?: StringFieldUpdateOperationsInput | string
+    shortBio?: NullableStringFieldUpdateOperationsInput | string | null
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
@@ -31008,8 +31008,8 @@ export namespace Prisma {
   export type StudentUncheckedUpdateManyWithoutBatchInput = {
     userId?: StringFieldUpdateOperationsInput | string
     fullName?: StringFieldUpdateOperationsInput | string
-    fatherName?: StringFieldUpdateOperationsInput | string
-    motherName?: StringFieldUpdateOperationsInput | string
+    fatherName?: NullableStringFieldUpdateOperationsInput | string | null
+    motherName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: StringFieldUpdateOperationsInput | string
     sscBatch?: StringFieldUpdateOperationsInput | string
     roll?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31018,7 +31018,7 @@ export namespace Prisma {
     currentProfession?: StringFieldUpdateOperationsInput | string
     currentAddress?: StringFieldUpdateOperationsInput | string
     profileImage?: StringFieldUpdateOperationsInput | string
-    shortBio?: StringFieldUpdateOperationsInput | string
+    shortBio?: NullableStringFieldUpdateOperationsInput | string | null
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus

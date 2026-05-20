@@ -18,10 +18,30 @@ const getAllTeachers = async (filters: any) => {
     ];
   }
 
-  return await prisma.teacher.findMany({
+  const page = Number(filters.page) || 1;
+  const limit = Number(filters.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const data = await prisma.teacher.findMany({
     where: whereConditions,
+    skip,
+    take: limit,
     orderBy: { name: "asc" },
   });
+
+  const total = await prisma.teacher.count({
+    where: whereConditions,
+  });
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+      totalPage: Math.ceil(total / limit),
+    },
+    data,
+  };
 };
 
 const getTeacherById = async (id: string) => {

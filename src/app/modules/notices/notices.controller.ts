@@ -5,7 +5,9 @@ import { NoticeService } from "./notices.service";
 
 const getAllNotices = catchAsync(async (req: Request, res: Response) => {
   const isAdmin = req.query.isAdmin === "true";
-  const result = await NoticeService.getAllNotices({ isAdmin });
+  const page = req.query.page as string;
+  const limit = req.query.limit as string;
+  const result = await NoticeService.getAllNotices({ isAdmin, page, limit });
 
   sendResponse(res, {
     statusCode: 200,

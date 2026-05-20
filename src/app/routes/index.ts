@@ -11,6 +11,7 @@ import { CommentRoutes } from "../modules/comments/comments.route";
 import { GalleryRoutes } from "../modules/gallery/gallery.route";
 import { FeedbackRoutes } from "../modules/feedback/feedback.route";
 import { DashboardRoutes } from "../modules/dashboard/dashboard.route";
+import { UploadRoutes } from "../modules/upload/upload.route";
 
 const router = Router();
 
@@ -27,6 +28,7 @@ const moduleRoutes = [
   { path: "/gallery", route: GalleryRoutes },
   { path: "/feedback", route: FeedbackRoutes },
   { path: "/dashboard", route: DashboardRoutes },
+  { path: "/upload", route: UploadRoutes },
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

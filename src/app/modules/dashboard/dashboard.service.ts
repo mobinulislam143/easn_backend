@@ -163,6 +163,37 @@ const getTeachersExportData = async () => {
   return csvContent;
 };
 
+const getEventParticipantsExportData = async (eventId: string) => {
+  const event = await prisma.event.findUnique({
+    where: { id: eventId },
+  });
+
+  if (!event) {
+    throw new AppError(404, "Event not found!");
+  }
+
+  const participants = await prisma.eventParticipant.findMany({
+    where: { eventId, status: "JOINED" },
+    include: {
+      user: {
+        include: {
+          studentProfile: true,
+        },
+      },
+    },
+  });
+
+  let csvContent = "FullName,Email,Phone,SSC Batch,Roll,RegNo,Group,Profession,Address\n";
+  participants.forEach((p) => {
+    const s = p.user.studentProfile;
+    if (s) {
+      csvContent += `"${s.fullName}","${p.user.email}","${s.phone}","${s.sscBatch}","${s.roll || ""}","${s.regNo || ""}","${s.group}","${s.currentProfession}","${s.currentAddress.replace(/"/g, '""')}"\n`;
+    }
+  });
+
+  return csvContent;
+};
+
 export const DashboardService = {
   getAdminDashboardSummary,
   getStudentDashboardSummary,
@@ -170,4 +201,5 @@ export const DashboardService = {
   markNotificationRead,
   getStudentsExportData,
   getTeachersExportData,
+  getEventParticipantsExportData,
 };
