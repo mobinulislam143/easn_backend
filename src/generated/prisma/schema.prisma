@@ -1,0 +1,339 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+enum Role {
+  SUPER_ADMIN
+  BATCH_ADMIN
+  STUDENT
+  TEACHER
+}
+
+enum StudentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum TeacherStatus {
+  ACTIVE
+  RETIRED
+}
+
+enum GroupType {
+  SCIENCE
+  HUMANITIES
+  COMMERCE
+}
+
+enum EventStatus {
+  JOINED
+  NOT_JOINED
+}
+
+enum BlogCategory {
+  REUNION
+  CAREER
+  MEMORIES
+  SUCCESS_STORIES
+  EDUCATION
+}
+
+enum ContactType {
+  BATCH_ADMIN
+  PUBLIC
+  COMPLAINT
+}
+
+model User {
+  id                      String    @id @default(auto()) @map("_id") @db.ObjectId
+  email                   String    @unique
+  password                String
+  role                    Role      @default(STUDENT)
+  isVerified              Boolean   @default(false)
+  verificationCode        String?
+  verificationCodeExpires DateTime?
+  resetPasswordToken      String?
+  resetPasswordExpires    DateTime?
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+  isDeleted               Boolean   @default(false)
+
+  // Relations
+  studentProfile      Student?
+  teacherProfile      Teacher?
+  alumniProfile       AlumniProfile?
+  eventsCreated       Event[]            @relation("EventsCreated")
+  eventParticipations EventParticipant[]
+  blogsWritten        Blog[]             @relation("BlogsWritten")
+  noticesCreated      Notice[]           @relation("NoticesCreated")
+  uploadedMedia       Gallery[]          @relation("UploadedMedia")
+  comments            Comment[]
+  notifications       Notification[]
+  feedbacks           Feedback[]
+  resolvedMessages    ContactMessage[]   @relation("ResolvedBy")
+  approvalLogs        ApprovalHistory[]  @relation("PerformedBy")
+  activityLogs        ActivityLog[]
+}
+
+model Student {
+  id                String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String        @unique @db.ObjectId
+  fullName          String
+  fatherName        String
+  motherName        String
+  phone             String
+  sscBatch          String // e.g. "2020"
+  batchId           String        @db.ObjectId
+  roll              String?
+  regNo             String?
+  group             GroupType
+  currentProfession String
+  currentAddress    String
+  profileImage      String
+  shortBio          String
+  facebookProfile   String?
+  linkedInProfile   String?
+  status            StudentStatus @default(PENDING)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  // Relations
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  batch           Batch             @relation(fields: [batchId], references: [id])
+  approvalHistory ApprovalHistory[] @relation("ApprovedStudent")
+}
+
+model Teacher {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String?       @unique @db.ObjectId
+  name         String
+  subject      String
+  phone        String
+  email        String
+  designation  String
+  joiningYear  Int
+  profileImage String
+  status       TeacherStatus @default(ACTIVE)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  // Relations
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model Batch {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  year        String   @unique // e.g. "2020", "2021"
+  name        String // e.g. "SSC 2020"
+  description String?
+  banner      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  students        Student[]
+  alumniProfiles  AlumniProfile[]
+  galleryImages   Gallery[]
+  contactMessages ContactMessage[]
+}
+
+model AlumniProfile {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String   @unique @db.ObjectId
+  currentCompany String?
+  designation    String?
+  skills         String[] @default([])
+  isFeatured     Boolean  @default(false)
+  sscBatch       String
+  batchId        String   @db.ObjectId
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  batch Batch @relation(fields: [batchId], references: [id])
+}
+
+model Event {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  title                String
+  description          String
+  date                 DateTime
+  time                 String
+  venue                String
+  organizer            String
+  banner               String
+  registrationDeadline DateTime
+  allowedBatch         String[] // Array of batch years allowed to register (e.g. ["2020", "2021"])
+  participantLimit     Int?
+  createdById          String   @db.ObjectId
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  // Relations
+  createdBy    User               @relation("EventsCreated", fields: [createdById], references: [id])
+  participants EventParticipant[]
+  gallery      Gallery[]
+  comments     Comment[]
+}
+
+model EventParticipant {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  eventId   String      @db.ObjectId
+  userId    String      @db.ObjectId
+  status    EventStatus @default(JOINED)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  // Relations
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+}
+
+model Blog {
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  content    String // HTML or Rich-text content
+  banner     String?
+  authorId   String       @db.ObjectId
+  category   BlogCategory
+  tags       String[]     @default([])
+  isFeatured Boolean      @default(false)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  // Relations
+  author   User      @relation("BlogsWritten", fields: [authorId], references: [id])
+  comments Comment[]
+}
+
+model Notice {
+  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+  title              String
+  content            String
+  isPinned           Boolean   @default(false)
+  scheduledAt        DateTime?
+  sendEmailBroadcast Boolean   @default(false)
+  createdById        String    @db.ObjectId
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  // Relations
+  createdBy User      @relation("NoticesCreated", fields: [createdById], references: [id])
+  comments  Comment[]
+}
+
+model Gallery {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  imageUrl     String
+  type         String // "REUNION" | "EVENT" | "BATCH_MEMORIES"
+  batchId      String?  @db.ObjectId
+  eventId      String?  @db.ObjectId
+  uploadedById String   @db.ObjectId
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  batch      Batch?    @relation(fields: [batchId], references: [id], onDelete: SetNull)
+  event      Event?    @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  uploadedBy User      @relation("UploadedMedia", fields: [uploadedById], references: [id])
+  comments   Comment[]
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  userId    String   @db.ObjectId
+  blogId    String?  @db.ObjectId
+  eventId   String?  @db.ObjectId
+  noticeId  String?  @db.ObjectId
+  galleryId String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  blog    Blog?    @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  event   Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  notice  Notice?  @relation(fields: [noticeId], references: [id], onDelete: Cascade)
+  gallery Gallery? @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  message   String
+  userId    String   @db.ObjectId
+  isRead    Boolean  @default(false)
+  type      String // "APPROVAL" | "EVENT_REMINDER" | "NEW_NOTICE" | "BLOG_UPDATE" | "BATCH_ACTIVITY"
+  link      String?
+  createdAt DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Feedback {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  rating      Int
+  message     String
+  suggestions String?
+  userId      String?  @db.ObjectId
+  createdAt   DateTime @default(now())
+
+  // Relations
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model ContactMessage {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  email        String
+  subject      String
+  message      String
+  type         ContactType @default(PUBLIC)
+  batchId      String?     @db.ObjectId
+  resolved     Boolean     @default(false)
+  resolvedById String?     @db.ObjectId
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  // Relations
+  batch      Batch? @relation(fields: [batchId], references: [id], onDelete: SetNull)
+  resolvedBy User?  @relation("ResolvedBy", fields: [resolvedById], references: [id], onDelete: SetNull)
+}
+
+model ActivityLog {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  action    String
+  details   String
+  ipAddress String?
+  userId    String?  @db.ObjectId
+  createdAt DateTime @default(now())
+
+  // Relations
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model ApprovalHistory {
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  studentId     String        @db.ObjectId
+  action        StudentStatus
+  performedById String        @db.ObjectId
+  reason        String?
+  createdAt     DateTime      @default(now())
+
+  // Relations
+  student     Student @relation("ApprovedStudent", fields: [studentId], references: [id], onDelete: Cascade)
+  performedBy User    @relation("PerformedBy", fields: [performedById], references: [id])
+}
