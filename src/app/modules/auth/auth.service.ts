@@ -179,7 +179,7 @@ const forgotPassword = async (email: string) => {
   });
 
   const resetUrl = `${
-    process.env.FRONTEND_URL || "http://localhost:3000"
+    process.env.FRONTEND_URL || "https://easn-alumni.vercel.app"
   }/reset-password?token=${resetToken}`;
 
   await sendEmail(
