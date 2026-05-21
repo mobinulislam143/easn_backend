@@ -9,13 +9,30 @@ import {
   getResetPasswordTemplate,
 } from "../../utils/sendEmail";
 import crypto from "crypto";
+import { getReservedAdminEmail } from "../../helpers/ensureSystemAdmin";
 
 const registerStudent = async (payload: any) => {
+  const email = String(payload.email).trim().toLowerCase();
+  const reservedAdminEmail = getReservedAdminEmail();
+
+  if (reservedAdminEmail && email === reservedAdminEmail) {
+    throw new AppError(
+      403,
+      "This email is reserved for the system administrator. Sign in from the login page instead of registering."
+    );
+  }
+
   const existingUser = await prisma.user.findUnique({
-    where: { email: payload.email },
+    where: { email },
   });
 
   if (existingUser) {
+    if (existingUser.role === "SUPER_ADMIN" || existingUser.role === "TEACHER") {
+      throw new AppError(
+        403,
+        "This account cannot be registered as a student. Use the login page instead."
+      );
+    }
     throw new AppError(400, "Email is already registered!");
   }
 
@@ -41,7 +58,7 @@ const registerStudent = async (payload: any) => {
   const result = await prisma.$transaction(async (tx) => {
     const user = await tx.user.create({
       data: {
-        email: payload.email,
+        email,
         password: hashedPassword,
         role: "STUDENT",
         isVerified: false,
@@ -76,7 +93,7 @@ const registerStudent = async (payload: any) => {
 
   // Send Welcome Email to Student
   await sendEmail(
-    payload.email,
+    email,
     "Welcome to EASN Alumni Platform - Registration Pending",
     getWelcomeTemplate(payload.fullName)
   ).catch((err) => console.error("Welcome email failed", err));
@@ -89,7 +106,7 @@ const registerStudent = async (payload: any) => {
     getAdminNotificationTemplate(
       payload.fullName,
       payload.sscBatch,
-      payload.email,
+      email,
       payload.phone
     )
   ).catch((err) => console.error("Admin notification email failed", err));
@@ -97,15 +114,62 @@ const registerStudent = async (payload: any) => {
   return result.student;
 };
 
+const resolveLoginProfile = (user: {
+  role: string;
+  email: string;
+  studentProfile?: { fullName: string; profileImage: string } | null;
+  teacherProfile?: { name: string; profileImage: string } | null;
+}) => {
+  if (user.studentProfile) {
+    return {
+      fullName: user.studentProfile.fullName,
+      profileImage: user.studentProfile.profileImage,
+    };
+  }
+
+  if (user.role === "TEACHER" && user.teacherProfile) {
+    return {
+      fullName: user.teacherProfile.name,
+      profileImage: user.teacherProfile.profileImage,
+    };
+  }
+
+  if (user.role === "SUPER_ADMIN") {
+    return {
+      fullName: process.env.ADMIN_NAME || "Super Admin",
+      profileImage: "",
+    };
+  }
+
+  if (user.role === "BATCH_ADMIN") {
+    return {
+      fullName: process.env.ADMIN_NAME || "Batch Admin",
+      profileImage: "",
+    };
+  }
+
+  return {
+    fullName: user.email.split("@")[0],
+    profileImage: "",
+  };
+};
+
 const loginUser = async (payload: any) => {
+  const email = String(payload.email).trim().toLowerCase();
+
   const user = await prisma.user.findUnique({
-    where: { email: payload.email, isDeleted: false },
-    include: { studentProfile: true },
+    where: { email, isDeleted: false },
+    include: { studentProfile: true, teacherProfile: true },
   });
-  
 
   if (!user) {
     throw new AppError(404, "User not found with this email!");
+  }
+
+  if (user.role === "SUPER_ADMIN" || user.role === "TEACHER") {
+    // Admin and teacher accounts are provisioned in the backend only
+  } else if (user.role !== "STUDENT" && user.role !== "BATCH_ADMIN") {
+    throw new AppError(403, "This account type cannot sign in here.");
   }
 
   const isPasswordMatch = await bcrypt.compare(payload.password, user.password);
@@ -113,8 +177,11 @@ const loginUser = async (payload: any) => {
     throw new AppError(400, "Incorrect password!");
   }
 
-  // Check student approval status
-  if (user.role === "STUDENT" && user.studentProfile) {
+  // Students and batch admins need an approved student profile
+  if (
+    (user.role === "STUDENT" || user.role === "BATCH_ADMIN") &&
+    user.studentProfile
+  ) {
     if (user.studentProfile.status === "PENDING") {
       throw new AppError(
         403,
@@ -127,7 +194,17 @@ const loginUser = async (payload: any) => {
         "Your registration request has been rejected. Please contact administration."
       );
     }
+  } else if (
+    (user.role === "STUDENT" || user.role === "BATCH_ADMIN") &&
+    !user.studentProfile
+  ) {
+    throw new AppError(
+      403,
+      "No student profile linked to this account. Contact the administrator."
+    );
   }
+
+  const profile = resolveLoginProfile(user);
 
   // Generate tokens
   const jwtSecret = process.env.JWT_SECRET || "MyEasnSecret";
@@ -152,8 +229,8 @@ const loginUser = async (payload: any) => {
       id: user.id,
       email: user.email,
       role: user.role,
-      fullName: user.studentProfile?.fullName || "Administrator",
-      profileImage: user.studentProfile?.profileImage || "",
+      fullName: profile.fullName,
+      profileImage: profile.profileImage,
     },
   };
 };

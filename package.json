@@ -9,7 +9,11 @@
     "build": "tsc",
     "generate": "ts-node src/generate-module.ts",
     "postinstall": "prisma generate",
+    "seed": "prisma db seed",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "prisma": {
+    "seed": "npx ts-node prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "6.19.0",

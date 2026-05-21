@@ -1,15 +1,18 @@
 import { Server } from "http";
-import app from "./app";
 import dotenv from "dotenv";
 
-// Load Environment variables
 dotenv.config();
+
+import app from "./app";
+import { ensureSystemAdmin } from "./app/helpers/ensureSystemAdmin";
 
 const port = process.env.PORT || 3990;
 let server: Server;
 
 async function main() {
   try {
+    await ensureSystemAdmin();
+
     server = app.listen(port, () => {
       console.log(`[Server]: EASN Backend running at http://localhost:${port}`);
     });

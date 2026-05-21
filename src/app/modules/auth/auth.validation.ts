@@ -1,7 +1,8 @@
 import { z } from "zod";
 
 const registerStudentSchema = z.object({
-  body: z.object({
+  body: z
+    .object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     fullName: z.string().min(3, "Full Name is required"),
@@ -19,7 +20,8 @@ const registerStudentSchema = z.object({
     facebookProfile: z.string().url("Invalid Facebook link").optional().or(z.literal("")),
     linkedInProfile: z.string().url("Invalid LinkedIn link").optional().or(z.literal("")),
     agreeToJoinReunion: z.boolean().optional(),
-  }),
+  })
+    .strict("Registration cannot include admin or role fields."),
 });
 
 const loginSchema = z.object({

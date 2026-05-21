@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+import { ensureSystemAdmin } from "./app/helpers/ensureSystemAdmin";
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -11,6 +12,19 @@ import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import { corsOptions, corsPreflightMiddleware } from "./app/config/cors";
 
 const app: Application = express();
+
+// Provision super admin from ADMIN_EMAIL / ADMIN_PASSWORD (Vercel + local)
+let adminBootstrap: Promise<void> | null = null;
+const adminReady = (): Promise<void> => {
+  if (!adminBootstrap) {
+    adminBootstrap = ensureSystemAdmin().catch((err) => {
+      adminBootstrap = null;
+      console.error("[Admin] Bootstrap failed:", err);
+    });
+  }
+  return adminBootstrap;
+};
+void adminReady();
 
 // CORS preflight first (important on Vercel serverless)
 app.use(corsPreflightMiddleware);
