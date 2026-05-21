@@ -76,10 +76,10 @@ export const getResetPasswordTemplate = (resetUrl: string) => `
   </div>
 `;
 
-export const getEventReminderTemplate = (eventTitle: string, date: string, venue: string, organizerPhone: string) => `
+export const getEventReminderTemplate = (name: string,eventTitle: string, date: string, venue: string, organizerPhone: string) => `
   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
     <h2 style="color: #1e3a8a;">Event Reminder: ${eventTitle}</h2>
-    <p>Hello,</p>
+    <p>Hello, ${name}</p>
     <p>This is a reminder for the upcoming event on the <strong>EASN Alumni Platform</strong>:</p>
     <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
       <tr>
@@ -107,10 +107,10 @@ export const getEventReminderTemplate = (eventTitle: string, date: string, venue
   </div>
 `;
 
-export const getNoticeTemplate = (title: string, content: string) => `
+export const getNoticeTemplate = (name: string, title: string, content: string) => `
   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
     <h2 style="color: #1e3a8a;">New School Notice: ${title}</h2>
-    <p>Hello,</p>
+    <p>Hello, ${name}</p>
     <p>A new important notice has been posted on the EASN Alumni Platform:</p>
     <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 5px; margin: 15px 0; white-space: pre-line;">
       ${content}

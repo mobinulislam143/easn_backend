@@ -104,7 +104,7 @@ const createNotice = async (userId: string, payload: any) => {
       return sendEmail(
         std.user.email,
         `Notice: ${notice.title}`,
-        getNoticeTemplate(notice.title, notice.content)
+        getNoticeTemplate(std.fullName, notice.title, notice.content)
       ).catch((err) => console.error(`Failed to broadcast notice to ${std.user.email}`, err));
     });
 

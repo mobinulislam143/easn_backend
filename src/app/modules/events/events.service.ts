@@ -267,6 +267,7 @@ const sendBatchReminder = async (
       email,
       `Event Reminder: ${event.title}`,
       getEventReminderTemplate(
+        profile?.fullName || "Student",
         event.title,
         formattedDate,
         event.venue,
