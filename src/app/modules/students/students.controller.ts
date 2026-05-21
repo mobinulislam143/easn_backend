@@ -21,6 +21,8 @@ const getApprovedStudents = catchAsync(async (req: Request, res: Response) => {
     search: req.query.search as string,
     page: req.query.page as string,
     limit: req.query.limit as string,
+    status: req.query.status as string,
+    agreeToJoinReunion: req.query.agreeToJoinReunion as string,
   };
 
   const result = await StudentService.getApprovedStudents(filters);
@@ -28,7 +30,7 @@ const getApprovedStudents = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: "Approved students directory retrieved successfully",
+    message: "Students directory retrieved successfully",
     data: result,
   });
 });
@@ -89,6 +91,28 @@ const rejectStudent = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteStudent = catchAsync(async (req: Request, res: Response) => {
+  const result = await StudentService.deleteStudent(req.params.id);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Student registration and user account deleted successfully",
+    data: result,
+  });
+});
+
+const updateStudentByAdmin = catchAsync(async (req: Request, res: Response) => {
+  const result = await StudentService.updateStudentByAdmin(req.params.id, req.body);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Student record updated by Admin successfully",
+    data: result,
+  });
+});
+
 export const StudentController = {
   getPendingStudents,
   getApprovedStudents,
@@ -97,4 +121,6 @@ export const StudentController = {
   updateStudentProfile,
   approveStudent,
   rejectStudent,
+  deleteStudent,
+  updateStudentByAdmin,
 };

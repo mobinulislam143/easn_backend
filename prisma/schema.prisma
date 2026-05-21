@@ -4,8 +4,9 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  provider   = "prisma-client-js"
+  output     = "../src/generated/prisma"
+  engineType = "library"
 }
 
 enum Role {
@@ -43,6 +44,16 @@ enum BlogCategory {
   MEMORIES
   SUCCESS_STORIES
   EDUCATION
+  ANNOUNCEMENT
+  ACHIEVEMENT
+  GENERAL
+  TECH
+}
+
+enum ContentStatus {
+  PENDING
+  PUBLISHED
+  REJECTED
 }
 
 enum ContactType {
@@ -101,6 +112,7 @@ model Student {
   facebookProfile   String?
   linkedInProfile   String?
   status            StudentStatus     @default(PENDING)
+  agreeToJoinReunion Boolean          @default(false)
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
 
@@ -200,19 +212,21 @@ model EventParticipant {
 }
 
 model Blog {
-  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  id         String         @id @default(auto()) @map("_id") @db.ObjectId
   title      String
-  content    String       // HTML or Rich-text content
+  content    String
   banner     String?
-  authorId   String       @db.ObjectId
+  authorId   String         @db.ObjectId
   category   BlogCategory
-  tags       String[]     @default([])
-  isFeatured Boolean      @default(false)
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
+  tags       String[]       @default([])
+  isFeatured Boolean        @default(false)
+  status     ContentStatus? // null = legacy (treated as PUBLISHED)
+  batchId    String?        @db.ObjectId // set when student submits for batch admin approval
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
 
   // Relations
-  author     User         @relation("BlogsWritten", fields: [authorId], references: [id])
+  author     User           @relation("BlogsWritten", fields: [authorId], references: [id])
   comments   Comment[]
 }
 
@@ -233,15 +247,16 @@ model Notice {
 }
 
 model Gallery {
-  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
   title        String
   imageUrl     String
-  type         String      // "REUNION" | "EVENT" | "BATCH_MEMORIES"
-  batchId      String?     @db.ObjectId
-  eventId      String?     @db.ObjectId
-  uploadedById String      @db.ObjectId
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  type         String         // "REUNION" | "EVENT" | "BATCH_MEMORIES"
+  batchId      String?        @db.ObjectId
+  eventId      String?        @db.ObjectId
+  uploadedById String         @db.ObjectId
+  status       ContentStatus? // null = legacy (treated as PUBLISHED)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
 
   // Relations
   batch        Batch?      @relation(fields: [batchId], references: [id], onDelete: SetNull)

@@ -1,15 +1,38 @@
 import prisma from "../../helpers/prisma";
 import AppError from "../../errors/AppError";
+import {
+  assertBatchAdminCanAccessEvent,
+  getBatchAdminContext,
+} from "../../helpers/batchAdmin";
 import { sendEmail, getEventReminderTemplate } from "../../utils/sendEmail";
 
-const getAllEvents = async () => {
-  return await prisma.event.findMany({
+const getAllEvents = async (filters?: any) => {
+  const page = Number(filters?.page) || 1;
+  const limit = Number(filters?.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const data = await prisma.event.findMany({
     orderBy: { date: "asc" },
     include: {
       createdBy: { select: { email: true } },
+      participants: { select: { userId: true, status: true } },
       _count: { select: { participants: { where: { status: "JOINED" } } } },
     },
+    skip,
+    take: limit,
   });
+
+  const total = await prisma.event.count();
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+      totalPage: Math.ceil(total / limit),
+    },
+    data,
+  };
 };
 
 const getEventById = async (id: string) => {
@@ -34,7 +57,14 @@ const getEventById = async (id: string) => {
   return event;
 };
 
-const createEvent = async (userId: string, payload: any) => {
+const createEvent = async (userId: string, role: string, payload: any) => {
+  let allowedBatch = payload.allowedBatch || [];
+
+  if (role === "BATCH_ADMIN") {
+    const { sscBatch } = await getBatchAdminContext(userId);
+    allowedBatch = [sscBatch];
+  }
+
   return await prisma.event.create({
     data: {
       title: payload.title,
@@ -43,22 +73,34 @@ const createEvent = async (userId: string, payload: any) => {
       time: payload.time,
       venue: payload.venue,
       organizer: payload.organizer,
-      banner: payload.banner || "https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg",
+      banner:
+        payload.banner ||
+        "https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg",
       registrationDeadline: new Date(payload.registrationDeadline),
-      allowedBatch: payload.allowedBatch || [],
-      participantLimit: payload.participantLimit ? Number(payload.participantLimit) : null,
+      allowedBatch,
+      participantLimit: payload.participantLimit
+        ? Number(payload.participantLimit)
+        : null,
       createdById: userId,
     },
   });
 };
 
-const updateEvent = async (id: string, payload: any) => {
+const updateEvent = async (id: string, userId: string, role: string, payload: any) => {
   const event = await prisma.event.findUnique({
     where: { id },
   });
 
   if (!event) {
     throw new AppError(404, "Event not found!");
+  }
+
+  await assertBatchAdminCanAccessEvent(userId, role, event);
+
+  let allowedBatch = payload.allowedBatch;
+  if (role === "BATCH_ADMIN") {
+    const { sscBatch } = await getBatchAdminContext(userId);
+    allowedBatch = [sscBatch];
   }
 
   return await prisma.event.update({
@@ -71,14 +113,18 @@ const updateEvent = async (id: string, payload: any) => {
       venue: payload.venue,
       organizer: payload.organizer,
       banner: payload.banner,
-      registrationDeadline: payload.registrationDeadline ? new Date(payload.registrationDeadline) : undefined,
-      allowedBatch: payload.allowedBatch,
-      participantLimit: payload.participantLimit ? Number(payload.participantLimit) : undefined,
+      registrationDeadline: payload.registrationDeadline
+        ? new Date(payload.registrationDeadline)
+        : undefined,
+      allowedBatch,
+      participantLimit: payload.participantLimit
+        ? Number(payload.participantLimit)
+        : undefined,
     },
   });
 };
 
-const deleteEvent = async (id: string) => {
+const deleteEvent = async (id: string, userId: string, role: string) => {
   const event = await prisma.event.findUnique({
     where: { id },
   });
@@ -86,6 +132,8 @@ const deleteEvent = async (id: string) => {
   if (!event) {
     throw new AppError(404, "Event not found!");
   }
+
+  await assertBatchAdminCanAccessEvent(userId, role, event);
 
   await prisma.event.delete({
     where: { id },
@@ -94,7 +142,11 @@ const deleteEvent = async (id: string) => {
   return true;
 };
 
-const rsvpEvent = async (userId: string, eventId: string, status: "JOINED" | "NOT_JOINED") => {
+const rsvpEvent = async (
+  userId: string,
+  eventId: string,
+  status: "JOINED" | "NOT_JOINED"
+) => {
   const event = await prisma.event.findUnique({
     where: { id: eventId },
   });
@@ -103,12 +155,17 @@ const rsvpEvent = async (userId: string, eventId: string, status: "JOINED" | "NO
     throw new AppError(404, "Event not found!");
   }
 
-  // Validate deadline
   if (new Date() > new Date(event.registrationDeadline)) {
     throw new AppError(400, "Registration deadline for this event has passed.");
   }
 
-  // If status is JOINED, check participant limit
+  if (status === "JOINED" && event.allowedBatch.length > 0) {
+    const student = await prisma.student.findUnique({ where: { userId } });
+    if (student && !event.allowedBatch.includes(student.sscBatch)) {
+      throw new AppError(403, "Your batch is not eligible to join this event.");
+    }
+  }
+
   if (status === "JOINED" && event.participantLimit) {
     const joinedCount = await prisma.eventParticipant.count({
       where: { eventId, status: "JOINED" },
@@ -127,7 +184,12 @@ const rsvpEvent = async (userId: string, eventId: string, status: "JOINED" | "NO
   });
 };
 
-const sendBatchReminder = async (eventId: string, batchYear: string) => {
+const sendBatchReminder = async (
+  eventId: string,
+  batchYear: string,
+  userId: string,
+  role: string
+) => {
   const event = await prisma.event.findUnique({
     where: { id: eventId },
   });
@@ -136,10 +198,17 @@ const sendBatchReminder = async (eventId: string, batchYear: string) => {
     throw new AppError(404, "Event not found!");
   }
 
-  // Get all approved students in that batch
+  await assertBatchAdminCanAccessEvent(userId, role, event);
+
+  let targetBatch = batchYear;
+  if (role === "BATCH_ADMIN") {
+    const { sscBatch } = await getBatchAdminContext(userId);
+    targetBatch = sscBatch;
+  }
+
   const students = await prisma.student.findMany({
     where: {
-      sscBatch: batchYear,
+      sscBatch: targetBatch,
       status: "APPROVED",
     },
     include: {
@@ -148,24 +217,31 @@ const sendBatchReminder = async (eventId: string, batchYear: string) => {
   });
 
   if (!students.length) {
-    throw new AppError(400, `No approved students found in batch ${batchYear}.`);
+    throw new AppError(400, `No approved students found in batch ${targetBatch}.`);
   }
 
-  const formattedDate = new Date(event.date).toLocaleDateString() + " " + event.time;
-  const organizerPhone = students.find((s) => s.fullName === event.organizer)?.phone || ""; // try to match organizer phone
+  const formattedDate =
+    new Date(event.date).toLocaleDateString() + " " + event.time;
+  const organizerPhone =
+    students.find((s) => s.fullName === event.organizer)?.phone || "";
 
-  // Send email to each student
   const emailPromises = students.map((std) => {
     return sendEmail(
       std.user.email,
       `Event Reminder: ${event.title}`,
-      getEventReminderTemplate(event.title, formattedDate, event.venue, organizerPhone || std.phone)
-    ).catch((err) => console.error(`Failed to send event email to ${std.user.email}`, err));
+      getEventReminderTemplate(
+        event.title,
+        formattedDate,
+        event.venue,
+        organizerPhone || std.phone
+      )
+    ).catch((err) =>
+      console.error(`Failed to send event email to ${std.user.email}`, err)
+    );
   });
 
   await Promise.all(emailPromises);
 
-  // Register in-app notifications
   const notificationPromises = students.map((std) => {
     return prisma.notification.create({
       data: {
@@ -183,7 +259,31 @@ const sendBatchReminder = async (eventId: string, batchYear: string) => {
   return {
     success: true,
     recipientsCount: students.length,
+    batchYear: targetBatch,
   };
+};
+
+const getEventParticipants = async (eventId: string, userId: string, role: string) => {
+  const event = await prisma.event.findUnique({
+    where: { id: eventId },
+  });
+
+  if (!event) {
+    throw new AppError(404, "Event not found!");
+  }
+
+  await assertBatchAdminCanAccessEvent(userId, role, event);
+
+  return await prisma.eventParticipant.findMany({
+    where: { eventId, status: "JOINED" },
+    include: {
+      user: {
+        include: {
+          studentProfile: true,
+        },
+      },
+    },
+  });
 };
 
 export const EventService = {
@@ -194,4 +294,5 @@ export const EventService = {
   deleteEvent,
   rsvpEvent,
   sendBatchReminder,
+  getEventParticipants,
 };

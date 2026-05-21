@@ -54,7 +54,11 @@ const exportStudentsCsv = catchAsync(async (req: Request, res: Response) => {
     status: req.query.status as string,
   };
 
-  const csvData = await DashboardService.getStudentsExportData(filters);
+  const csvData = await DashboardService.getStudentsExportData(
+    filters,
+    req.user!.id,
+    req.user!.role
+  );
 
   res.setHeader("Content-Type", "text/csv");
   res.setHeader("Content-Disposition", "attachment; filename=students_export.csv");
@@ -70,19 +74,54 @@ const exportTeachersCsv = catchAsync(async (req: Request, res: Response) => {
 });
 
 const exportEventParticipantsCsv = catchAsync(async (req: Request, res: Response) => {
-  const csvData = await DashboardService.getEventParticipantsExportData(req.params.id);
+  const csvData = await DashboardService.getEventParticipantsExportData(
+    req.params.id,
+    req.user!.id,
+    req.user!.role
+  );
 
   res.setHeader("Content-Type", "text/csv");
   res.setHeader("Content-Disposition", `attachment; filename=event_participants_${req.params.id}.csv`);
   res.status(200).send(csvData);
 });
 
+const exportReunionParticipantsCsv = catchAsync(async (req: Request, res: Response) => {
+  const csvData = await DashboardService.getReunionParticipantsExportData();
+
+  res.setHeader("Content-Type", "text/csv");
+  res.setHeader("Content-Disposition", "attachment; filename=reunion_participants.csv");
+  res.status(200).send(csvData);
+});
+
+const getTeacherSummary = catchAsync(async (req: Request, res: Response) => {
+  const result = await DashboardService.getTeacherDashboardSummary(req.user!.id);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Teacher dashboard loaded successfully",
+    data: result,
+  });
+});
+
+const getBatchAdminSummary = catchAsync(async (req: Request, res: Response) => {
+  const result = await DashboardService.getBatchAdminDashboardSummary(req.user!.id);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Batch admin dashboard loaded successfully",
+    data: result,
+  });
+});
+
 export const DashboardController = {
   getAdminSummary,
   getStudentSummary,
+  getTeacherSummary,
+  getBatchAdminSummary,
   getNotifications,
   markNotificationRead,
   exportStudentsCsv,
   exportTeachersCsv,
   exportEventParticipantsCsv,
+  exportReunionParticipantsCsv,
 };

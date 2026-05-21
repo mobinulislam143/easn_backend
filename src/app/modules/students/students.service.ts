@@ -10,7 +10,13 @@ const getPendingStudents = async () => {
 };
 
 const getApprovedStudents = async (filters: any) => {
-  const whereConditions: any = { status: "APPROVED" };
+  const whereConditions: any = {};
+
+  if (filters.status && filters.status !== "ALL") {
+    whereConditions.status = filters.status;
+  } else if (!filters.status) {
+    whereConditions.status = "APPROVED";
+  }
 
   if (filters.sscBatch) {
     whereConditions.sscBatch = filters.sscBatch;
@@ -18,10 +24,14 @@ const getApprovedStudents = async (filters: any) => {
   if (filters.group) {
     whereConditions.group = filters.group;
   }
+  if (filters.agreeToJoinReunion !== undefined && filters.agreeToJoinReunion !== "") {
+    whereConditions.agreeToJoinReunion = filters.agreeToJoinReunion === "true" || filters.agreeToJoinReunion === true;
+  }
   if (filters.search) {
     whereConditions.OR = [
       { fullName: { contains: filters.search, mode: "insensitive" } },
       { currentProfession: { contains: filters.search, mode: "insensitive" } },
+      { user: { email: { contains: filters.search, mode: "insensitive" } } },
     ];
   }
 
@@ -31,7 +41,7 @@ const getApprovedStudents = async (filters: any) => {
 
   const data = await prisma.student.findMany({
     where: whereConditions,
-    include: { user: { select: { email: true } }, batch: true },
+    include: { user: { select: { email: true, role: true } }, batch: true },
     skip,
     take: limit,
     orderBy: { fullName: "asc" },
@@ -101,6 +111,7 @@ const updateStudentProfile = async (userId: string, payload: any) => {
       shortBio: payload.shortBio || null,
       facebookProfile: payload.facebookProfile || null,
       linkedInProfile: payload.linkedInProfile || null,
+      agreeToJoinReunion: payload.agreeToJoinReunion !== undefined ? (payload.agreeToJoinReunion === true || payload.agreeToJoinReunion === "true") : undefined,
     },
   });
 };
@@ -218,6 +229,83 @@ const rejectStudent = async (studentId: string, adminId: string, reason: string)
   return result;
 };
 
+const deleteStudent = async (studentId: string) => {
+  const student = await prisma.student.findUnique({
+    where: { id: studentId },
+  });
+
+  if (!student) {
+    throw new AppError(404, "Student registration not found!");
+  }
+
+  // Delete user, which will cascade delete student and alumni profile
+  await prisma.user.delete({
+    where: { id: student.userId },
+  });
+
+  return true;
+};
+
+const updateStudentByAdmin = async (studentId: string, payload: any) => {
+  const student = await prisma.student.findUnique({
+    where: { id: studentId },
+  });
+
+  if (!student) {
+    throw new AppError(404, "Student registration not found!");
+  }
+
+  const result = await prisma.$transaction(async (tx) => {
+    // If batch year is updated, find or create the corresponding batch
+    let batchId = student.batchId;
+    if (payload.sscBatch && payload.sscBatch !== student.sscBatch) {
+      let batch = await tx.batch.findUnique({
+        where: { year: payload.sscBatch },
+      });
+      if (!batch) {
+        batch = await tx.batch.create({
+          data: {
+            year: payload.sscBatch,
+            name: `SSC ${payload.sscBatch}`,
+            description: `Class of ${payload.sscBatch} alumni network`,
+          },
+        });
+      }
+      batchId = batch.id;
+    }
+
+    const updatedStudent = await tx.student.update({
+      where: { id: studentId },
+      data: {
+        fullName: payload.fullName,
+        phone: payload.phone,
+        sscBatch: payload.sscBatch,
+        batchId,
+        roll: payload.roll,
+        regNo: payload.regNo,
+        group: payload.group,
+        currentProfession: payload.currentProfession,
+        currentAddress: payload.currentAddress,
+        agreeToJoinReunion: payload.agreeToJoinReunion !== undefined ? (payload.agreeToJoinReunion === true || payload.agreeToJoinReunion === "true") : undefined,
+        status: payload.status,
+      },
+    });
+
+    if (payload.role) {
+      await tx.user.update({
+        where: { id: student.userId },
+        data: {
+          role: payload.role,
+        },
+      });
+    }
+
+    return updatedStudent;
+  });
+
+  return result;
+};
+
 export const StudentService = {
   getPendingStudents,
   getApprovedStudents,
@@ -226,4 +314,6 @@ export const StudentService = {
   updateStudentProfile,
   approveStudent,
   rejectStudent,
+  deleteStudent,
+  updateStudentByAdmin,
 };

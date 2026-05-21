@@ -4,13 +4,18 @@ import sendResponse from "../../utils/sendResponse";
 import { BatchService } from "./batches.service";
 
 const getAllBatches = catchAsync(async (req: Request, res: Response) => {
-  const result = await BatchService.getAllBatches();
+  const filters = {
+    page: req.query.page,
+    limit: req.query.limit,
+  };
+  const result = await BatchService.getAllBatches(filters);
 
   sendResponse(res, {
     statusCode: 200,
     success: true,
     message: "Batches list retrieved successfully",
-    data: result,
+    data: result.data,
+    meta: result.meta,
   });
 });
 
@@ -47,9 +52,21 @@ const updateBatch = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteBatch = catchAsync(async (req: Request, res: Response) => {
+  await BatchService.deleteBatch(req.params.year);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Batch deleted successfully",
+    data: null,
+  });
+});
+
 export const BatchController = {
   getAllBatches,
   getBatchByYear,
   createBatch,
   updateBatch,
+  deleteBatch,
 };

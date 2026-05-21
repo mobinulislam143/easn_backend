@@ -147,10 +147,23 @@ export const BlogCategory: {
   CAREER: 'CAREER',
   MEMORIES: 'MEMORIES',
   SUCCESS_STORIES: 'SUCCESS_STORIES',
-  EDUCATION: 'EDUCATION'
+  EDUCATION: 'EDUCATION',
+  ANNOUNCEMENT: 'ANNOUNCEMENT',
+  ACHIEVEMENT: 'ACHIEVEMENT',
+  GENERAL: 'GENERAL',
+  TECH: 'TECH'
 };
 
 export type BlogCategory = (typeof BlogCategory)[keyof typeof BlogCategory]
+
+
+export const ContentStatus: {
+  PENDING: 'PENDING',
+  PUBLISHED: 'PUBLISHED',
+  REJECTED: 'REJECTED'
+};
+
+export type ContentStatus = (typeof ContentStatus)[keyof typeof ContentStatus]
 
 
 export const ContactType: {
@@ -186,6 +199,10 @@ export const EventStatus: typeof $Enums.EventStatus
 export type BlogCategory = $Enums.BlogCategory
 
 export const BlogCategory: typeof $Enums.BlogCategory
+
+export type ContentStatus = $Enums.ContentStatus
+
+export const ContentStatus: typeof $Enums.ContentStatus
 
 export type ContactType = $Enums.ContactType
 
@@ -4084,6 +4101,7 @@ export namespace Prisma {
     facebookProfile: string | null
     linkedInProfile: string | null
     status: $Enums.StudentStatus | null
+    agreeToJoinReunion: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -4107,6 +4125,7 @@ export namespace Prisma {
     facebookProfile: string | null
     linkedInProfile: string | null
     status: $Enums.StudentStatus | null
+    agreeToJoinReunion: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -4130,6 +4149,7 @@ export namespace Prisma {
     facebookProfile: number
     linkedInProfile: number
     status: number
+    agreeToJoinReunion: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -4155,6 +4175,7 @@ export namespace Prisma {
     facebookProfile?: true
     linkedInProfile?: true
     status?: true
+    agreeToJoinReunion?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -4178,6 +4199,7 @@ export namespace Prisma {
     facebookProfile?: true
     linkedInProfile?: true
     status?: true
+    agreeToJoinReunion?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -4201,6 +4223,7 @@ export namespace Prisma {
     facebookProfile?: true
     linkedInProfile?: true
     status?: true
+    agreeToJoinReunion?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -4297,6 +4320,7 @@ export namespace Prisma {
     facebookProfile: string | null
     linkedInProfile: string | null
     status: $Enums.StudentStatus
+    agreeToJoinReunion: boolean
     createdAt: Date
     updatedAt: Date
     _count: StudentCountAggregateOutputType | null
@@ -4337,6 +4361,7 @@ export namespace Prisma {
     facebookProfile?: boolean
     linkedInProfile?: boolean
     status?: boolean
+    agreeToJoinReunion?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -4366,11 +4391,12 @@ export namespace Prisma {
     facebookProfile?: boolean
     linkedInProfile?: boolean
     status?: boolean
+    agreeToJoinReunion?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type StudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fullName" | "fatherName" | "motherName" | "phone" | "sscBatch" | "batchId" | "roll" | "regNo" | "group" | "currentProfession" | "currentAddress" | "profileImage" | "shortBio" | "facebookProfile" | "linkedInProfile" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["student"]>
+  export type StudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fullName" | "fatherName" | "motherName" | "phone" | "sscBatch" | "batchId" | "roll" | "regNo" | "group" | "currentProfession" | "currentAddress" | "profileImage" | "shortBio" | "facebookProfile" | "linkedInProfile" | "status" | "agreeToJoinReunion" | "createdAt" | "updatedAt", ExtArgs["result"]["student"]>
   export type StudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     batch?: boolean | BatchDefaultArgs<ExtArgs>
@@ -4404,6 +4430,7 @@ export namespace Prisma {
       facebookProfile: string | null
       linkedInProfile: string | null
       status: $Enums.StudentStatus
+      agreeToJoinReunion: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["student"]>
@@ -4819,6 +4846,7 @@ export namespace Prisma {
     readonly facebookProfile: FieldRef<"Student", 'String'>
     readonly linkedInProfile: FieldRef<"Student", 'String'>
     readonly status: FieldRef<"Student", 'StudentStatus'>
+    readonly agreeToJoinReunion: FieldRef<"Student", 'Boolean'>
     readonly createdAt: FieldRef<"Student", 'DateTime'>
     readonly updatedAt: FieldRef<"Student", 'DateTime'>
   }
@@ -10693,6 +10721,8 @@ export namespace Prisma {
     authorId: string | null
     category: $Enums.BlogCategory | null
     isFeatured: boolean | null
+    status: $Enums.ContentStatus | null
+    batchId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10705,6 +10735,8 @@ export namespace Prisma {
     authorId: string | null
     category: $Enums.BlogCategory | null
     isFeatured: boolean | null
+    status: $Enums.ContentStatus | null
+    batchId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10718,6 +10750,8 @@ export namespace Prisma {
     category: number
     tags: number
     isFeatured: number
+    status: number
+    batchId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -10732,6 +10766,8 @@ export namespace Prisma {
     authorId?: true
     category?: true
     isFeatured?: true
+    status?: true
+    batchId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10744,6 +10780,8 @@ export namespace Prisma {
     authorId?: true
     category?: true
     isFeatured?: true
+    status?: true
+    batchId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10757,6 +10795,8 @@ export namespace Prisma {
     category?: true
     tags?: true
     isFeatured?: true
+    status?: true
+    batchId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -10843,6 +10883,8 @@ export namespace Prisma {
     category: $Enums.BlogCategory
     tags: string[]
     isFeatured: boolean
+    status: $Enums.ContentStatus | null
+    batchId: string | null
     createdAt: Date
     updatedAt: Date
     _count: BlogCountAggregateOutputType | null
@@ -10873,6 +10915,8 @@ export namespace Prisma {
     category?: boolean
     tags?: boolean
     isFeatured?: boolean
+    status?: boolean
+    batchId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
@@ -10891,11 +10935,13 @@ export namespace Prisma {
     category?: boolean
     tags?: boolean
     isFeatured?: boolean
+    status?: boolean
+    batchId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type BlogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "banner" | "authorId" | "category" | "tags" | "isFeatured" | "createdAt" | "updatedAt", ExtArgs["result"]["blog"]>
+  export type BlogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "banner" | "authorId" | "category" | "tags" | "isFeatured" | "status" | "batchId" | "createdAt" | "updatedAt", ExtArgs["result"]["blog"]>
   export type BlogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     author?: boolean | UserDefaultArgs<ExtArgs>
     comments?: boolean | Blog$commentsArgs<ExtArgs>
@@ -10917,6 +10963,8 @@ export namespace Prisma {
       category: $Enums.BlogCategory
       tags: string[]
       isFeatured: boolean
+      status: $Enums.ContentStatus | null
+      batchId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["blog"]>
@@ -11321,6 +11369,8 @@ export namespace Prisma {
     readonly category: FieldRef<"Blog", 'BlogCategory'>
     readonly tags: FieldRef<"Blog", 'String[]'>
     readonly isFeatured: FieldRef<"Blog", 'Boolean'>
+    readonly status: FieldRef<"Blog", 'ContentStatus'>
+    readonly batchId: FieldRef<"Blog", 'String'>
     readonly createdAt: FieldRef<"Blog", 'DateTime'>
     readonly updatedAt: FieldRef<"Blog", 'DateTime'>
   }
@@ -12806,6 +12856,7 @@ export namespace Prisma {
     batchId: string | null
     eventId: string | null
     uploadedById: string | null
+    status: $Enums.ContentStatus | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -12818,6 +12869,7 @@ export namespace Prisma {
     batchId: string | null
     eventId: string | null
     uploadedById: string | null
+    status: $Enums.ContentStatus | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -12830,6 +12882,7 @@ export namespace Prisma {
     batchId: number
     eventId: number
     uploadedById: number
+    status: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -12844,6 +12897,7 @@ export namespace Prisma {
     batchId?: true
     eventId?: true
     uploadedById?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -12856,6 +12910,7 @@ export namespace Prisma {
     batchId?: true
     eventId?: true
     uploadedById?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -12868,6 +12923,7 @@ export namespace Prisma {
     batchId?: true
     eventId?: true
     uploadedById?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -12953,6 +13009,7 @@ export namespace Prisma {
     batchId: string | null
     eventId: string | null
     uploadedById: string
+    status: $Enums.ContentStatus | null
     createdAt: Date
     updatedAt: Date
     _count: GalleryCountAggregateOutputType | null
@@ -12982,6 +13039,7 @@ export namespace Prisma {
     batchId?: boolean
     eventId?: boolean
     uploadedById?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     batch?: boolean | Gallery$batchArgs<ExtArgs>
@@ -13001,11 +13059,12 @@ export namespace Prisma {
     batchId?: boolean
     eventId?: boolean
     uploadedById?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type GalleryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "imageUrl" | "type" | "batchId" | "eventId" | "uploadedById" | "createdAt" | "updatedAt", ExtArgs["result"]["gallery"]>
+  export type GalleryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "imageUrl" | "type" | "batchId" | "eventId" | "uploadedById" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["gallery"]>
   export type GalleryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     batch?: boolean | Gallery$batchArgs<ExtArgs>
     event?: boolean | Gallery$eventArgs<ExtArgs>
@@ -13030,6 +13089,7 @@ export namespace Prisma {
       batchId: string | null
       eventId: string | null
       uploadedById: string
+      status: $Enums.ContentStatus | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["gallery"]>
@@ -13435,6 +13495,7 @@ export namespace Prisma {
     readonly batchId: FieldRef<"Gallery", 'String'>
     readonly eventId: FieldRef<"Gallery", 'String'>
     readonly uploadedById: FieldRef<"Gallery", 'String'>
+    readonly status: FieldRef<"Gallery", 'ContentStatus'>
     readonly createdAt: FieldRef<"Gallery", 'DateTime'>
     readonly updatedAt: FieldRef<"Gallery", 'DateTime'>
   }
@@ -20188,6 +20249,7 @@ export namespace Prisma {
     facebookProfile: 'facebookProfile',
     linkedInProfile: 'linkedInProfile',
     status: 'status',
+    agreeToJoinReunion: 'agreeToJoinReunion',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -20283,6 +20345,8 @@ export namespace Prisma {
     category: 'category',
     tags: 'tags',
     isFeatured: 'isFeatured',
+    status: 'status',
+    batchId: 'batchId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -20313,6 +20377,7 @@ export namespace Prisma {
     batchId: 'batchId',
     eventId: 'eventId',
     uploadedById: 'uploadedById',
+    status: 'status',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -20557,6 +20622,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'ContentStatus'
+   */
+  export type EnumContentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContentStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ContentStatus[]'
+   */
+  export type ListEnumContentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContentStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'ContactType'
    */
   export type EnumContactTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContactType'>
@@ -20738,6 +20817,7 @@ export namespace Prisma {
     facebookProfile?: StringNullableFilter<"Student"> | string | null
     linkedInProfile?: StringNullableFilter<"Student"> | string | null
     status?: EnumStudentStatusFilter<"Student"> | $Enums.StudentStatus
+    agreeToJoinReunion?: BoolFilter<"Student"> | boolean
     createdAt?: DateTimeFilter<"Student"> | Date | string
     updatedAt?: DateTimeFilter<"Student"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -20764,6 +20844,7 @@ export namespace Prisma {
     facebookProfile?: SortOrder
     linkedInProfile?: SortOrder
     status?: SortOrder
+    agreeToJoinReunion?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -20793,6 +20874,7 @@ export namespace Prisma {
     facebookProfile?: StringNullableFilter<"Student"> | string | null
     linkedInProfile?: StringNullableFilter<"Student"> | string | null
     status?: EnumStudentStatusFilter<"Student"> | $Enums.StudentStatus
+    agreeToJoinReunion?: BoolFilter<"Student"> | boolean
     createdAt?: DateTimeFilter<"Student"> | Date | string
     updatedAt?: DateTimeFilter<"Student"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -20819,6 +20901,7 @@ export namespace Prisma {
     facebookProfile?: SortOrder
     linkedInProfile?: SortOrder
     status?: SortOrder
+    agreeToJoinReunion?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: StudentCountOrderByAggregateInput
@@ -20848,6 +20931,7 @@ export namespace Prisma {
     facebookProfile?: StringNullableWithAggregatesFilter<"Student"> | string | null
     linkedInProfile?: StringNullableWithAggregatesFilter<"Student"> | string | null
     status?: EnumStudentStatusWithAggregatesFilter<"Student"> | $Enums.StudentStatus
+    agreeToJoinReunion?: BoolWithAggregatesFilter<"Student"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Student"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Student"> | Date | string
   }
@@ -21288,6 +21372,8 @@ export namespace Prisma {
     category?: EnumBlogCategoryFilter<"Blog"> | $Enums.BlogCategory
     tags?: StringNullableListFilter<"Blog">
     isFeatured?: BoolFilter<"Blog"> | boolean
+    status?: EnumContentStatusNullableFilter<"Blog"> | $Enums.ContentStatus | null
+    batchId?: StringNullableFilter<"Blog"> | string | null
     createdAt?: DateTimeFilter<"Blog"> | Date | string
     updatedAt?: DateTimeFilter<"Blog"> | Date | string
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -21303,6 +21389,8 @@ export namespace Prisma {
     category?: SortOrder
     tags?: SortOrder
     isFeatured?: SortOrder
+    status?: SortOrder
+    batchId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     author?: UserOrderByWithRelationInput
@@ -21321,6 +21409,8 @@ export namespace Prisma {
     category?: EnumBlogCategoryFilter<"Blog"> | $Enums.BlogCategory
     tags?: StringNullableListFilter<"Blog">
     isFeatured?: BoolFilter<"Blog"> | boolean
+    status?: EnumContentStatusNullableFilter<"Blog"> | $Enums.ContentStatus | null
+    batchId?: StringNullableFilter<"Blog"> | string | null
     createdAt?: DateTimeFilter<"Blog"> | Date | string
     updatedAt?: DateTimeFilter<"Blog"> | Date | string
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -21336,6 +21426,8 @@ export namespace Prisma {
     category?: SortOrder
     tags?: SortOrder
     isFeatured?: SortOrder
+    status?: SortOrder
+    batchId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: BlogCountOrderByAggregateInput
@@ -21355,6 +21447,8 @@ export namespace Prisma {
     category?: EnumBlogCategoryWithAggregatesFilter<"Blog"> | $Enums.BlogCategory
     tags?: StringNullableListFilter<"Blog">
     isFeatured?: BoolWithAggregatesFilter<"Blog"> | boolean
+    status?: EnumContentStatusNullableWithAggregatesFilter<"Blog"> | $Enums.ContentStatus | null
+    batchId?: StringNullableWithAggregatesFilter<"Blog"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Blog"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Blog"> | Date | string
   }
@@ -21448,6 +21542,7 @@ export namespace Prisma {
     batchId?: StringNullableFilter<"Gallery"> | string | null
     eventId?: StringNullableFilter<"Gallery"> | string | null
     uploadedById?: StringFilter<"Gallery"> | string
+    status?: EnumContentStatusNullableFilter<"Gallery"> | $Enums.ContentStatus | null
     createdAt?: DateTimeFilter<"Gallery"> | Date | string
     updatedAt?: DateTimeFilter<"Gallery"> | Date | string
     batch?: XOR<BatchNullableScalarRelationFilter, BatchWhereInput> | null
@@ -21464,6 +21559,7 @@ export namespace Prisma {
     batchId?: SortOrder
     eventId?: SortOrder
     uploadedById?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     batch?: BatchOrderByWithRelationInput
@@ -21483,6 +21579,7 @@ export namespace Prisma {
     batchId?: StringNullableFilter<"Gallery"> | string | null
     eventId?: StringNullableFilter<"Gallery"> | string | null
     uploadedById?: StringFilter<"Gallery"> | string
+    status?: EnumContentStatusNullableFilter<"Gallery"> | $Enums.ContentStatus | null
     createdAt?: DateTimeFilter<"Gallery"> | Date | string
     updatedAt?: DateTimeFilter<"Gallery"> | Date | string
     batch?: XOR<BatchNullableScalarRelationFilter, BatchWhereInput> | null
@@ -21499,6 +21596,7 @@ export namespace Prisma {
     batchId?: SortOrder
     eventId?: SortOrder
     uploadedById?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: GalleryCountOrderByAggregateInput
@@ -21517,6 +21615,7 @@ export namespace Prisma {
     batchId?: StringNullableWithAggregatesFilter<"Gallery"> | string | null
     eventId?: StringNullableWithAggregatesFilter<"Gallery"> | string | null
     uploadedById?: StringWithAggregatesFilter<"Gallery"> | string
+    status?: EnumContentStatusNullableWithAggregatesFilter<"Gallery"> | $Enums.ContentStatus | null
     createdAt?: DateTimeWithAggregatesFilter<"Gallery"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Gallery"> | Date | string
   }
@@ -22125,6 +22224,7 @@ export namespace Prisma {
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
+    agreeToJoinReunion?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutStudentProfileInput
@@ -22151,6 +22251,7 @@ export namespace Prisma {
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
+    agreeToJoinReunion?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     approvalHistory?: ApprovalHistoryUncheckedCreateNestedManyWithoutStudentInput
@@ -22172,6 +22273,7 @@ export namespace Prisma {
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
+    agreeToJoinReunion?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutStudentProfileNestedInput
@@ -22197,6 +22299,7 @@ export namespace Prisma {
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
+    agreeToJoinReunion?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvalHistory?: ApprovalHistoryUncheckedUpdateManyWithoutStudentNestedInput
@@ -22221,6 +22324,7 @@ export namespace Prisma {
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
+    agreeToJoinReunion?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22241,6 +22345,7 @@ export namespace Prisma {
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
+    agreeToJoinReunion?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22263,6 +22368,7 @@ export namespace Prisma {
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
+    agreeToJoinReunion?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22725,6 +22831,8 @@ export namespace Prisma {
     category: $Enums.BlogCategory
     tags?: BlogCreatetagsInput | string[]
     isFeatured?: boolean
+    status?: $Enums.ContentStatus | null
+    batchId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     author: UserCreateNestedOneWithoutBlogsWrittenInput
@@ -22740,6 +22848,8 @@ export namespace Prisma {
     category: $Enums.BlogCategory
     tags?: BlogCreatetagsInput | string[]
     isFeatured?: boolean
+    status?: $Enums.ContentStatus | null
+    batchId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     comments?: CommentUncheckedCreateNestedManyWithoutBlogInput
@@ -22752,6 +22862,8 @@ export namespace Prisma {
     category?: EnumBlogCategoryFieldUpdateOperationsInput | $Enums.BlogCategory
     tags?: BlogUpdatetagsInput | string[]
     isFeatured?: BoolFieldUpdateOperationsInput | boolean
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: UserUpdateOneRequiredWithoutBlogsWrittenNestedInput
@@ -22766,6 +22878,8 @@ export namespace Prisma {
     category?: EnumBlogCategoryFieldUpdateOperationsInput | $Enums.BlogCategory
     tags?: BlogUpdatetagsInput | string[]
     isFeatured?: BoolFieldUpdateOperationsInput | boolean
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     comments?: CommentUncheckedUpdateManyWithoutBlogNestedInput
@@ -22780,6 +22894,8 @@ export namespace Prisma {
     category: $Enums.BlogCategory
     tags?: BlogCreatetagsInput | string[]
     isFeatured?: boolean
+    status?: $Enums.ContentStatus | null
+    batchId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22791,6 +22907,8 @@ export namespace Prisma {
     category?: EnumBlogCategoryFieldUpdateOperationsInput | $Enums.BlogCategory
     tags?: BlogUpdatetagsInput | string[]
     isFeatured?: BoolFieldUpdateOperationsInput | boolean
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22803,6 +22921,8 @@ export namespace Prisma {
     category?: EnumBlogCategoryFieldUpdateOperationsInput | $Enums.BlogCategory
     tags?: BlogUpdatetagsInput | string[]
     isFeatured?: BoolFieldUpdateOperationsInput | boolean
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22895,6 +23015,7 @@ export namespace Prisma {
     title: string
     imageUrl: string
     type: string
+    status?: $Enums.ContentStatus | null
     createdAt?: Date | string
     updatedAt?: Date | string
     batch?: BatchCreateNestedOneWithoutGalleryImagesInput
@@ -22911,6 +23032,7 @@ export namespace Prisma {
     batchId?: string | null
     eventId?: string | null
     uploadedById: string
+    status?: $Enums.ContentStatus | null
     createdAt?: Date | string
     updatedAt?: Date | string
     comments?: CommentUncheckedCreateNestedManyWithoutGalleryInput
@@ -22920,6 +23042,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batch?: BatchUpdateOneWithoutGalleryImagesNestedInput
@@ -22935,6 +23058,7 @@ export namespace Prisma {
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     eventId?: NullableStringFieldUpdateOperationsInput | string | null
     uploadedById?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     comments?: CommentUncheckedUpdateManyWithoutGalleryNestedInput
@@ -22948,6 +23072,7 @@ export namespace Prisma {
     batchId?: string | null
     eventId?: string | null
     uploadedById: string
+    status?: $Enums.ContentStatus | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22956,6 +23081,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22967,6 +23093,7 @@ export namespace Prisma {
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     eventId?: NullableStringFieldUpdateOperationsInput | string | null
     uploadedById?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23746,6 +23873,7 @@ export namespace Prisma {
     facebookProfile?: SortOrder
     linkedInProfile?: SortOrder
     status?: SortOrder
+    agreeToJoinReunion?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -23769,6 +23897,7 @@ export namespace Prisma {
     facebookProfile?: SortOrder
     linkedInProfile?: SortOrder
     status?: SortOrder
+    agreeToJoinReunion?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -23792,6 +23921,7 @@ export namespace Prisma {
     facebookProfile?: SortOrder
     linkedInProfile?: SortOrder
     status?: SortOrder
+    agreeToJoinReunion?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24160,6 +24290,14 @@ export namespace Prisma {
     not?: NestedEnumBlogCategoryFilter<$PrismaModel> | $Enums.BlogCategory
   }
 
+  export type EnumContentStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContentStatus | EnumContentStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ContentStatus[] | ListEnumContentStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ContentStatus[] | ListEnumContentStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumContentStatusNullableFilter<$PrismaModel> | $Enums.ContentStatus | null
+    isSet?: boolean
+  }
+
   export type BlogCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -24169,6 +24307,8 @@ export namespace Prisma {
     category?: SortOrder
     tags?: SortOrder
     isFeatured?: SortOrder
+    status?: SortOrder
+    batchId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24181,6 +24321,8 @@ export namespace Prisma {
     authorId?: SortOrder
     category?: SortOrder
     isFeatured?: SortOrder
+    status?: SortOrder
+    batchId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24193,6 +24335,8 @@ export namespace Prisma {
     authorId?: SortOrder
     category?: SortOrder
     isFeatured?: SortOrder
+    status?: SortOrder
+    batchId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24205,6 +24349,17 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumBlogCategoryFilter<$PrismaModel>
     _max?: NestedEnumBlogCategoryFilter<$PrismaModel>
+  }
+
+  export type EnumContentStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContentStatus | EnumContentStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ContentStatus[] | ListEnumContentStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ContentStatus[] | ListEnumContentStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumContentStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.ContentStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumContentStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumContentStatusNullableFilter<$PrismaModel>
+    isSet?: boolean
   }
 
   export type NoticeCountOrderByAggregateInput = {
@@ -24261,6 +24416,7 @@ export namespace Prisma {
     batchId?: SortOrder
     eventId?: SortOrder
     uploadedById?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24273,6 +24429,7 @@ export namespace Prisma {
     batchId?: SortOrder
     eventId?: SortOrder
     uploadedById?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24285,6 +24442,7 @@ export namespace Prisma {
     batchId?: SortOrder
     eventId?: SortOrder
     uploadedById?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -25644,6 +25802,11 @@ export namespace Prisma {
     push?: string | string[]
   }
 
+  export type NullableEnumContentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ContentStatus | null
+    unset?: boolean
+  }
+
   export type UserUpdateOneRequiredWithoutBlogsWrittenNestedInput = {
     create?: XOR<UserCreateWithoutBlogsWrittenInput, UserUncheckedCreateWithoutBlogsWrittenInput>
     connectOrCreate?: UserCreateOrConnectWithoutBlogsWrittenInput
@@ -26312,6 +26475,14 @@ export namespace Prisma {
     not?: NestedEnumBlogCategoryFilter<$PrismaModel> | $Enums.BlogCategory
   }
 
+  export type NestedEnumContentStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContentStatus | EnumContentStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ContentStatus[] | ListEnumContentStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ContentStatus[] | ListEnumContentStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumContentStatusNullableFilter<$PrismaModel> | $Enums.ContentStatus | null
+    isSet?: boolean
+  }
+
   export type NestedEnumBlogCategoryWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.BlogCategory | EnumBlogCategoryFieldRefInput<$PrismaModel>
     in?: $Enums.BlogCategory[] | ListEnumBlogCategoryFieldRefInput<$PrismaModel>
@@ -26320,6 +26491,17 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumBlogCategoryFilter<$PrismaModel>
     _max?: NestedEnumBlogCategoryFilter<$PrismaModel>
+  }
+
+  export type NestedEnumContentStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContentStatus | EnumContentStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ContentStatus[] | ListEnumContentStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ContentStatus[] | ListEnumContentStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumContentStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.ContentStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumContentStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumContentStatusNullableFilter<$PrismaModel>
+    isSet?: boolean
   }
 
   export type NestedEnumContactTypeFilter<$PrismaModel = never> = {
@@ -26356,6 +26538,7 @@ export namespace Prisma {
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
+    agreeToJoinReunion?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     batch: BatchCreateNestedOneWithoutStudentsInput
@@ -26380,6 +26563,7 @@ export namespace Prisma {
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
+    agreeToJoinReunion?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     approvalHistory?: ApprovalHistoryUncheckedCreateNestedManyWithoutStudentInput
@@ -26532,6 +26716,8 @@ export namespace Prisma {
     category: $Enums.BlogCategory
     tags?: BlogCreatetagsInput | string[]
     isFeatured?: boolean
+    status?: $Enums.ContentStatus | null
+    batchId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     comments?: CommentCreateNestedManyWithoutBlogInput
@@ -26545,6 +26731,8 @@ export namespace Prisma {
     category: $Enums.BlogCategory
     tags?: BlogCreatetagsInput | string[]
     isFeatured?: boolean
+    status?: $Enums.ContentStatus | null
+    batchId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     comments?: CommentUncheckedCreateNestedManyWithoutBlogInput
@@ -26597,6 +26785,7 @@ export namespace Prisma {
     title: string
     imageUrl: string
     type: string
+    status?: $Enums.ContentStatus | null
     createdAt?: Date | string
     updatedAt?: Date | string
     batch?: BatchCreateNestedOneWithoutGalleryImagesInput
@@ -26611,6 +26800,7 @@ export namespace Prisma {
     type: string
     batchId?: string | null
     eventId?: string | null
+    status?: $Enums.ContentStatus | null
     createdAt?: Date | string
     updatedAt?: Date | string
     comments?: CommentUncheckedCreateNestedManyWithoutGalleryInput
@@ -26822,6 +27012,7 @@ export namespace Prisma {
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
+    agreeToJoinReunion?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batch?: BatchUpdateOneRequiredWithoutStudentsNestedInput
@@ -26845,6 +27036,7 @@ export namespace Prisma {
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
+    agreeToJoinReunion?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvalHistory?: ApprovalHistoryUncheckedUpdateManyWithoutStudentNestedInput
@@ -27012,6 +27204,8 @@ export namespace Prisma {
     category?: EnumBlogCategoryFilter<"Blog"> | $Enums.BlogCategory
     tags?: StringNullableListFilter<"Blog">
     isFeatured?: BoolFilter<"Blog"> | boolean
+    status?: EnumContentStatusNullableFilter<"Blog"> | $Enums.ContentStatus | null
+    batchId?: StringNullableFilter<"Blog"> | string | null
     createdAt?: DateTimeFilter<"Blog"> | Date | string
     updatedAt?: DateTimeFilter<"Blog"> | Date | string
   }
@@ -27074,6 +27268,7 @@ export namespace Prisma {
     batchId?: StringNullableFilter<"Gallery"> | string | null
     eventId?: StringNullableFilter<"Gallery"> | string | null
     uploadedById?: StringFilter<"Gallery"> | string
+    status?: EnumContentStatusNullableFilter<"Gallery"> | $Enums.ContentStatus | null
     createdAt?: DateTimeFilter<"Gallery"> | Date | string
     updatedAt?: DateTimeFilter<"Gallery"> | Date | string
   }
@@ -27632,6 +27827,7 @@ export namespace Prisma {
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
+    agreeToJoinReunion?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutStudentProfileInput
@@ -27656,6 +27852,7 @@ export namespace Prisma {
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
+    agreeToJoinReunion?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     approvalHistory?: ApprovalHistoryUncheckedCreateNestedManyWithoutStudentInput
@@ -27708,6 +27905,7 @@ export namespace Prisma {
     title: string
     imageUrl: string
     type: string
+    status?: $Enums.ContentStatus | null
     createdAt?: Date | string
     updatedAt?: Date | string
     event?: EventCreateNestedOneWithoutGalleryInput
@@ -27722,6 +27920,7 @@ export namespace Prisma {
     type: string
     eventId?: string | null
     uploadedById: string
+    status?: $Enums.ContentStatus | null
     createdAt?: Date | string
     updatedAt?: Date | string
     comments?: CommentUncheckedCreateNestedManyWithoutGalleryInput
@@ -27809,6 +28008,7 @@ export namespace Prisma {
     facebookProfile?: StringNullableFilter<"Student"> | string | null
     linkedInProfile?: StringNullableFilter<"Student"> | string | null
     status?: EnumStudentStatusFilter<"Student"> | $Enums.StudentStatus
+    agreeToJoinReunion?: BoolFilter<"Student"> | boolean
     createdAt?: DateTimeFilter<"Student"> | Date | string
     updatedAt?: DateTimeFilter<"Student"> | Date | string
   }
@@ -28160,6 +28360,7 @@ export namespace Prisma {
     title: string
     imageUrl: string
     type: string
+    status?: $Enums.ContentStatus | null
     createdAt?: Date | string
     updatedAt?: Date | string
     batch?: BatchCreateNestedOneWithoutGalleryImagesInput
@@ -28174,6 +28375,7 @@ export namespace Prisma {
     type: string
     batchId?: string | null
     uploadedById: string
+    status?: $Enums.ContentStatus | null
     createdAt?: Date | string
     updatedAt?: Date | string
     comments?: CommentUncheckedCreateNestedManyWithoutGalleryInput
@@ -29292,6 +29494,8 @@ export namespace Prisma {
     category: $Enums.BlogCategory
     tags?: BlogCreatetagsInput | string[]
     isFeatured?: boolean
+    status?: $Enums.ContentStatus | null
+    batchId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     author: UserCreateNestedOneWithoutBlogsWrittenInput
@@ -29306,6 +29510,8 @@ export namespace Prisma {
     category: $Enums.BlogCategory
     tags?: BlogCreatetagsInput | string[]
     isFeatured?: boolean
+    status?: $Enums.ContentStatus | null
+    batchId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -29392,6 +29598,7 @@ export namespace Prisma {
     title: string
     imageUrl: string
     type: string
+    status?: $Enums.ContentStatus | null
     createdAt?: Date | string
     updatedAt?: Date | string
     batch?: BatchCreateNestedOneWithoutGalleryImagesInput
@@ -29407,6 +29614,7 @@ export namespace Prisma {
     batchId?: string | null
     eventId?: string | null
     uploadedById: string
+    status?: $Enums.ContentStatus | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -29499,6 +29707,8 @@ export namespace Prisma {
     category?: EnumBlogCategoryFieldUpdateOperationsInput | $Enums.BlogCategory
     tags?: BlogUpdatetagsInput | string[]
     isFeatured?: BoolFieldUpdateOperationsInput | boolean
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: UserUpdateOneRequiredWithoutBlogsWrittenNestedInput
@@ -29512,6 +29722,8 @@ export namespace Prisma {
     category?: EnumBlogCategoryFieldUpdateOperationsInput | $Enums.BlogCategory
     tags?: BlogUpdatetagsInput | string[]
     isFeatured?: BoolFieldUpdateOperationsInput | boolean
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29611,6 +29823,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batch?: BatchUpdateOneWithoutGalleryImagesNestedInput
@@ -29625,6 +29838,7 @@ export namespace Prisma {
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     eventId?: NullableStringFieldUpdateOperationsInput | string | null
     uploadedById?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30216,6 +30430,7 @@ export namespace Prisma {
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
+    agreeToJoinReunion?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutStudentProfileInput
@@ -30241,6 +30456,7 @@ export namespace Prisma {
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
+    agreeToJoinReunion?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30338,6 +30554,7 @@ export namespace Prisma {
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
+    agreeToJoinReunion?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutStudentProfileNestedInput
@@ -30362,6 +30579,7 @@ export namespace Prisma {
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
+    agreeToJoinReunion?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30463,6 +30681,8 @@ export namespace Prisma {
     category: $Enums.BlogCategory
     tags?: BlogCreatetagsInput | string[]
     isFeatured?: boolean
+    status?: $Enums.ContentStatus | null
+    batchId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30485,6 +30705,7 @@ export namespace Prisma {
     type: string
     batchId?: string | null
     eventId?: string | null
+    status?: $Enums.ContentStatus | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30626,6 +30847,8 @@ export namespace Prisma {
     category?: EnumBlogCategoryFieldUpdateOperationsInput | $Enums.BlogCategory
     tags?: BlogUpdatetagsInput | string[]
     isFeatured?: BoolFieldUpdateOperationsInput | boolean
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     comments?: CommentUpdateManyWithoutBlogNestedInput
@@ -30638,6 +30861,8 @@ export namespace Prisma {
     category?: EnumBlogCategoryFieldUpdateOperationsInput | $Enums.BlogCategory
     tags?: BlogUpdatetagsInput | string[]
     isFeatured?: BoolFieldUpdateOperationsInput | boolean
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     comments?: CommentUncheckedUpdateManyWithoutBlogNestedInput
@@ -30650,6 +30875,8 @@ export namespace Prisma {
     category?: EnumBlogCategoryFieldUpdateOperationsInput | $Enums.BlogCategory
     tags?: BlogUpdatetagsInput | string[]
     isFeatured?: BoolFieldUpdateOperationsInput | boolean
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30690,6 +30917,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batch?: BatchUpdateOneWithoutGalleryImagesNestedInput
@@ -30703,6 +30931,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     eventId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     comments?: CommentUncheckedUpdateManyWithoutGalleryNestedInput
@@ -30714,6 +30943,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     eventId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30921,6 +31151,7 @@ export namespace Prisma {
     facebookProfile?: string | null
     linkedInProfile?: string | null
     status?: $Enums.StudentStatus
+    agreeToJoinReunion?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30944,6 +31175,7 @@ export namespace Prisma {
     type: string
     eventId?: string | null
     uploadedById: string
+    status?: $Enums.ContentStatus | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30977,6 +31209,7 @@ export namespace Prisma {
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
+    agreeToJoinReunion?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutStudentProfileNestedInput
@@ -31000,6 +31233,7 @@ export namespace Prisma {
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
+    agreeToJoinReunion?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvalHistory?: ApprovalHistoryUncheckedUpdateManyWithoutStudentNestedInput
@@ -31022,6 +31256,7 @@ export namespace Prisma {
     facebookProfile?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
+    agreeToJoinReunion?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31063,6 +31298,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneWithoutGalleryNestedInput
@@ -31076,6 +31312,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     eventId?: NullableStringFieldUpdateOperationsInput | string | null
     uploadedById?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     comments?: CommentUncheckedUpdateManyWithoutGalleryNestedInput
@@ -31087,6 +31324,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     eventId?: NullableStringFieldUpdateOperationsInput | string | null
     uploadedById?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31142,6 +31380,7 @@ export namespace Prisma {
     type: string
     batchId?: string | null
     uploadedById: string
+    status?: $Enums.ContentStatus | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -31182,6 +31421,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batch?: BatchUpdateOneWithoutGalleryImagesNestedInput
@@ -31195,6 +31435,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     uploadedById?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     comments?: CommentUncheckedUpdateManyWithoutGalleryNestedInput
@@ -31206,6 +31447,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     uploadedById?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

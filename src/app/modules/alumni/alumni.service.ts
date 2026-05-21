@@ -2,7 +2,7 @@ import prisma from "../../helpers/prisma";
 import AppError from "../../errors/AppError";
 
 const getAlumniDirectory = async (filters: any) => {
-  const { search, sscBatch, group, profession, company, isFeatured } = filters;
+  const { search, sscBatch, group, profession, company, isFeatured, role } = filters;
 
   const whereConditions: any = {
     status: "APPROVED",
@@ -16,6 +16,11 @@ const getAlumniDirectory = async (filters: any) => {
   }
   if (profession) {
     whereConditions.currentProfession = { contains: profession, mode: "insensitive" };
+  }
+
+  // Filter by user role
+  if (role && role !== "ALL") {
+    whereConditions.user = { role };
   }
 
   // Handle name search
@@ -32,6 +37,7 @@ const getAlumniDirectory = async (filters: any) => {
       user: {
         select: {
           email: true,
+          role: true,
           alumniProfile: true,
         },
       },
@@ -45,6 +51,7 @@ const getAlumniDirectory = async (filters: any) => {
     fullName: std.fullName,
     phone: std.phone,
     email: std.user.email,
+    role: std.user.role,
     sscBatch: std.sscBatch,
     group: std.group,
     currentProfession: std.currentProfession,

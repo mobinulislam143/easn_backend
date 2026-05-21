@@ -38,14 +38,35 @@ const resolveContactMessage = async (id: string, adminId: string) => {
   });
 };
 
-const getContactMessages = async () => {
-  return await prisma.contactMessage.findMany({
+const getContactMessages = async (filters?: any) => {
+  const page = Number(filters?.page) || 1;
+  const limit = Number(filters?.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const data = await prisma.contactMessage.findMany({
+    where: { resolved: false },
     orderBy: { createdAt: "desc" },
     include: {
       batch: true,
       resolvedBy: { select: { email: true } },
     },
+    skip,
+    take: limit,
   });
+
+  const total = await prisma.contactMessage.count({
+    where: { resolved: false },
+  });
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+      totalPage: Math.ceil(total / limit),
+    },
+    data,
+  };
 };
 
 const submitFeedback = async (userId: string | null, payload: any) => {
@@ -65,8 +86,12 @@ const submitFeedback = async (userId: string | null, payload: any) => {
   });
 };
 
-const getAllFeedbacks = async () => {
-  return await prisma.feedback.findMany({
+const getAllFeedbacks = async (filters?: any) => {
+  const page = Number(filters?.page) || 1;
+  const limit = Number(filters?.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const data = await prisma.feedback.findMany({
     orderBy: { createdAt: "desc" },
     include: {
       user: {
@@ -76,7 +101,21 @@ const getAllFeedbacks = async () => {
         },
       },
     },
+    skip,
+    take: limit,
   });
+
+  const total = await prisma.feedback.count();
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+      totalPage: Math.ceil(total / limit),
+    },
+    data,
+  };
 };
 
 export const FeedbackService = {

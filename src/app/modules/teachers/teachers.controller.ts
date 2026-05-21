@@ -66,10 +66,21 @@ const deleteTeacher = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const createTeacherAccount = catchAsync(async (req: Request, res: Response) => {
+  const result = await TeacherService.createTeacherAccount(req.params.id, req.body);
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: "Teacher login account created successfully",
+    data: result,
+  });
+});
+
 export const TeacherController = {
   getAllTeachers,
   getTeacherById,
   createTeacher,
   updateTeacher,
   deleteTeacher,
+  createTeacherAccount,
 };

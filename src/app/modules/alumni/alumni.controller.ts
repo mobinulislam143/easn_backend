@@ -10,6 +10,7 @@ const getAlumniDirectory = catchAsync(async (req: Request, res: Response) => {
     group: req.query.group as string,
     profession: req.query.profession as string,
     company: req.query.company as string,
+    role: req.query.role as string,
     isFeatured: req.query.isFeatured as string,
     page: req.query.page as string,
     limit: req.query.limit as string,

@@ -67,6 +67,7 @@ const registerStudent = async (payload: any) => {
         facebookProfile: payload.facebookProfile || null,
         linkedInProfile: payload.linkedInProfile || null,
         status: "PENDING",
+        agreeToJoinReunion: payload.agreeToJoinReunion === true,
       },
     });
 
@@ -101,6 +102,7 @@ const loginUser = async (payload: any) => {
     where: { email: payload.email, isDeleted: false },
     include: { studentProfile: true },
   });
+  
 
   if (!user) {
     throw new AppError(404, "User not found with this email!");

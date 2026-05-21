@@ -80,7 +80,7 @@ export const getEventReminderTemplate = (eventTitle: string, date: string, venue
   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
     <h2 style="color: #1e3a8a;">Event Reminder: ${eventTitle}</h2>
     <p>Hello,</p>
-    <p>This is a reminder for the upcoming event on the **EASN Alumni Platform**:</p>
+    <p>This is a reminder for the upcoming event on the <strong>EASN Alumni Platform</strong>:</p>
     <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
       <tr>
         <td style="padding: 8px 0; font-weight: bold; width: 120px;">Event Name:</td>
@@ -99,8 +99,9 @@ export const getEventReminderTemplate = (eventTitle: string, date: string, venue
         <td style="padding: 8px 0;">${organizerPhone || "N/A"}</td>
       </tr>
     </table>
-    <p>We look forward to seeing you there!</p>
-    <br/>
+    <p>We look forward to seeing you there! Click the button below to confirm your RSVP or view event details:</p>
+    <a href="${process.env.FRONTEND_URL || "http://localhost:3000"}/dashboard/student" style="display: inline-block; background-color: #3b82f6; color: white; padding: 12px 28px; text-decoration: none; border-radius: 6px; margin-top: 10px; font-weight: bold; font-size: 15px;">Join Event</a>
+    <br/><br/>
     <p>Best Regards,</p>
     <p><strong>Eidgah Adarsha Shiksha Niketon (EASN)</strong></p>
   </div>

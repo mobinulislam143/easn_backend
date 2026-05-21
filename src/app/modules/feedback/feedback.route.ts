@@ -1,6 +1,8 @@
 import { Router } from "express";
 import auth from "../../middlewares/auth";
+import validateRequest from "../../middlewares/validateRequest";
 import { FeedbackController } from "./feedback.controller";
+import { FeedbackValidation } from "./feedback.validation";
 import jwt from "jsonwebtoken";
 
 const router = Router();
@@ -19,7 +21,11 @@ const optionalAuth = (req: any, res: any, next: any) => {
   next();
 };
 
-router.post("/contact", FeedbackController.createContactMessage);
+router.post(
+  "/contact",
+  validateRequest(FeedbackValidation.createContactMessageSchema),
+  FeedbackController.createContactMessage
+);
 
 router.get(
   "/contact",
@@ -33,7 +39,12 @@ router.post(
   FeedbackController.resolveContactMessage
 );
 
-router.post("/", optionalAuth, FeedbackController.submitFeedback);
+router.post(
+  "/",
+  optionalAuth,
+  validateRequest(FeedbackValidation.submitFeedbackSchema),
+  FeedbackController.submitFeedback
+);
 
 router.get(
   "/",

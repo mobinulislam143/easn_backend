@@ -148,6 +148,7 @@ exports.Prisma.StudentScalarFieldEnum = {
   facebookProfile: 'facebookProfile',
   linkedInProfile: 'linkedInProfile',
   status: 'status',
+  agreeToJoinReunion: 'agreeToJoinReunion',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -225,6 +226,8 @@ exports.Prisma.BlogScalarFieldEnum = {
   category: 'category',
   tags: 'tags',
   isFeatured: 'isFeatured',
+  status: 'status',
+  batchId: 'batchId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -249,6 +252,7 @@ exports.Prisma.GalleryScalarFieldEnum = {
   batchId: 'batchId',
   eventId: 'eventId',
   uploadedById: 'uploadedById',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -360,7 +364,17 @@ exports.BlogCategory = exports.$Enums.BlogCategory = {
   CAREER: 'CAREER',
   MEMORIES: 'MEMORIES',
   SUCCESS_STORIES: 'SUCCESS_STORIES',
-  EDUCATION: 'EDUCATION'
+  EDUCATION: 'EDUCATION',
+  ANNOUNCEMENT: 'ANNOUNCEMENT',
+  ACHIEVEMENT: 'ACHIEVEMENT',
+  GENERAL: 'GENERAL',
+  TECH: 'TECH'
+};
+
+exports.ContentStatus = exports.$Enums.ContentStatus = {
+  PENDING: 'PENDING',
+  PUBLISHED: 'PUBLISHED',
+  REJECTED: 'REJECTED'
 };
 
 exports.ContactType = exports.$Enums.ContactType = {

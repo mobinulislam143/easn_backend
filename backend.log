@@ -1,0 +1,40 @@
+
+> easn-backend@1.0.0 start
+> node dist/server.js
+
+node:internal/modules/cjs/loader:1386
+  throw err;
+  ^
+
+Error: Cannot find module '../../generated/prisma'
+Require stack:
+- D:\ai project\easn\backend\dist\app\helpers\prisma.js
+- D:\ai project\easn\backend\dist\app\modules\auth\auth.service.js
+- D:\ai project\easn\backend\dist\app\modules\auth\auth.controller.js
+- D:\ai project\easn\backend\dist\app\modules\auth\auth.route.js
+- D:\ai project\easn\backend\dist\app\routes\index.js
+- D:\ai project\easn\backend\dist\app.js
+- D:\ai project\easn\backend\dist\server.js
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1383:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1025:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1030:22)
+    at Function._load (node:internal/modules/cjs/loader:1192:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+    at Module.require (node:internal/modules/cjs/loader:1463:12)
+    at require (node:internal/modules/helpers:147:16)
+    at Object.<anonymous> (D:\ai project\easn\backend\dist\app\helpers\prisma.js:3:18)
+    at Module._compile (node:internal/modules/cjs/loader:1706:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ai project\\easn\\backend\\dist\\app\\helpers\\prisma.js',
+    'D:\\ai project\\easn\\backend\\dist\\app\\modules\\auth\\auth.service.js',
+    'D:\\ai project\\easn\\backend\\dist\\app\\modules\\auth\\auth.controller.js',
+    'D:\\ai project\\easn\\backend\\dist\\app\\modules\\auth\\auth.route.js',
+    'D:\\ai project\\easn\\backend\\dist\\app\\routes\\index.js',
+    'D:\\ai project\\easn\\backend\\dist\\app.js',
+    'D:\\ai project\\easn\\backend\\dist\\server.js'
+  ]
+}
+
+Node.js v22.20.0

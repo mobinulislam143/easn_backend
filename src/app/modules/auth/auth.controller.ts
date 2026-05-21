@@ -16,8 +16,7 @@ const registerStudent = catchAsync(async (req: Request, res: Response) => {
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.loginUser(req.body);
-
-  // Set refresh token cookie
+ 
   res.cookie("refreshToken", result.refreshToken, {
     secure: process.env.NODE_ENV === "production",
     httpOnly: true,

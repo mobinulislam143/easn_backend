@@ -26,13 +26,18 @@ const resolveContactMessage = catchAsync(async (req: Request, res: Response) => 
 });
 
 const getContactMessages = catchAsync(async (req: Request, res: Response) => {
-  const result = await FeedbackService.getContactMessages();
+  const filters = {
+    page: req.query.page,
+    limit: req.query.limit,
+  };
+  const result = await FeedbackService.getContactMessages(filters);
 
   sendResponse(res, {
     statusCode: 200,
     success: true,
     message: "Contact requests retrieved successfully",
-    data: result,
+    data: result.data,
+    meta: result.meta,
   });
 });
 
@@ -49,13 +54,18 @@ const submitFeedback = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllFeedbacks = catchAsync(async (req: Request, res: Response) => {
-  const result = await FeedbackService.getAllFeedbacks();
+  const filters = {
+    page: req.query.page,
+    limit: req.query.limit,
+  };
+  const result = await FeedbackService.getAllFeedbacks(filters);
 
   sendResponse(res, {
     statusCode: 200,
     success: true,
     message: "Feedbacks list retrieved successfully",
-    data: result,
+    data: result.data,
+    meta: result.meta,
   });
 });
 

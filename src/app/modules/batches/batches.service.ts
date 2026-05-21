@@ -1,17 +1,25 @@
 import prisma from "../../helpers/prisma";
 import AppError from "../../errors/AppError";
 
-const getAllBatches = async () => {
-  const batches = await prisma.batch.findMany({
+const getAllBatches = async (filters?: any) => {
+  const page = Number(filters?.page) || 1;
+  const limit = Number(filters?.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const data = await prisma.batch.findMany({
     orderBy: { year: "asc" },
     include: {
       _count: {
         select: { students: { where: { status: "APPROVED" } } },
       },
     },
+    skip,
+    take: limit,
   });
 
-  return batches.map((batch) => ({
+  const total = await prisma.batch.count();
+
+  const mappedData = data.map((batch) => ({
     id: batch.id,
     year: batch.year,
     name: batch.name,
@@ -21,6 +29,16 @@ const getAllBatches = async () => {
     createdAt: batch.createdAt,
     updatedAt: batch.updatedAt,
   }));
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+      totalPage: Math.ceil(total / limit),
+    },
+    data: mappedData,
+  };
 };
 
 const getBatchByYear = async (year: string) => {
@@ -29,7 +47,7 @@ const getBatchByYear = async (year: string) => {
     include: {
       students: {
         where: { status: "APPROVED" },
-        include: { user: { select: { email: true } } },
+        include: { user: { select: { email: true, role: true } } },
       },
       galleryImages: true,
     },
@@ -116,9 +134,26 @@ const updateBatch = async (year: string, payload: any) => {
   });
 };
 
+const deleteBatch = async (year: string) => {
+  const batch = await prisma.batch.findUnique({
+    where: { year },
+  });
+
+  if (!batch) {
+    throw new AppError(404, "Batch not found!");
+  }
+
+  await prisma.batch.delete({
+    where: { year },
+  });
+
+  return true;
+};
+
 export const BatchService = {
   getAllBatches,
   getBatchByYear,
   createBatch,
   updateBatch,
+  deleteBatch,
 };

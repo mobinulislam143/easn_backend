@@ -1,5 +1,6 @@
 import prisma from "../../helpers/prisma";
 import AppError from "../../errors/AppError";
+import bcrypt from "bcryptjs";
 
 const getAllTeachers = async (filters: any) => {
   const whereConditions: any = {};
@@ -111,10 +112,49 @@ const deleteTeacher = async (id: string) => {
   return true;
 };
 
+const createTeacherAccount = async (teacherId: string, payload: { password: string }) => {
+  const teacher = await prisma.teacher.findUnique({ where: { id: teacherId } });
+  if (!teacher) throw new AppError(404, "Teacher record not found!");
+  if (teacher.userId) throw new AppError(400, "This teacher already has a login account!");
+
+  const existingUser = await prisma.user.findUnique({ where: { email: teacher.email } });
+  if (existingUser) throw new AppError(400, "Email is already registered as a system user!");
+
+  const hashedPassword = await bcrypt.hash(payload.password, 10);
+
+  const user = await prisma.user.create({
+    data: {
+      email: teacher.email,
+      password: hashedPassword,
+      role: "TEACHER",
+      isVerified: true,
+    },
+  });
+
+  await prisma.teacher.update({
+    where: { id: teacherId },
+    data: { userId: user.id },
+  });
+
+  return { userId: user.id, email: user.email, role: "TEACHER" };
+};
+
+const assignRole = async (studentId: string, role: string) => {
+  const student = await prisma.student.findUnique({ where: { id: studentId } });
+  if (!student) throw new AppError(404, "Student not found!");
+
+  return await prisma.user.update({
+    where: { id: student.userId },
+    data: { role: role as any },
+  });
+};
+
 export const TeacherService = {
   getAllTeachers,
   getTeacherById,
   createTeacher,
   updateTeacher,
   deleteTeacher,
+  createTeacherAccount,
+  assignRole,
 };

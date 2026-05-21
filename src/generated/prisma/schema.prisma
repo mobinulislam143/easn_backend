@@ -43,6 +43,16 @@ enum BlogCategory {
   MEMORIES
   SUCCESS_STORIES
   EDUCATION
+  ANNOUNCEMENT
+  ACHIEVEMENT
+  GENERAL
+  TECH
+}
+
+enum ContentStatus {
+  PENDING
+  PUBLISHED
+  REJECTED
 }
 
 enum ContactType {
@@ -83,26 +93,27 @@ model User {
 }
 
 model Student {
-  id                String        @id @default(auto()) @map("_id") @db.ObjectId
-  userId            String        @unique @db.ObjectId
-  fullName          String
-  fatherName        String?
-  motherName        String?
-  phone             String
-  sscBatch          String // e.g. "2020"
-  batchId           String        @db.ObjectId
-  roll              String?
-  regNo             String?
-  group             GroupType
-  currentProfession String
-  currentAddress    String
-  profileImage      String
-  shortBio          String?
-  facebookProfile   String?
-  linkedInProfile   String?
-  status            StudentStatus @default(PENDING)
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
+  id                 String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId             String        @unique @db.ObjectId
+  fullName           String
+  fatherName         String?
+  motherName         String?
+  phone              String
+  sscBatch           String // e.g. "2020"
+  batchId            String        @db.ObjectId
+  roll               String?
+  regNo              String?
+  group              GroupType
+  currentProfession  String
+  currentAddress     String
+  profileImage       String
+  shortBio           String?
+  facebookProfile    String?
+  linkedInProfile    String?
+  status             StudentStatus @default(PENDING)
+  agreeToJoinReunion Boolean       @default(false)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
 
   // Relations
   user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -200,16 +211,18 @@ model EventParticipant {
 }
 
 model Blog {
-  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  id         String         @id @default(auto()) @map("_id") @db.ObjectId
   title      String
-  content    String // HTML or Rich-text content
+  content    String
   banner     String?
-  authorId   String       @db.ObjectId
+  authorId   String         @db.ObjectId
   category   BlogCategory
-  tags       String[]     @default([])
-  isFeatured Boolean      @default(false)
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
+  tags       String[]       @default([])
+  isFeatured Boolean        @default(false)
+  status     ContentStatus? // null = legacy (treated as PUBLISHED)
+  batchId    String?        @db.ObjectId // set when student submits for batch admin approval
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
 
   // Relations
   author   User      @relation("BlogsWritten", fields: [authorId], references: [id])
@@ -233,15 +246,16 @@ model Notice {
 }
 
 model Gallery {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
   title        String
   imageUrl     String
   type         String // "REUNION" | "EVENT" | "BATCH_MEMORIES"
-  batchId      String?  @db.ObjectId
-  eventId      String?  @db.ObjectId
-  uploadedById String   @db.ObjectId
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  batchId      String?        @db.ObjectId
+  eventId      String?        @db.ObjectId
+  uploadedById String         @db.ObjectId
+  status       ContentStatus? // null = legacy (treated as PUBLISHED)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
 
   // Relations
   batch      Batch?    @relation(fields: [batchId], references: [id], onDelete: SetNull)

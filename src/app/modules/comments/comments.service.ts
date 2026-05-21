@@ -2,27 +2,25 @@ import prisma from "../../helpers/prisma";
 import AppError from "../../errors/AppError";
 
 const addComment = async (userId: string, payload: any) => {
-  const { content, blogId, eventId, noticeId, galleryId } = payload;
+  const { content, targetType, targetId } = payload;
 
   if (!content) {
     throw new AppError(400, "Comment content cannot be empty.");
   }
 
-  // Ensure exactly one target is provided
-  const targetsCount = [blogId, eventId, noticeId, galleryId].filter(Boolean).length;
-  if (targetsCount !== 1) {
-    throw new AppError(400, "Comment must belong to exactly one target (blog, event, notice, or gallery).");
+  const data: any = { content, userId, blogId: null, eventId: null, noticeId: null, galleryId: null };
+
+  switch (targetType) {
+    case "BLOG":    data.blogId    = targetId; break;
+    case "EVENT":   data.eventId   = targetId; break;
+    case "NOTICE":  data.noticeId  = targetId; break;
+    case "GALLERY": data.galleryId = targetId; break;
+    default:
+      throw new AppError(400, "Invalid target type. Must be BLOG, EVENT, NOTICE, or GALLERY.");
   }
 
   return await prisma.comment.create({
-    data: {
-      content,
-      userId,
-      blogId: blogId || null,
-      eventId: eventId || null,
-      noticeId: noticeId || null,
-      galleryId: galleryId || null,
-    },
+    data,
     include: {
       user: {
         select: {

@@ -4,13 +4,18 @@ import sendResponse from "../../utils/sendResponse";
 import { EventService } from "./events.service";
 
 const getAllEvents = catchAsync(async (req: Request, res: Response) => {
-  const result = await EventService.getAllEvents();
+  const filters = {
+    page: req.query.page,
+    limit: req.query.limit,
+  };
+  const result = await EventService.getAllEvents(filters);
 
   sendResponse(res, {
     statusCode: 200,
     success: true,
     message: "Events retrieved successfully",
-    data: result,
+    data: result.data,
+    meta: result.meta,
   });
 });
 
@@ -26,7 +31,11 @@ const getEventById = catchAsync(async (req: Request, res: Response) => {
 });
 
 const createEvent = catchAsync(async (req: Request, res: Response) => {
-  const result = await EventService.createEvent(req.user!.id, req.body);
+  const result = await EventService.createEvent(
+    req.user!.id,
+    req.user!.role,
+    req.body
+  );
 
   sendResponse(res, {
     statusCode: 201,
@@ -37,7 +46,12 @@ const createEvent = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateEvent = catchAsync(async (req: Request, res: Response) => {
-  const result = await EventService.updateEvent(req.params.id, req.body);
+  const result = await EventService.updateEvent(
+    req.params.id,
+    req.user!.id,
+    req.user!.role,
+    req.body
+  );
 
   sendResponse(res, {
     statusCode: 200,
@@ -48,7 +62,7 @@ const updateEvent = catchAsync(async (req: Request, res: Response) => {
 });
 
 const deleteEvent = catchAsync(async (req: Request, res: Response) => {
-  await EventService.deleteEvent(req.params.id);
+  await EventService.deleteEvent(req.params.id, req.user!.id, req.user!.role);
 
   sendResponse(res, {
     statusCode: 200,
@@ -65,19 +79,42 @@ const rsvpEvent = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: status === "JOINED" ? "You joined this event!" : "RSVP updated to not attending.",
+    message:
+      status === "JOINED"
+        ? "You joined this event!"
+        : "RSVP updated to not attending.",
     data: result,
   });
 });
 
 const sendBatchReminder = catchAsync(async (req: Request, res: Response) => {
   const { batchYear } = req.body;
-  const result = await EventService.sendBatchReminder(req.params.id, batchYear);
+  const result = await EventService.sendBatchReminder(
+    req.params.id,
+    batchYear,
+    req.user!.id,
+    req.user!.role
+  );
 
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: `Successfully sent email reminders to ${result.recipientsCount} students in batch ${batchYear}!`,
+    message: `Successfully sent reminders to ${result.recipientsCount} students in batch ${result.batchYear}!`,
+    data: result,
+  });
+});
+
+const getEventParticipants = catchAsync(async (req: Request, res: Response) => {
+  const result = await EventService.getEventParticipants(
+    req.params.id,
+    req.user!.id,
+    req.user!.role
+  );
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Event participants retrieved successfully",
     data: result,
   });
 });
@@ -90,4 +127,5 @@ export const EventController = {
   deleteEvent,
   rsvpEvent,
   sendBatchReminder,
+  getEventParticipants,
 };

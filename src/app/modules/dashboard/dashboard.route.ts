@@ -17,6 +17,18 @@ router.get(
 );
 
 router.get(
+  "/teacher",
+  auth("TEACHER"),
+  DashboardController.getTeacherSummary
+);
+
+router.get(
+  "/batch-admin",
+  auth("BATCH_ADMIN"),
+  DashboardController.getBatchAdminSummary
+);
+
+router.get(
   "/notifications",
   auth("STUDENT", "SUPER_ADMIN", "BATCH_ADMIN"),
   DashboardController.getNotifications
@@ -44,6 +56,12 @@ router.get(
   "/export/events/:id/participants",
   auth("SUPER_ADMIN", "BATCH_ADMIN"),
   DashboardController.exportEventParticipantsCsv
+);
+
+router.get(
+  "/export/reunion-participants",
+  auth("SUPER_ADMIN", "BATCH_ADMIN"),
+  DashboardController.exportReunionParticipantsCsv
 );
 
 export const DashboardRoutes = router;
