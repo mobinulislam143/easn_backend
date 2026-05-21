@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -5,8 +8,13 @@ import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import router from "./app/routes";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
+import { corsOptions, corsPreflightMiddleware } from "./app/config/cors";
 
 const app: Application = express();
+
+// CORS preflight first (important on Vercel serverless)
+app.use(corsPreflightMiddleware);
+app.use(cors(corsOptions));
 
 // Security and standard middlewares
 app.use(
@@ -14,29 +22,17 @@ app.use(
     crossOriginResourcePolicy: { policy: "cross-origin" },
   })
 );
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "http://127.0.0.1:3000",
-      "http://localhost:3001",
-      "https://easn-alumni.vercel.app",
-      "http://127.0.0.1:3001",
-      ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : []),
-    ],
-    credentials: true,
-  })
-);
 app.use(cookieParser());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-// Rate Limiter to prevent brute force attacks
+// Rate Limiter — skip OPTIONS so preflight is never blocked
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => req.method === "OPTIONS",
   message: "Too many requests from this IP, please try again after 15 minutes.",
 });
 app.use("/api/v1", limiter);
