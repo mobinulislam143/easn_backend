@@ -45,6 +45,13 @@ router.put(
   StudentController.updateStudentByAdmin
 );
 
+router.post(
+  "/:id/assign-event",
+  auth("SUPER_ADMIN", "BATCH_ADMIN"),
+  validateRequest(StudentValidation.assignEventSchema),
+  StudentController.assignEventToStudent
+);
+
 router.delete(
   "/:id",
   auth("SUPER_ADMIN"),

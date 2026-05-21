@@ -113,6 +113,22 @@ const updateStudentByAdmin = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const assignEventToStudent = catchAsync(async (req: Request, res: Response) => {
+  const result = await StudentService.assignEventToStudent(
+    req.params.id,
+    req.body.eventId,
+    req.user!.id,
+    req.user!.role
+  );
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: `Student assigned to event "${result.event.title}" and marked as reunion attendee.`,
+    data: result,
+  });
+});
+
 export const StudentController = {
   getPendingStudents,
   getApprovedStudents,
@@ -123,4 +139,5 @@ export const StudentController = {
   rejectStudent,
   deleteStudent,
   updateStudentByAdmin,
+  assignEventToStudent,
 };

@@ -307,6 +307,90 @@ const updateStudentByAdmin = async (studentId: string, payload: any) => {
   return result;
 };
 
+const assignEventToStudent = async (
+  studentId: string,
+  eventId: string,
+  adminId: string,
+  adminRole: string
+) => {
+  const student = await prisma.student.findUnique({
+    where: { id: studentId },
+    include: { user: { select: { id: true, role: true } } },
+  });
+
+  if (!student) {
+    throw new AppError(404, "Student not found!");
+  }
+
+  if (student.status !== "APPROVED") {
+    throw new AppError(400, "Only approved students can be assigned to events.");
+  }
+
+  const event = await prisma.event.findUnique({
+    where: { id: eventId },
+  });
+
+  if (!event) {
+    throw new AppError(404, "Event not found!");
+  }
+
+  if (
+    event.allowedBatch.length > 0 &&
+    !event.allowedBatch.includes(student.sscBatch)
+  ) {
+    throw new AppError(
+      400,
+      `This event is not open to batch ${student.sscBatch}.`
+    );
+  }
+
+  if (event.participantLimit) {
+    const joinedCount = await prisma.eventParticipant.count({
+      where: { eventId, status: "JOINED" },
+    });
+    const existing = await prisma.eventParticipant.findUnique({
+      where: {
+        eventId_userId: { eventId, userId: student.userId },
+      },
+    });
+    if (
+      joinedCount >= event.participantLimit &&
+      (!existing || existing.status !== "JOINED")
+    ) {
+      throw new AppError(400, "Event participation limit reached.");
+    }
+  }
+
+  const participation = await prisma.eventParticipant.upsert({
+    where: {
+      eventId_userId: { eventId, userId: student.userId },
+    },
+    update: { status: "JOINED" },
+    create: {
+      eventId,
+      userId: student.userId,
+      status: "JOINED",
+    },
+  });
+
+  await syncAgreeToJoinReunionFromEventRsvps(student.userId);
+
+  await prisma.notification.create({
+    data: {
+      title: `Registered for ${event.title}`,
+      message: `An administrator registered you for ${event.title} on ${new Date(event.date).toLocaleDateString()} at ${event.venue}.`,
+      userId: student.userId,
+      type: "EVENT_REMINDER",
+      link: `/events/${event.id}`,
+    },
+  });
+
+  return {
+    participation,
+    event: { id: event.id, title: event.title },
+  };
+};
+
 export const StudentService = {
   getPendingStudents,
   getApprovedStudents,
@@ -317,4 +401,5 @@ export const StudentService = {
   rejectStudent,
   deleteStudent,
   updateStudentByAdmin,
+  assignEventToStudent,
 };

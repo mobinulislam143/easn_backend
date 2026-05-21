@@ -15,6 +15,13 @@ const updateStudentProfileSchema = z.object({
   }).strict("Reunion RSVP is managed from the Events page only."),
 });
 
+const assignEventSchema = z.object({
+  body: z.object({
+    eventId: z.string().min(1, "Event is required"),
+  }),
+});
+
 export const StudentValidation = {
   updateStudentProfileSchema,
+  assignEventSchema,
 };
