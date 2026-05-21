@@ -43,7 +43,7 @@ export const getApprovalTemplate = (name: string) => `
     <p>Dear ${name},</p>
     <p>We are pleased to inform you that your registration on the **EASN Alumni Platform** has been approved!</p>
     <p>You can now log in, explore the alumni directory, join upcoming events, and participate in discussions.</p>
-    <a href="${process.env.FRONTEND_URL || "http://localhost:3000"}/login" style="display: inline-block; background-color: #3b82f6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 10px;">Login Now</a>
+    <a href="${process.env.FRONTEND_URL || "https://easn-alumni.vercel.app"}/login" style="display: inline-block; background-color: #3b82f6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 10px;">Login Now</a>
     <br/><br/>
     <p>Best Regards,</p>
     <p><strong>Eidgah Adarsha Shiksha Niketon (EASN)</strong></p>
@@ -100,7 +100,7 @@ export const getEventReminderTemplate = (eventTitle: string, date: string, venue
       </tr>
     </table>
     <p>We look forward to seeing you there! Click the button below to confirm your RSVP or view event details:</p>
-    <a href="${process.env.FRONTEND_URL || "http://localhost:3000"}/dashboard/student" style="display: inline-block; background-color: #3b82f6; color: white; padding: 12px 28px; text-decoration: none; border-radius: 6px; margin-top: 10px; font-weight: bold; font-size: 15px;">Join Event</a>
+    <a href="${process.env.FRONTEND_URL || "https://easn-alumni.vercel.app"}/dashboard/student" style="display: inline-block; background-color: #3b82f6; color: white; padding: 12px 28px; text-decoration: none; border-radius: 6px; margin-top: 10px; font-weight: bold; font-size: 15px;">Join Event</a>
     <br/><br/>
     <p>Best Regards,</p>
     <p><strong>Eidgah Adarsha Shiksha Niketon (EASN)</strong></p>
@@ -115,7 +115,7 @@ export const getNoticeTemplate = (title: string, content: string) => `
     <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 5px; margin: 15px 0; white-space: pre-line;">
       ${content}
     </div>
-    <a href="${process.env.FRONTEND_URL || "http://localhost:3000"}/notices" style="display: inline-block; background-color: #3b82f6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">View Board</a>
+    <a href="${process.env.FRONTEND_URL || "https://easn-alumni.vercel.app"}/notices" style="display: inline-block; background-color: #3b82f6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">View Board</a>
     <br/><br/>
     <p>Best Regards,</p>
     <p><strong>Eidgah Adarsha Shiksha Niketon (EASN)</strong></p>
@@ -134,7 +134,7 @@ export const getAdminNotificationTemplate = (studentName: string, batch: string,
       <li><strong>Phone:</strong> ${phone}</li>
     </ul>
     <p>Please log in to the Admin Dashboard to review and approve/reject this registration.</p>
-    <a href="${process.env.FRONTEND_URL || "http://localhost:3000"}/admin/dashboard" style="display: inline-block; background-color: #1e3a8a; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 10px;">Go to Dashboard</a>
+    <a href="${process.env.FRONTEND_URL || "https://easn-alumni.vercel.app"}/admin/dashboard" style="display: inline-block; background-color: #1e3a8a; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 10px;">Go to Dashboard</a>
     <br/><br/>
     <p>EASN Automation System</p>
   </div>
