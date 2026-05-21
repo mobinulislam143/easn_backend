@@ -1,4 +1,5 @@
 import prisma from "../../helpers/prisma";
+import { syncAgreeToJoinReunionFromEventRsvps } from "../../helpers/reunionRsvp";
 import AppError from "../../errors/AppError";
 import { sendEmail, getApprovalTemplate, getRejectionTemplate } from "../../utils/sendEmail";
 
@@ -111,7 +112,6 @@ const updateStudentProfile = async (userId: string, payload: any) => {
       shortBio: payload.shortBio || null,
       facebookProfile: payload.facebookProfile || null,
       linkedInProfile: payload.linkedInProfile || null,
-      agreeToJoinReunion: payload.agreeToJoinReunion !== undefined ? (payload.agreeToJoinReunion === true || payload.agreeToJoinReunion === "true") : undefined,
     },
   });
 };
@@ -174,6 +174,8 @@ const approveStudent = async (studentId: string, adminId: string) => {
 
     return updatedStudent;
   });
+
+  await syncAgreeToJoinReunionFromEventRsvps(student.userId);
 
   // Send approval email
   await sendEmail(
@@ -286,7 +288,6 @@ const updateStudentByAdmin = async (studentId: string, payload: any) => {
         group: payload.group,
         currentProfession: payload.currentProfession,
         currentAddress: payload.currentAddress,
-        agreeToJoinReunion: payload.agreeToJoinReunion !== undefined ? (payload.agreeToJoinReunion === true || payload.agreeToJoinReunion === "true") : undefined,
         status: payload.status,
       },
     });

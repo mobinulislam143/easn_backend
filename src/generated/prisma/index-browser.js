@@ -208,6 +208,14 @@ exports.Prisma.EventScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.EventReminderDeliveryScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  userId: 'userId',
+  sentById: 'sentById',
+  sentAt: 'sentAt'
+};
+
 exports.Prisma.EventParticipantScalarFieldEnum = {
   id: 'id',
   eventId: 'eventId',
@@ -390,6 +398,7 @@ exports.Prisma.ModelName = {
   Batch: 'Batch',
   AlumniProfile: 'AlumniProfile',
   Event: 'Event',
+  EventReminderDelivery: 'EventReminderDelivery',
   EventParticipant: 'EventParticipant',
   Blog: 'Blog',
   Notice: 'Notice',

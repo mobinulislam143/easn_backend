@@ -44,6 +44,11 @@ export type AlumniProfile = $Result.DefaultSelection<Prisma.$AlumniProfilePayloa
  */
 export type Event = $Result.DefaultSelection<Prisma.$EventPayload>
 /**
+ * Model EventReminderDelivery
+ * 
+ */
+export type EventReminderDelivery = $Result.DefaultSelection<Prisma.$EventReminderDeliveryPayload>
+/**
  * Model EventParticipant
  * 
  */
@@ -352,6 +357,16 @@ export class PrismaClient<
     * ```
     */
   get event(): Prisma.EventDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.eventReminderDelivery`: Exposes CRUD operations for the **EventReminderDelivery** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EventReminderDeliveries
+    * const eventReminderDeliveries = await prisma.eventReminderDelivery.findMany()
+    * ```
+    */
+  get eventReminderDelivery(): Prisma.EventReminderDeliveryDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.eventParticipant`: Exposes CRUD operations for the **EventParticipant** model.
@@ -899,6 +914,7 @@ export namespace Prisma {
     Batch: 'Batch',
     AlumniProfile: 'AlumniProfile',
     Event: 'Event',
+    EventReminderDelivery: 'EventReminderDelivery',
     EventParticipant: 'EventParticipant',
     Blog: 'Blog',
     Notice: 'Notice',
@@ -927,7 +943,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "student" | "teacher" | "batch" | "alumniProfile" | "event" | "eventParticipant" | "blog" | "notice" | "gallery" | "comment" | "notification" | "feedback" | "contactMessage" | "activityLog" | "approvalHistory"
+      modelProps: "user" | "student" | "teacher" | "batch" | "alumniProfile" | "event" | "eventReminderDelivery" | "eventParticipant" | "blog" | "notice" | "gallery" | "comment" | "notification" | "feedback" | "contactMessage" | "activityLog" | "approvalHistory"
       txIsolationLevel: never
     }
     model: {
@@ -1372,6 +1388,80 @@ export namespace Prisma {
           count: {
             args: Prisma.EventCountArgs<ExtArgs>
             result: $Utils.Optional<EventCountAggregateOutputType> | number
+          }
+        }
+      }
+      EventReminderDelivery: {
+        payload: Prisma.$EventReminderDeliveryPayload<ExtArgs>
+        fields: Prisma.EventReminderDeliveryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EventReminderDeliveryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventReminderDeliveryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EventReminderDeliveryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventReminderDeliveryPayload>
+          }
+          findFirst: {
+            args: Prisma.EventReminderDeliveryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventReminderDeliveryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EventReminderDeliveryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventReminderDeliveryPayload>
+          }
+          findMany: {
+            args: Prisma.EventReminderDeliveryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventReminderDeliveryPayload>[]
+          }
+          create: {
+            args: Prisma.EventReminderDeliveryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventReminderDeliveryPayload>
+          }
+          createMany: {
+            args: Prisma.EventReminderDeliveryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.EventReminderDeliveryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventReminderDeliveryPayload>
+          }
+          update: {
+            args: Prisma.EventReminderDeliveryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventReminderDeliveryPayload>
+          }
+          deleteMany: {
+            args: Prisma.EventReminderDeliveryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EventReminderDeliveryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.EventReminderDeliveryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventReminderDeliveryPayload>
+          }
+          aggregate: {
+            args: Prisma.EventReminderDeliveryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEventReminderDelivery>
+          }
+          groupBy: {
+            args: Prisma.EventReminderDeliveryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EventReminderDeliveryGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.EventReminderDeliveryFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.EventReminderDeliveryAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.EventReminderDeliveryCountArgs<ExtArgs>
+            result: $Utils.Optional<EventReminderDeliveryCountAggregateOutputType> | number
           }
         }
       }
@@ -2200,6 +2290,7 @@ export namespace Prisma {
     batch?: BatchOmit
     alumniProfile?: AlumniProfileOmit
     event?: EventOmit
+    eventReminderDelivery?: EventReminderDeliveryOmit
     eventParticipant?: EventParticipantOmit
     blog?: BlogOmit
     notice?: NoticeOmit
@@ -2292,6 +2383,8 @@ export namespace Prisma {
   export type UserCountOutputType = {
     eventsCreated: number
     eventParticipations: number
+    eventRemindersReceived: number
+    eventRemindersSent: number
     blogsWritten: number
     noticesCreated: number
     uploadedMedia: number
@@ -2306,6 +2399,8 @@ export namespace Prisma {
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     eventsCreated?: boolean | UserCountOutputTypeCountEventsCreatedArgs
     eventParticipations?: boolean | UserCountOutputTypeCountEventParticipationsArgs
+    eventRemindersReceived?: boolean | UserCountOutputTypeCountEventRemindersReceivedArgs
+    eventRemindersSent?: boolean | UserCountOutputTypeCountEventRemindersSentArgs
     blogsWritten?: boolean | UserCountOutputTypeCountBlogsWrittenArgs
     noticesCreated?: boolean | UserCountOutputTypeCountNoticesCreatedArgs
     uploadedMedia?: boolean | UserCountOutputTypeCountUploadedMediaArgs
@@ -2340,6 +2435,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountEventParticipationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EventParticipantWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountEventRemindersReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventReminderDeliveryWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountEventRemindersSentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventReminderDeliveryWhereInput
   }
 
   /**
@@ -2501,12 +2610,14 @@ export namespace Prisma {
 
   export type EventCountOutputType = {
     participants: number
+    reminderDeliveries: number
     gallery: number
     comments: number
   }
 
   export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     participants?: boolean | EventCountOutputTypeCountParticipantsArgs
+    reminderDeliveries?: boolean | EventCountOutputTypeCountReminderDeliveriesArgs
     gallery?: boolean | EventCountOutputTypeCountGalleryArgs
     comments?: boolean | EventCountOutputTypeCountCommentsArgs
   }
@@ -2527,6 +2638,13 @@ export namespace Prisma {
    */
   export type EventCountOutputTypeCountParticipantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EventParticipantWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountReminderDeliveriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventReminderDeliveryWhereInput
   }
 
   /**
@@ -2866,6 +2984,8 @@ export namespace Prisma {
     alumniProfile?: boolean | User$alumniProfileArgs<ExtArgs>
     eventsCreated?: boolean | User$eventsCreatedArgs<ExtArgs>
     eventParticipations?: boolean | User$eventParticipationsArgs<ExtArgs>
+    eventRemindersReceived?: boolean | User$eventRemindersReceivedArgs<ExtArgs>
+    eventRemindersSent?: boolean | User$eventRemindersSentArgs<ExtArgs>
     blogsWritten?: boolean | User$blogsWrittenArgs<ExtArgs>
     noticesCreated?: boolean | User$noticesCreatedArgs<ExtArgs>
     uploadedMedia?: boolean | User$uploadedMediaArgs<ExtArgs>
@@ -2902,6 +3022,8 @@ export namespace Prisma {
     alumniProfile?: boolean | User$alumniProfileArgs<ExtArgs>
     eventsCreated?: boolean | User$eventsCreatedArgs<ExtArgs>
     eventParticipations?: boolean | User$eventParticipationsArgs<ExtArgs>
+    eventRemindersReceived?: boolean | User$eventRemindersReceivedArgs<ExtArgs>
+    eventRemindersSent?: boolean | User$eventRemindersSentArgs<ExtArgs>
     blogsWritten?: boolean | User$blogsWrittenArgs<ExtArgs>
     noticesCreated?: boolean | User$noticesCreatedArgs<ExtArgs>
     uploadedMedia?: boolean | User$uploadedMediaArgs<ExtArgs>
@@ -2922,6 +3044,8 @@ export namespace Prisma {
       alumniProfile: Prisma.$AlumniProfilePayload<ExtArgs> | null
       eventsCreated: Prisma.$EventPayload<ExtArgs>[]
       eventParticipations: Prisma.$EventParticipantPayload<ExtArgs>[]
+      eventRemindersReceived: Prisma.$EventReminderDeliveryPayload<ExtArgs>[]
+      eventRemindersSent: Prisma.$EventReminderDeliveryPayload<ExtArgs>[]
       blogsWritten: Prisma.$BlogPayload<ExtArgs>[]
       noticesCreated: Prisma.$NoticePayload<ExtArgs>[]
       uploadedMedia: Prisma.$GalleryPayload<ExtArgs>[]
@@ -3313,6 +3437,8 @@ export namespace Prisma {
     alumniProfile<T extends User$alumniProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$alumniProfileArgs<ExtArgs>>): Prisma__AlumniProfileClient<$Result.GetResult<Prisma.$AlumniProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     eventsCreated<T extends User$eventsCreatedArgs<ExtArgs> = {}>(args?: Subset<T, User$eventsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     eventParticipations<T extends User$eventParticipationsArgs<ExtArgs> = {}>(args?: Subset<T, User$eventParticipationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    eventRemindersReceived<T extends User$eventRemindersReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$eventRemindersReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventReminderDeliveryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    eventRemindersSent<T extends User$eventRemindersSentArgs<ExtArgs> = {}>(args?: Subset<T, User$eventRemindersSentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventReminderDeliveryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     blogsWritten<T extends User$blogsWrittenArgs<ExtArgs> = {}>(args?: Subset<T, User$blogsWrittenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     noticesCreated<T extends User$noticesCreatedArgs<ExtArgs> = {}>(args?: Subset<T, User$noticesCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     uploadedMedia<T extends User$uploadedMediaArgs<ExtArgs> = {}>(args?: Subset<T, User$uploadedMediaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3835,6 +3961,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: EventParticipantScalarFieldEnum | EventParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * User.eventRemindersReceived
+   */
+  export type User$eventRemindersReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventReminderDelivery
+     */
+    select?: EventReminderDeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventReminderDelivery
+     */
+    omit?: EventReminderDeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventReminderDeliveryInclude<ExtArgs> | null
+    where?: EventReminderDeliveryWhereInput
+    orderBy?: EventReminderDeliveryOrderByWithRelationInput | EventReminderDeliveryOrderByWithRelationInput[]
+    cursor?: EventReminderDeliveryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventReminderDeliveryScalarFieldEnum | EventReminderDeliveryScalarFieldEnum[]
+  }
+
+  /**
+   * User.eventRemindersSent
+   */
+  export type User$eventRemindersSentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventReminderDelivery
+     */
+    select?: EventReminderDeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventReminderDelivery
+     */
+    omit?: EventReminderDeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventReminderDeliveryInclude<ExtArgs> | null
+    where?: EventReminderDeliveryWhereInput
+    orderBy?: EventReminderDeliveryOrderByWithRelationInput | EventReminderDeliveryOrderByWithRelationInput[]
+    cursor?: EventReminderDeliveryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventReminderDeliveryScalarFieldEnum | EventReminderDeliveryScalarFieldEnum[]
   }
 
   /**
@@ -8783,6 +8957,7 @@ export namespace Prisma {
     updatedAt?: boolean
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     participants?: boolean | Event$participantsArgs<ExtArgs>
+    reminderDeliveries?: boolean | Event$reminderDeliveriesArgs<ExtArgs>
     gallery?: boolean | Event$galleryArgs<ExtArgs>
     comments?: boolean | Event$commentsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
@@ -8811,6 +8986,7 @@ export namespace Prisma {
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     participants?: boolean | Event$participantsArgs<ExtArgs>
+    reminderDeliveries?: boolean | Event$reminderDeliveriesArgs<ExtArgs>
     gallery?: boolean | Event$galleryArgs<ExtArgs>
     comments?: boolean | Event$commentsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
@@ -8821,6 +8997,7 @@ export namespace Prisma {
     objects: {
       createdBy: Prisma.$UserPayload<ExtArgs>
       participants: Prisma.$EventParticipantPayload<ExtArgs>[]
+      reminderDeliveries: Prisma.$EventReminderDeliveryPayload<ExtArgs>[]
       gallery: Prisma.$GalleryPayload<ExtArgs>[]
       comments: Prisma.$CommentPayload<ExtArgs>[]
     }
@@ -9204,6 +9381,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     participants<T extends Event$participantsArgs<ExtArgs> = {}>(args?: Subset<T, Event$participantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reminderDeliveries<T extends Event$reminderDeliveriesArgs<ExtArgs> = {}>(args?: Subset<T, Event$reminderDeliveriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventReminderDeliveryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     gallery<T extends Event$galleryArgs<ExtArgs> = {}>(args?: Subset<T, Event$galleryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     comments<T extends Event$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Event$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -9643,6 +9821,30 @@ export namespace Prisma {
   }
 
   /**
+   * Event.reminderDeliveries
+   */
+  export type Event$reminderDeliveriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventReminderDelivery
+     */
+    select?: EventReminderDeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventReminderDelivery
+     */
+    omit?: EventReminderDeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventReminderDeliveryInclude<ExtArgs> | null
+    where?: EventReminderDeliveryWhereInput
+    orderBy?: EventReminderDeliveryOrderByWithRelationInput | EventReminderDeliveryOrderByWithRelationInput[]
+    cursor?: EventReminderDeliveryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventReminderDeliveryScalarFieldEnum | EventReminderDeliveryScalarFieldEnum[]
+  }
+
+  /**
    * Event.gallery
    */
   export type Event$galleryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9706,6 +9908,993 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: EventInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EventReminderDelivery
+   */
+
+  export type AggregateEventReminderDelivery = {
+    _count: EventReminderDeliveryCountAggregateOutputType | null
+    _min: EventReminderDeliveryMinAggregateOutputType | null
+    _max: EventReminderDeliveryMaxAggregateOutputType | null
+  }
+
+  export type EventReminderDeliveryMinAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    userId: string | null
+    sentById: string | null
+    sentAt: Date | null
+  }
+
+  export type EventReminderDeliveryMaxAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    userId: string | null
+    sentById: string | null
+    sentAt: Date | null
+  }
+
+  export type EventReminderDeliveryCountAggregateOutputType = {
+    id: number
+    eventId: number
+    userId: number
+    sentById: number
+    sentAt: number
+    _all: number
+  }
+
+
+  export type EventReminderDeliveryMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    userId?: true
+    sentById?: true
+    sentAt?: true
+  }
+
+  export type EventReminderDeliveryMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    userId?: true
+    sentById?: true
+    sentAt?: true
+  }
+
+  export type EventReminderDeliveryCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    userId?: true
+    sentById?: true
+    sentAt?: true
+    _all?: true
+  }
+
+  export type EventReminderDeliveryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventReminderDelivery to aggregate.
+     */
+    where?: EventReminderDeliveryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventReminderDeliveries to fetch.
+     */
+    orderBy?: EventReminderDeliveryOrderByWithRelationInput | EventReminderDeliveryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EventReminderDeliveryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventReminderDeliveries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventReminderDeliveries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EventReminderDeliveries
+    **/
+    _count?: true | EventReminderDeliveryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EventReminderDeliveryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EventReminderDeliveryMaxAggregateInputType
+  }
+
+  export type GetEventReminderDeliveryAggregateType<T extends EventReminderDeliveryAggregateArgs> = {
+        [P in keyof T & keyof AggregateEventReminderDelivery]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEventReminderDelivery[P]>
+      : GetScalarType<T[P], AggregateEventReminderDelivery[P]>
+  }
+
+
+
+
+  export type EventReminderDeliveryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventReminderDeliveryWhereInput
+    orderBy?: EventReminderDeliveryOrderByWithAggregationInput | EventReminderDeliveryOrderByWithAggregationInput[]
+    by: EventReminderDeliveryScalarFieldEnum[] | EventReminderDeliveryScalarFieldEnum
+    having?: EventReminderDeliveryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EventReminderDeliveryCountAggregateInputType | true
+    _min?: EventReminderDeliveryMinAggregateInputType
+    _max?: EventReminderDeliveryMaxAggregateInputType
+  }
+
+  export type EventReminderDeliveryGroupByOutputType = {
+    id: string
+    eventId: string
+    userId: string
+    sentById: string
+    sentAt: Date
+    _count: EventReminderDeliveryCountAggregateOutputType | null
+    _min: EventReminderDeliveryMinAggregateOutputType | null
+    _max: EventReminderDeliveryMaxAggregateOutputType | null
+  }
+
+  type GetEventReminderDeliveryGroupByPayload<T extends EventReminderDeliveryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EventReminderDeliveryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EventReminderDeliveryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EventReminderDeliveryGroupByOutputType[P]>
+            : GetScalarType<T[P], EventReminderDeliveryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EventReminderDeliverySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    userId?: boolean
+    sentById?: boolean
+    sentAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    sentBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventReminderDelivery"]>
+
+
+
+  export type EventReminderDeliverySelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    userId?: boolean
+    sentById?: boolean
+    sentAt?: boolean
+  }
+
+  export type EventReminderDeliveryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "userId" | "sentById" | "sentAt", ExtArgs["result"]["eventReminderDelivery"]>
+  export type EventReminderDeliveryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    sentBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $EventReminderDeliveryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EventReminderDelivery"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+      sentBy: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      eventId: string
+      userId: string
+      sentById: string
+      sentAt: Date
+    }, ExtArgs["result"]["eventReminderDelivery"]>
+    composites: {}
+  }
+
+  type EventReminderDeliveryGetPayload<S extends boolean | null | undefined | EventReminderDeliveryDefaultArgs> = $Result.GetResult<Prisma.$EventReminderDeliveryPayload, S>
+
+  type EventReminderDeliveryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EventReminderDeliveryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EventReminderDeliveryCountAggregateInputType | true
+    }
+
+  export interface EventReminderDeliveryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EventReminderDelivery'], meta: { name: 'EventReminderDelivery' } }
+    /**
+     * Find zero or one EventReminderDelivery that matches the filter.
+     * @param {EventReminderDeliveryFindUniqueArgs} args - Arguments to find a EventReminderDelivery
+     * @example
+     * // Get one EventReminderDelivery
+     * const eventReminderDelivery = await prisma.eventReminderDelivery.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EventReminderDeliveryFindUniqueArgs>(args: SelectSubset<T, EventReminderDeliveryFindUniqueArgs<ExtArgs>>): Prisma__EventReminderDeliveryClient<$Result.GetResult<Prisma.$EventReminderDeliveryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EventReminderDelivery that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EventReminderDeliveryFindUniqueOrThrowArgs} args - Arguments to find a EventReminderDelivery
+     * @example
+     * // Get one EventReminderDelivery
+     * const eventReminderDelivery = await prisma.eventReminderDelivery.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EventReminderDeliveryFindUniqueOrThrowArgs>(args: SelectSubset<T, EventReminderDeliveryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EventReminderDeliveryClient<$Result.GetResult<Prisma.$EventReminderDeliveryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EventReminderDelivery that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventReminderDeliveryFindFirstArgs} args - Arguments to find a EventReminderDelivery
+     * @example
+     * // Get one EventReminderDelivery
+     * const eventReminderDelivery = await prisma.eventReminderDelivery.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EventReminderDeliveryFindFirstArgs>(args?: SelectSubset<T, EventReminderDeliveryFindFirstArgs<ExtArgs>>): Prisma__EventReminderDeliveryClient<$Result.GetResult<Prisma.$EventReminderDeliveryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EventReminderDelivery that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventReminderDeliveryFindFirstOrThrowArgs} args - Arguments to find a EventReminderDelivery
+     * @example
+     * // Get one EventReminderDelivery
+     * const eventReminderDelivery = await prisma.eventReminderDelivery.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EventReminderDeliveryFindFirstOrThrowArgs>(args?: SelectSubset<T, EventReminderDeliveryFindFirstOrThrowArgs<ExtArgs>>): Prisma__EventReminderDeliveryClient<$Result.GetResult<Prisma.$EventReminderDeliveryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EventReminderDeliveries that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventReminderDeliveryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EventReminderDeliveries
+     * const eventReminderDeliveries = await prisma.eventReminderDelivery.findMany()
+     * 
+     * // Get first 10 EventReminderDeliveries
+     * const eventReminderDeliveries = await prisma.eventReminderDelivery.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const eventReminderDeliveryWithIdOnly = await prisma.eventReminderDelivery.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EventReminderDeliveryFindManyArgs>(args?: SelectSubset<T, EventReminderDeliveryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventReminderDeliveryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EventReminderDelivery.
+     * @param {EventReminderDeliveryCreateArgs} args - Arguments to create a EventReminderDelivery.
+     * @example
+     * // Create one EventReminderDelivery
+     * const EventReminderDelivery = await prisma.eventReminderDelivery.create({
+     *   data: {
+     *     // ... data to create a EventReminderDelivery
+     *   }
+     * })
+     * 
+     */
+    create<T extends EventReminderDeliveryCreateArgs>(args: SelectSubset<T, EventReminderDeliveryCreateArgs<ExtArgs>>): Prisma__EventReminderDeliveryClient<$Result.GetResult<Prisma.$EventReminderDeliveryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EventReminderDeliveries.
+     * @param {EventReminderDeliveryCreateManyArgs} args - Arguments to create many EventReminderDeliveries.
+     * @example
+     * // Create many EventReminderDeliveries
+     * const eventReminderDelivery = await prisma.eventReminderDelivery.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EventReminderDeliveryCreateManyArgs>(args?: SelectSubset<T, EventReminderDeliveryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a EventReminderDelivery.
+     * @param {EventReminderDeliveryDeleteArgs} args - Arguments to delete one EventReminderDelivery.
+     * @example
+     * // Delete one EventReminderDelivery
+     * const EventReminderDelivery = await prisma.eventReminderDelivery.delete({
+     *   where: {
+     *     // ... filter to delete one EventReminderDelivery
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EventReminderDeliveryDeleteArgs>(args: SelectSubset<T, EventReminderDeliveryDeleteArgs<ExtArgs>>): Prisma__EventReminderDeliveryClient<$Result.GetResult<Prisma.$EventReminderDeliveryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EventReminderDelivery.
+     * @param {EventReminderDeliveryUpdateArgs} args - Arguments to update one EventReminderDelivery.
+     * @example
+     * // Update one EventReminderDelivery
+     * const eventReminderDelivery = await prisma.eventReminderDelivery.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EventReminderDeliveryUpdateArgs>(args: SelectSubset<T, EventReminderDeliveryUpdateArgs<ExtArgs>>): Prisma__EventReminderDeliveryClient<$Result.GetResult<Prisma.$EventReminderDeliveryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EventReminderDeliveries.
+     * @param {EventReminderDeliveryDeleteManyArgs} args - Arguments to filter EventReminderDeliveries to delete.
+     * @example
+     * // Delete a few EventReminderDeliveries
+     * const { count } = await prisma.eventReminderDelivery.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EventReminderDeliveryDeleteManyArgs>(args?: SelectSubset<T, EventReminderDeliveryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EventReminderDeliveries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventReminderDeliveryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EventReminderDeliveries
+     * const eventReminderDelivery = await prisma.eventReminderDelivery.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EventReminderDeliveryUpdateManyArgs>(args: SelectSubset<T, EventReminderDeliveryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one EventReminderDelivery.
+     * @param {EventReminderDeliveryUpsertArgs} args - Arguments to update or create a EventReminderDelivery.
+     * @example
+     * // Update or create a EventReminderDelivery
+     * const eventReminderDelivery = await prisma.eventReminderDelivery.upsert({
+     *   create: {
+     *     // ... data to create a EventReminderDelivery
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EventReminderDelivery we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EventReminderDeliveryUpsertArgs>(args: SelectSubset<T, EventReminderDeliveryUpsertArgs<ExtArgs>>): Prisma__EventReminderDeliveryClient<$Result.GetResult<Prisma.$EventReminderDeliveryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EventReminderDeliveries that matches the filter.
+     * @param {EventReminderDeliveryFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const eventReminderDelivery = await prisma.eventReminderDelivery.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: EventReminderDeliveryFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a EventReminderDelivery.
+     * @param {EventReminderDeliveryAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const eventReminderDelivery = await prisma.eventReminderDelivery.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: EventReminderDeliveryAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of EventReminderDeliveries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventReminderDeliveryCountArgs} args - Arguments to filter EventReminderDeliveries to count.
+     * @example
+     * // Count the number of EventReminderDeliveries
+     * const count = await prisma.eventReminderDelivery.count({
+     *   where: {
+     *     // ... the filter for the EventReminderDeliveries we want to count
+     *   }
+     * })
+    **/
+    count<T extends EventReminderDeliveryCountArgs>(
+      args?: Subset<T, EventReminderDeliveryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EventReminderDeliveryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EventReminderDelivery.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventReminderDeliveryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EventReminderDeliveryAggregateArgs>(args: Subset<T, EventReminderDeliveryAggregateArgs>): Prisma.PrismaPromise<GetEventReminderDeliveryAggregateType<T>>
+
+    /**
+     * Group by EventReminderDelivery.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventReminderDeliveryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EventReminderDeliveryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EventReminderDeliveryGroupByArgs['orderBy'] }
+        : { orderBy?: EventReminderDeliveryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EventReminderDeliveryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEventReminderDeliveryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EventReminderDelivery model
+   */
+  readonly fields: EventReminderDeliveryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EventReminderDelivery.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EventReminderDeliveryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sentBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EventReminderDelivery model
+   */
+  interface EventReminderDeliveryFieldRefs {
+    readonly id: FieldRef<"EventReminderDelivery", 'String'>
+    readonly eventId: FieldRef<"EventReminderDelivery", 'String'>
+    readonly userId: FieldRef<"EventReminderDelivery", 'String'>
+    readonly sentById: FieldRef<"EventReminderDelivery", 'String'>
+    readonly sentAt: FieldRef<"EventReminderDelivery", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EventReminderDelivery findUnique
+   */
+  export type EventReminderDeliveryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventReminderDelivery
+     */
+    select?: EventReminderDeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventReminderDelivery
+     */
+    omit?: EventReminderDeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventReminderDeliveryInclude<ExtArgs> | null
+    /**
+     * Filter, which EventReminderDelivery to fetch.
+     */
+    where: EventReminderDeliveryWhereUniqueInput
+  }
+
+  /**
+   * EventReminderDelivery findUniqueOrThrow
+   */
+  export type EventReminderDeliveryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventReminderDelivery
+     */
+    select?: EventReminderDeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventReminderDelivery
+     */
+    omit?: EventReminderDeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventReminderDeliveryInclude<ExtArgs> | null
+    /**
+     * Filter, which EventReminderDelivery to fetch.
+     */
+    where: EventReminderDeliveryWhereUniqueInput
+  }
+
+  /**
+   * EventReminderDelivery findFirst
+   */
+  export type EventReminderDeliveryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventReminderDelivery
+     */
+    select?: EventReminderDeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventReminderDelivery
+     */
+    omit?: EventReminderDeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventReminderDeliveryInclude<ExtArgs> | null
+    /**
+     * Filter, which EventReminderDelivery to fetch.
+     */
+    where?: EventReminderDeliveryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventReminderDeliveries to fetch.
+     */
+    orderBy?: EventReminderDeliveryOrderByWithRelationInput | EventReminderDeliveryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EventReminderDeliveries.
+     */
+    cursor?: EventReminderDeliveryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventReminderDeliveries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventReminderDeliveries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventReminderDeliveries.
+     */
+    distinct?: EventReminderDeliveryScalarFieldEnum | EventReminderDeliveryScalarFieldEnum[]
+  }
+
+  /**
+   * EventReminderDelivery findFirstOrThrow
+   */
+  export type EventReminderDeliveryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventReminderDelivery
+     */
+    select?: EventReminderDeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventReminderDelivery
+     */
+    omit?: EventReminderDeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventReminderDeliveryInclude<ExtArgs> | null
+    /**
+     * Filter, which EventReminderDelivery to fetch.
+     */
+    where?: EventReminderDeliveryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventReminderDeliveries to fetch.
+     */
+    orderBy?: EventReminderDeliveryOrderByWithRelationInput | EventReminderDeliveryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EventReminderDeliveries.
+     */
+    cursor?: EventReminderDeliveryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventReminderDeliveries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventReminderDeliveries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventReminderDeliveries.
+     */
+    distinct?: EventReminderDeliveryScalarFieldEnum | EventReminderDeliveryScalarFieldEnum[]
+  }
+
+  /**
+   * EventReminderDelivery findMany
+   */
+  export type EventReminderDeliveryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventReminderDelivery
+     */
+    select?: EventReminderDeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventReminderDelivery
+     */
+    omit?: EventReminderDeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventReminderDeliveryInclude<ExtArgs> | null
+    /**
+     * Filter, which EventReminderDeliveries to fetch.
+     */
+    where?: EventReminderDeliveryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventReminderDeliveries to fetch.
+     */
+    orderBy?: EventReminderDeliveryOrderByWithRelationInput | EventReminderDeliveryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EventReminderDeliveries.
+     */
+    cursor?: EventReminderDeliveryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventReminderDeliveries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventReminderDeliveries.
+     */
+    skip?: number
+    distinct?: EventReminderDeliveryScalarFieldEnum | EventReminderDeliveryScalarFieldEnum[]
+  }
+
+  /**
+   * EventReminderDelivery create
+   */
+  export type EventReminderDeliveryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventReminderDelivery
+     */
+    select?: EventReminderDeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventReminderDelivery
+     */
+    omit?: EventReminderDeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventReminderDeliveryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EventReminderDelivery.
+     */
+    data: XOR<EventReminderDeliveryCreateInput, EventReminderDeliveryUncheckedCreateInput>
+  }
+
+  /**
+   * EventReminderDelivery createMany
+   */
+  export type EventReminderDeliveryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EventReminderDeliveries.
+     */
+    data: EventReminderDeliveryCreateManyInput | EventReminderDeliveryCreateManyInput[]
+  }
+
+  /**
+   * EventReminderDelivery update
+   */
+  export type EventReminderDeliveryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventReminderDelivery
+     */
+    select?: EventReminderDeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventReminderDelivery
+     */
+    omit?: EventReminderDeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventReminderDeliveryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EventReminderDelivery.
+     */
+    data: XOR<EventReminderDeliveryUpdateInput, EventReminderDeliveryUncheckedUpdateInput>
+    /**
+     * Choose, which EventReminderDelivery to update.
+     */
+    where: EventReminderDeliveryWhereUniqueInput
+  }
+
+  /**
+   * EventReminderDelivery updateMany
+   */
+  export type EventReminderDeliveryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EventReminderDeliveries.
+     */
+    data: XOR<EventReminderDeliveryUpdateManyMutationInput, EventReminderDeliveryUncheckedUpdateManyInput>
+    /**
+     * Filter which EventReminderDeliveries to update
+     */
+    where?: EventReminderDeliveryWhereInput
+    /**
+     * Limit how many EventReminderDeliveries to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EventReminderDelivery upsert
+   */
+  export type EventReminderDeliveryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventReminderDelivery
+     */
+    select?: EventReminderDeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventReminderDelivery
+     */
+    omit?: EventReminderDeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventReminderDeliveryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EventReminderDelivery to update in case it exists.
+     */
+    where: EventReminderDeliveryWhereUniqueInput
+    /**
+     * In case the EventReminderDelivery found by the `where` argument doesn't exist, create a new EventReminderDelivery with this data.
+     */
+    create: XOR<EventReminderDeliveryCreateInput, EventReminderDeliveryUncheckedCreateInput>
+    /**
+     * In case the EventReminderDelivery was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EventReminderDeliveryUpdateInput, EventReminderDeliveryUncheckedUpdateInput>
+  }
+
+  /**
+   * EventReminderDelivery delete
+   */
+  export type EventReminderDeliveryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventReminderDelivery
+     */
+    select?: EventReminderDeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventReminderDelivery
+     */
+    omit?: EventReminderDeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventReminderDeliveryInclude<ExtArgs> | null
+    /**
+     * Filter which EventReminderDelivery to delete.
+     */
+    where: EventReminderDeliveryWhereUniqueInput
+  }
+
+  /**
+   * EventReminderDelivery deleteMany
+   */
+  export type EventReminderDeliveryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventReminderDeliveries to delete
+     */
+    where?: EventReminderDeliveryWhereInput
+    /**
+     * Limit how many EventReminderDeliveries to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EventReminderDelivery findRaw
+   */
+  export type EventReminderDeliveryFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * EventReminderDelivery aggregateRaw
+   */
+  export type EventReminderDeliveryAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * EventReminderDelivery without action
+   */
+  export type EventReminderDeliveryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventReminderDelivery
+     */
+    select?: EventReminderDeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventReminderDelivery
+     */
+    omit?: EventReminderDeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventReminderDeliveryInclude<ExtArgs> | null
   }
 
 
@@ -20324,6 +21513,17 @@ export namespace Prisma {
   export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
 
 
+  export const EventReminderDeliveryScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    userId: 'userId',
+    sentById: 'sentById',
+    sentAt: 'sentAt'
+  };
+
+  export type EventReminderDeliveryScalarFieldEnum = (typeof EventReminderDeliveryScalarFieldEnum)[keyof typeof EventReminderDeliveryScalarFieldEnum]
+
+
   export const EventParticipantScalarFieldEnum: {
     id: 'id',
     eventId: 'eventId',
@@ -20687,6 +21887,8 @@ export namespace Prisma {
     alumniProfile?: XOR<AlumniProfileNullableScalarRelationFilter, AlumniProfileWhereInput> | null
     eventsCreated?: EventListRelationFilter
     eventParticipations?: EventParticipantListRelationFilter
+    eventRemindersReceived?: EventReminderDeliveryListRelationFilter
+    eventRemindersSent?: EventReminderDeliveryListRelationFilter
     blogsWritten?: BlogListRelationFilter
     noticesCreated?: NoticeListRelationFilter
     uploadedMedia?: GalleryListRelationFilter
@@ -20716,6 +21918,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileOrderByWithRelationInput
     eventsCreated?: EventOrderByRelationAggregateInput
     eventParticipations?: EventParticipantOrderByRelationAggregateInput
+    eventRemindersReceived?: EventReminderDeliveryOrderByRelationAggregateInput
+    eventRemindersSent?: EventReminderDeliveryOrderByRelationAggregateInput
     blogsWritten?: BlogOrderByRelationAggregateInput
     noticesCreated?: NoticeOrderByRelationAggregateInput
     uploadedMedia?: GalleryOrderByRelationAggregateInput
@@ -20748,6 +21952,8 @@ export namespace Prisma {
     alumniProfile?: XOR<AlumniProfileNullableScalarRelationFilter, AlumniProfileWhereInput> | null
     eventsCreated?: EventListRelationFilter
     eventParticipations?: EventParticipantListRelationFilter
+    eventRemindersReceived?: EventReminderDeliveryListRelationFilter
+    eventRemindersSent?: EventReminderDeliveryListRelationFilter
     blogsWritten?: BlogListRelationFilter
     noticesCreated?: NoticeListRelationFilter
     uploadedMedia?: GalleryListRelationFilter
@@ -21205,6 +22411,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Event"> | Date | string
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     participants?: EventParticipantListRelationFilter
+    reminderDeliveries?: EventReminderDeliveryListRelationFilter
     gallery?: GalleryListRelationFilter
     comments?: CommentListRelationFilter
   }
@@ -21226,6 +22433,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     createdBy?: UserOrderByWithRelationInput
     participants?: EventParticipantOrderByRelationAggregateInput
+    reminderDeliveries?: EventReminderDeliveryOrderByRelationAggregateInput
     gallery?: GalleryOrderByRelationAggregateInput
     comments?: CommentOrderByRelationAggregateInput
   }
@@ -21250,6 +22458,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Event"> | Date | string
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     participants?: EventParticipantListRelationFilter
+    reminderDeliveries?: EventReminderDeliveryListRelationFilter
     gallery?: GalleryListRelationFilter
     comments?: CommentListRelationFilter
   }, "id">
@@ -21294,6 +22503,68 @@ export namespace Prisma {
     createdById?: StringWithAggregatesFilter<"Event"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
+  }
+
+  export type EventReminderDeliveryWhereInput = {
+    AND?: EventReminderDeliveryWhereInput | EventReminderDeliveryWhereInput[]
+    OR?: EventReminderDeliveryWhereInput[]
+    NOT?: EventReminderDeliveryWhereInput | EventReminderDeliveryWhereInput[]
+    id?: StringFilter<"EventReminderDelivery"> | string
+    eventId?: StringFilter<"EventReminderDelivery"> | string
+    userId?: StringFilter<"EventReminderDelivery"> | string
+    sentById?: StringFilter<"EventReminderDelivery"> | string
+    sentAt?: DateTimeFilter<"EventReminderDelivery"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    sentBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type EventReminderDeliveryOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    sentById?: SortOrder
+    sentAt?: SortOrder
+    event?: EventOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+    sentBy?: UserOrderByWithRelationInput
+  }
+
+  export type EventReminderDeliveryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    eventId_userId?: EventReminderDeliveryEventIdUserIdCompoundUniqueInput
+    AND?: EventReminderDeliveryWhereInput | EventReminderDeliveryWhereInput[]
+    OR?: EventReminderDeliveryWhereInput[]
+    NOT?: EventReminderDeliveryWhereInput | EventReminderDeliveryWhereInput[]
+    eventId?: StringFilter<"EventReminderDelivery"> | string
+    userId?: StringFilter<"EventReminderDelivery"> | string
+    sentById?: StringFilter<"EventReminderDelivery"> | string
+    sentAt?: DateTimeFilter<"EventReminderDelivery"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    sentBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "eventId_userId">
+
+  export type EventReminderDeliveryOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    sentById?: SortOrder
+    sentAt?: SortOrder
+    _count?: EventReminderDeliveryCountOrderByAggregateInput
+    _max?: EventReminderDeliveryMaxOrderByAggregateInput
+    _min?: EventReminderDeliveryMinOrderByAggregateInput
+  }
+
+  export type EventReminderDeliveryScalarWhereWithAggregatesInput = {
+    AND?: EventReminderDeliveryScalarWhereWithAggregatesInput | EventReminderDeliveryScalarWhereWithAggregatesInput[]
+    OR?: EventReminderDeliveryScalarWhereWithAggregatesInput[]
+    NOT?: EventReminderDeliveryScalarWhereWithAggregatesInput | EventReminderDeliveryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EventReminderDelivery"> | string
+    eventId?: StringWithAggregatesFilter<"EventReminderDelivery"> | string
+    userId?: StringWithAggregatesFilter<"EventReminderDelivery"> | string
+    sentById?: StringWithAggregatesFilter<"EventReminderDelivery"> | string
+    sentAt?: DateTimeWithAggregatesFilter<"EventReminderDelivery"> | Date | string
   }
 
   export type EventParticipantWhereInput = {
@@ -22068,6 +23339,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileCreateNestedOneWithoutUserInput
     eventsCreated?: EventCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryCreateNestedManyWithoutUploadedByInput
@@ -22097,6 +23370,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedCreateNestedOneWithoutUserInput
     eventsCreated?: EventUncheckedCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogUncheckedCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryUncheckedCreateNestedManyWithoutUploadedByInput
@@ -22125,6 +23400,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUpdateManyWithoutUploadedByNestedInput
@@ -22153,6 +23430,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUncheckedUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUncheckedUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUncheckedUpdateManyWithoutUploadedByNestedInput
@@ -22656,6 +23935,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     createdBy: UserCreateNestedOneWithoutEventsCreatedInput
     participants?: EventParticipantCreateNestedManyWithoutEventInput
+    reminderDeliveries?: EventReminderDeliveryCreateNestedManyWithoutEventInput
     gallery?: GalleryCreateNestedManyWithoutEventInput
     comments?: CommentCreateNestedManyWithoutEventInput
   }
@@ -22676,6 +23956,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     participants?: EventParticipantUncheckedCreateNestedManyWithoutEventInput
+    reminderDeliveries?: EventReminderDeliveryUncheckedCreateNestedManyWithoutEventInput
     gallery?: GalleryUncheckedCreateNestedManyWithoutEventInput
     comments?: CommentUncheckedCreateNestedManyWithoutEventInput
   }
@@ -22695,6 +23976,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutEventsCreatedNestedInput
     participants?: EventParticipantUpdateManyWithoutEventNestedInput
+    reminderDeliveries?: EventReminderDeliveryUpdateManyWithoutEventNestedInput
     gallery?: GalleryUpdateManyWithoutEventNestedInput
     comments?: CommentUpdateManyWithoutEventNestedInput
   }
@@ -22714,6 +23996,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participants?: EventParticipantUncheckedUpdateManyWithoutEventNestedInput
+    reminderDeliveries?: EventReminderDeliveryUncheckedUpdateManyWithoutEventNestedInput
     gallery?: GalleryUncheckedUpdateManyWithoutEventNestedInput
     comments?: CommentUncheckedUpdateManyWithoutEventNestedInput
   }
@@ -22764,6 +24047,55 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventReminderDeliveryCreateInput = {
+    id?: string
+    sentAt?: Date | string
+    event: EventCreateNestedOneWithoutReminderDeliveriesInput
+    user: UserCreateNestedOneWithoutEventRemindersReceivedInput
+    sentBy: UserCreateNestedOneWithoutEventRemindersSentInput
+  }
+
+  export type EventReminderDeliveryUncheckedCreateInput = {
+    id?: string
+    eventId: string
+    userId: string
+    sentById: string
+    sentAt?: Date | string
+  }
+
+  export type EventReminderDeliveryUpdateInput = {
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutReminderDeliveriesNestedInput
+    user?: UserUpdateOneRequiredWithoutEventRemindersReceivedNestedInput
+    sentBy?: UserUpdateOneRequiredWithoutEventRemindersSentNestedInput
+  }
+
+  export type EventReminderDeliveryUncheckedUpdateInput = {
+    eventId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    sentById?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventReminderDeliveryCreateManyInput = {
+    id?: string
+    eventId: string
+    userId: string
+    sentById: string
+    sentAt?: Date | string
+  }
+
+  export type EventReminderDeliveryUpdateManyMutationInput = {
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventReminderDeliveryUncheckedUpdateManyInput = {
+    eventId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    sentById?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EventParticipantCreateInput = {
@@ -23603,6 +24935,12 @@ export namespace Prisma {
     none?: EventParticipantWhereInput
   }
 
+  export type EventReminderDeliveryListRelationFilter = {
+    every?: EventReminderDeliveryWhereInput
+    some?: EventReminderDeliveryWhereInput
+    none?: EventReminderDeliveryWhereInput
+  }
+
   export type BlogListRelationFilter = {
     every?: BlogWhereInput
     some?: BlogWhereInput
@@ -23662,6 +25000,10 @@ export namespace Prisma {
   }
 
   export type EventParticipantOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EventReminderDeliveryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -24229,16 +25571,45 @@ export namespace Prisma {
     isSet?: boolean
   }
 
+  export type EventScalarRelationFilter = {
+    is?: EventWhereInput
+    isNot?: EventWhereInput
+  }
+
+  export type EventReminderDeliveryEventIdUserIdCompoundUniqueInput = {
+    eventId: string
+    userId: string
+  }
+
+  export type EventReminderDeliveryCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    sentById?: SortOrder
+    sentAt?: SortOrder
+  }
+
+  export type EventReminderDeliveryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    sentById?: SortOrder
+    sentAt?: SortOrder
+  }
+
+  export type EventReminderDeliveryMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    sentById?: SortOrder
+    sentAt?: SortOrder
+  }
+
   export type EnumEventStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
     in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumEventStatusFilter<$PrismaModel> | $Enums.EventStatus
-  }
-
-  export type EventScalarRelationFilter = {
-    is?: EventWhereInput
-    isNot?: EventWhereInput
   }
 
   export type EventParticipantEventIdUserIdCompoundUniqueInput = {
@@ -24716,6 +26087,20 @@ export namespace Prisma {
     connect?: EventParticipantWhereUniqueInput | EventParticipantWhereUniqueInput[]
   }
 
+  export type EventReminderDeliveryCreateNestedManyWithoutUserInput = {
+    create?: XOR<EventReminderDeliveryCreateWithoutUserInput, EventReminderDeliveryUncheckedCreateWithoutUserInput> | EventReminderDeliveryCreateWithoutUserInput[] | EventReminderDeliveryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EventReminderDeliveryCreateOrConnectWithoutUserInput | EventReminderDeliveryCreateOrConnectWithoutUserInput[]
+    createMany?: EventReminderDeliveryCreateManyUserInputEnvelope
+    connect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+  }
+
+  export type EventReminderDeliveryCreateNestedManyWithoutSentByInput = {
+    create?: XOR<EventReminderDeliveryCreateWithoutSentByInput, EventReminderDeliveryUncheckedCreateWithoutSentByInput> | EventReminderDeliveryCreateWithoutSentByInput[] | EventReminderDeliveryUncheckedCreateWithoutSentByInput[]
+    connectOrCreate?: EventReminderDeliveryCreateOrConnectWithoutSentByInput | EventReminderDeliveryCreateOrConnectWithoutSentByInput[]
+    createMany?: EventReminderDeliveryCreateManySentByInputEnvelope
+    connect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+  }
+
   export type BlogCreateNestedManyWithoutAuthorInput = {
     create?: XOR<BlogCreateWithoutAuthorInput, BlogUncheckedCreateWithoutAuthorInput> | BlogCreateWithoutAuthorInput[] | BlogUncheckedCreateWithoutAuthorInput[]
     connectOrCreate?: BlogCreateOrConnectWithoutAuthorInput | BlogCreateOrConnectWithoutAuthorInput[]
@@ -24809,6 +26194,20 @@ export namespace Prisma {
     connectOrCreate?: EventParticipantCreateOrConnectWithoutUserInput | EventParticipantCreateOrConnectWithoutUserInput[]
     createMany?: EventParticipantCreateManyUserInputEnvelope
     connect?: EventParticipantWhereUniqueInput | EventParticipantWhereUniqueInput[]
+  }
+
+  export type EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<EventReminderDeliveryCreateWithoutUserInput, EventReminderDeliveryUncheckedCreateWithoutUserInput> | EventReminderDeliveryCreateWithoutUserInput[] | EventReminderDeliveryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EventReminderDeliveryCreateOrConnectWithoutUserInput | EventReminderDeliveryCreateOrConnectWithoutUserInput[]
+    createMany?: EventReminderDeliveryCreateManyUserInputEnvelope
+    connect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+  }
+
+  export type EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput = {
+    create?: XOR<EventReminderDeliveryCreateWithoutSentByInput, EventReminderDeliveryUncheckedCreateWithoutSentByInput> | EventReminderDeliveryCreateWithoutSentByInput[] | EventReminderDeliveryUncheckedCreateWithoutSentByInput[]
+    connectOrCreate?: EventReminderDeliveryCreateOrConnectWithoutSentByInput | EventReminderDeliveryCreateOrConnectWithoutSentByInput[]
+    createMany?: EventReminderDeliveryCreateManySentByInputEnvelope
+    connect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
   }
 
   export type BlogUncheckedCreateNestedManyWithoutAuthorInput = {
@@ -24956,6 +26355,34 @@ export namespace Prisma {
     update?: EventParticipantUpdateWithWhereUniqueWithoutUserInput | EventParticipantUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: EventParticipantUpdateManyWithWhereWithoutUserInput | EventParticipantUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: EventParticipantScalarWhereInput | EventParticipantScalarWhereInput[]
+  }
+
+  export type EventReminderDeliveryUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EventReminderDeliveryCreateWithoutUserInput, EventReminderDeliveryUncheckedCreateWithoutUserInput> | EventReminderDeliveryCreateWithoutUserInput[] | EventReminderDeliveryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EventReminderDeliveryCreateOrConnectWithoutUserInput | EventReminderDeliveryCreateOrConnectWithoutUserInput[]
+    upsert?: EventReminderDeliveryUpsertWithWhereUniqueWithoutUserInput | EventReminderDeliveryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EventReminderDeliveryCreateManyUserInputEnvelope
+    set?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    disconnect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    delete?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    connect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    update?: EventReminderDeliveryUpdateWithWhereUniqueWithoutUserInput | EventReminderDeliveryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EventReminderDeliveryUpdateManyWithWhereWithoutUserInput | EventReminderDeliveryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EventReminderDeliveryScalarWhereInput | EventReminderDeliveryScalarWhereInput[]
+  }
+
+  export type EventReminderDeliveryUpdateManyWithoutSentByNestedInput = {
+    create?: XOR<EventReminderDeliveryCreateWithoutSentByInput, EventReminderDeliveryUncheckedCreateWithoutSentByInput> | EventReminderDeliveryCreateWithoutSentByInput[] | EventReminderDeliveryUncheckedCreateWithoutSentByInput[]
+    connectOrCreate?: EventReminderDeliveryCreateOrConnectWithoutSentByInput | EventReminderDeliveryCreateOrConnectWithoutSentByInput[]
+    upsert?: EventReminderDeliveryUpsertWithWhereUniqueWithoutSentByInput | EventReminderDeliveryUpsertWithWhereUniqueWithoutSentByInput[]
+    createMany?: EventReminderDeliveryCreateManySentByInputEnvelope
+    set?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    disconnect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    delete?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    connect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    update?: EventReminderDeliveryUpdateWithWhereUniqueWithoutSentByInput | EventReminderDeliveryUpdateWithWhereUniqueWithoutSentByInput[]
+    updateMany?: EventReminderDeliveryUpdateManyWithWhereWithoutSentByInput | EventReminderDeliveryUpdateManyWithWhereWithoutSentByInput[]
+    deleteMany?: EventReminderDeliveryScalarWhereInput | EventReminderDeliveryScalarWhereInput[]
   }
 
   export type BlogUpdateManyWithoutAuthorNestedInput = {
@@ -25140,6 +26567,34 @@ export namespace Prisma {
     update?: EventParticipantUpdateWithWhereUniqueWithoutUserInput | EventParticipantUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: EventParticipantUpdateManyWithWhereWithoutUserInput | EventParticipantUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: EventParticipantScalarWhereInput | EventParticipantScalarWhereInput[]
+  }
+
+  export type EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EventReminderDeliveryCreateWithoutUserInput, EventReminderDeliveryUncheckedCreateWithoutUserInput> | EventReminderDeliveryCreateWithoutUserInput[] | EventReminderDeliveryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EventReminderDeliveryCreateOrConnectWithoutUserInput | EventReminderDeliveryCreateOrConnectWithoutUserInput[]
+    upsert?: EventReminderDeliveryUpsertWithWhereUniqueWithoutUserInput | EventReminderDeliveryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EventReminderDeliveryCreateManyUserInputEnvelope
+    set?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    disconnect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    delete?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    connect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    update?: EventReminderDeliveryUpdateWithWhereUniqueWithoutUserInput | EventReminderDeliveryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EventReminderDeliveryUpdateManyWithWhereWithoutUserInput | EventReminderDeliveryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EventReminderDeliveryScalarWhereInput | EventReminderDeliveryScalarWhereInput[]
+  }
+
+  export type EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput = {
+    create?: XOR<EventReminderDeliveryCreateWithoutSentByInput, EventReminderDeliveryUncheckedCreateWithoutSentByInput> | EventReminderDeliveryCreateWithoutSentByInput[] | EventReminderDeliveryUncheckedCreateWithoutSentByInput[]
+    connectOrCreate?: EventReminderDeliveryCreateOrConnectWithoutSentByInput | EventReminderDeliveryCreateOrConnectWithoutSentByInput[]
+    upsert?: EventReminderDeliveryUpsertWithWhereUniqueWithoutSentByInput | EventReminderDeliveryUpsertWithWhereUniqueWithoutSentByInput[]
+    createMany?: EventReminderDeliveryCreateManySentByInputEnvelope
+    set?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    disconnect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    delete?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    connect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    update?: EventReminderDeliveryUpdateWithWhereUniqueWithoutSentByInput | EventReminderDeliveryUpdateWithWhereUniqueWithoutSentByInput[]
+    updateMany?: EventReminderDeliveryUpdateManyWithWhereWithoutSentByInput | EventReminderDeliveryUpdateManyWithWhereWithoutSentByInput[]
+    deleteMany?: EventReminderDeliveryScalarWhereInput | EventReminderDeliveryScalarWhereInput[]
   }
 
   export type BlogUncheckedUpdateManyWithoutAuthorNestedInput = {
@@ -25596,6 +27051,13 @@ export namespace Prisma {
     connect?: EventParticipantWhereUniqueInput | EventParticipantWhereUniqueInput[]
   }
 
+  export type EventReminderDeliveryCreateNestedManyWithoutEventInput = {
+    create?: XOR<EventReminderDeliveryCreateWithoutEventInput, EventReminderDeliveryUncheckedCreateWithoutEventInput> | EventReminderDeliveryCreateWithoutEventInput[] | EventReminderDeliveryUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventReminderDeliveryCreateOrConnectWithoutEventInput | EventReminderDeliveryCreateOrConnectWithoutEventInput[]
+    createMany?: EventReminderDeliveryCreateManyEventInputEnvelope
+    connect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+  }
+
   export type GalleryCreateNestedManyWithoutEventInput = {
     create?: XOR<GalleryCreateWithoutEventInput, GalleryUncheckedCreateWithoutEventInput> | GalleryCreateWithoutEventInput[] | GalleryUncheckedCreateWithoutEventInput[]
     connectOrCreate?: GalleryCreateOrConnectWithoutEventInput | GalleryCreateOrConnectWithoutEventInput[]
@@ -25615,6 +27077,13 @@ export namespace Prisma {
     connectOrCreate?: EventParticipantCreateOrConnectWithoutEventInput | EventParticipantCreateOrConnectWithoutEventInput[]
     createMany?: EventParticipantCreateManyEventInputEnvelope
     connect?: EventParticipantWhereUniqueInput | EventParticipantWhereUniqueInput[]
+  }
+
+  export type EventReminderDeliveryUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<EventReminderDeliveryCreateWithoutEventInput, EventReminderDeliveryUncheckedCreateWithoutEventInput> | EventReminderDeliveryCreateWithoutEventInput[] | EventReminderDeliveryUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventReminderDeliveryCreateOrConnectWithoutEventInput | EventReminderDeliveryCreateOrConnectWithoutEventInput[]
+    createMany?: EventReminderDeliveryCreateManyEventInputEnvelope
+    connect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
   }
 
   export type GalleryUncheckedCreateNestedManyWithoutEventInput = {
@@ -25667,6 +27136,20 @@ export namespace Prisma {
     deleteMany?: EventParticipantScalarWhereInput | EventParticipantScalarWhereInput[]
   }
 
+  export type EventReminderDeliveryUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EventReminderDeliveryCreateWithoutEventInput, EventReminderDeliveryUncheckedCreateWithoutEventInput> | EventReminderDeliveryCreateWithoutEventInput[] | EventReminderDeliveryUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventReminderDeliveryCreateOrConnectWithoutEventInput | EventReminderDeliveryCreateOrConnectWithoutEventInput[]
+    upsert?: EventReminderDeliveryUpsertWithWhereUniqueWithoutEventInput | EventReminderDeliveryUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EventReminderDeliveryCreateManyEventInputEnvelope
+    set?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    disconnect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    delete?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    connect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    update?: EventReminderDeliveryUpdateWithWhereUniqueWithoutEventInput | EventReminderDeliveryUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EventReminderDeliveryUpdateManyWithWhereWithoutEventInput | EventReminderDeliveryUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EventReminderDeliveryScalarWhereInput | EventReminderDeliveryScalarWhereInput[]
+  }
+
   export type GalleryUpdateManyWithoutEventNestedInput = {
     create?: XOR<GalleryCreateWithoutEventInput, GalleryUncheckedCreateWithoutEventInput> | GalleryCreateWithoutEventInput[] | GalleryUncheckedCreateWithoutEventInput[]
     connectOrCreate?: GalleryCreateOrConnectWithoutEventInput | GalleryCreateOrConnectWithoutEventInput[]
@@ -25709,6 +27192,20 @@ export namespace Prisma {
     deleteMany?: EventParticipantScalarWhereInput | EventParticipantScalarWhereInput[]
   }
 
+  export type EventReminderDeliveryUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EventReminderDeliveryCreateWithoutEventInput, EventReminderDeliveryUncheckedCreateWithoutEventInput> | EventReminderDeliveryCreateWithoutEventInput[] | EventReminderDeliveryUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventReminderDeliveryCreateOrConnectWithoutEventInput | EventReminderDeliveryCreateOrConnectWithoutEventInput[]
+    upsert?: EventReminderDeliveryUpsertWithWhereUniqueWithoutEventInput | EventReminderDeliveryUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EventReminderDeliveryCreateManyEventInputEnvelope
+    set?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    disconnect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    delete?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    connect?: EventReminderDeliveryWhereUniqueInput | EventReminderDeliveryWhereUniqueInput[]
+    update?: EventReminderDeliveryUpdateWithWhereUniqueWithoutEventInput | EventReminderDeliveryUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EventReminderDeliveryUpdateManyWithWhereWithoutEventInput | EventReminderDeliveryUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EventReminderDeliveryScalarWhereInput | EventReminderDeliveryScalarWhereInput[]
+  }
+
   export type GalleryUncheckedUpdateManyWithoutEventNestedInput = {
     create?: XOR<GalleryCreateWithoutEventInput, GalleryUncheckedCreateWithoutEventInput> | GalleryCreateWithoutEventInput[] | GalleryUncheckedCreateWithoutEventInput[]
     connectOrCreate?: GalleryCreateOrConnectWithoutEventInput | GalleryCreateOrConnectWithoutEventInput[]
@@ -25735,6 +27232,48 @@ export namespace Prisma {
     update?: CommentUpdateWithWhereUniqueWithoutEventInput | CommentUpdateWithWhereUniqueWithoutEventInput[]
     updateMany?: CommentUpdateManyWithWhereWithoutEventInput | CommentUpdateManyWithWhereWithoutEventInput[]
     deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
+  }
+
+  export type EventCreateNestedOneWithoutReminderDeliveriesInput = {
+    create?: XOR<EventCreateWithoutReminderDeliveriesInput, EventUncheckedCreateWithoutReminderDeliveriesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutReminderDeliveriesInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutEventRemindersReceivedInput = {
+    create?: XOR<UserCreateWithoutEventRemindersReceivedInput, UserUncheckedCreateWithoutEventRemindersReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEventRemindersReceivedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutEventRemindersSentInput = {
+    create?: XOR<UserCreateWithoutEventRemindersSentInput, UserUncheckedCreateWithoutEventRemindersSentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEventRemindersSentInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EventUpdateOneRequiredWithoutReminderDeliveriesNestedInput = {
+    create?: XOR<EventCreateWithoutReminderDeliveriesInput, EventUncheckedCreateWithoutReminderDeliveriesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutReminderDeliveriesInput
+    upsert?: EventUpsertWithoutReminderDeliveriesInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutReminderDeliveriesInput, EventUpdateWithoutReminderDeliveriesInput>, EventUncheckedUpdateWithoutReminderDeliveriesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutEventRemindersReceivedNestedInput = {
+    create?: XOR<UserCreateWithoutEventRemindersReceivedInput, UserUncheckedCreateWithoutEventRemindersReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEventRemindersReceivedInput
+    upsert?: UserUpsertWithoutEventRemindersReceivedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEventRemindersReceivedInput, UserUpdateWithoutEventRemindersReceivedInput>, UserUncheckedUpdateWithoutEventRemindersReceivedInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutEventRemindersSentNestedInput = {
+    create?: XOR<UserCreateWithoutEventRemindersSentInput, UserUncheckedCreateWithoutEventRemindersSentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEventRemindersSentInput
+    upsert?: UserUpsertWithoutEventRemindersSentInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEventRemindersSentInput, UserUpdateWithoutEventRemindersSentInput>, UserUncheckedUpdateWithoutEventRemindersSentInput>
   }
 
   export type EventCreateNestedOneWithoutParticipantsInput = {
@@ -26651,6 +28190,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     participants?: EventParticipantCreateNestedManyWithoutEventInput
+    reminderDeliveries?: EventReminderDeliveryCreateNestedManyWithoutEventInput
     gallery?: GalleryCreateNestedManyWithoutEventInput
     comments?: CommentCreateNestedManyWithoutEventInput
   }
@@ -26670,6 +28210,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     participants?: EventParticipantUncheckedCreateNestedManyWithoutEventInput
+    reminderDeliveries?: EventReminderDeliveryUncheckedCreateNestedManyWithoutEventInput
     gallery?: GalleryUncheckedCreateNestedManyWithoutEventInput
     comments?: CommentUncheckedCreateNestedManyWithoutEventInput
   }
@@ -26706,6 +28247,52 @@ export namespace Prisma {
 
   export type EventParticipantCreateManyUserInputEnvelope = {
     data: EventParticipantCreateManyUserInput | EventParticipantCreateManyUserInput[]
+  }
+
+  export type EventReminderDeliveryCreateWithoutUserInput = {
+    id?: string
+    sentAt?: Date | string
+    event: EventCreateNestedOneWithoutReminderDeliveriesInput
+    sentBy: UserCreateNestedOneWithoutEventRemindersSentInput
+  }
+
+  export type EventReminderDeliveryUncheckedCreateWithoutUserInput = {
+    id?: string
+    eventId: string
+    sentById: string
+    sentAt?: Date | string
+  }
+
+  export type EventReminderDeliveryCreateOrConnectWithoutUserInput = {
+    where: EventReminderDeliveryWhereUniqueInput
+    create: XOR<EventReminderDeliveryCreateWithoutUserInput, EventReminderDeliveryUncheckedCreateWithoutUserInput>
+  }
+
+  export type EventReminderDeliveryCreateManyUserInputEnvelope = {
+    data: EventReminderDeliveryCreateManyUserInput | EventReminderDeliveryCreateManyUserInput[]
+  }
+
+  export type EventReminderDeliveryCreateWithoutSentByInput = {
+    id?: string
+    sentAt?: Date | string
+    event: EventCreateNestedOneWithoutReminderDeliveriesInput
+    user: UserCreateNestedOneWithoutEventRemindersReceivedInput
+  }
+
+  export type EventReminderDeliveryUncheckedCreateWithoutSentByInput = {
+    id?: string
+    eventId: string
+    userId: string
+    sentAt?: Date | string
+  }
+
+  export type EventReminderDeliveryCreateOrConnectWithoutSentByInput = {
+    where: EventReminderDeliveryWhereUniqueInput
+    create: XOR<EventReminderDeliveryCreateWithoutSentByInput, EventReminderDeliveryUncheckedCreateWithoutSentByInput>
+  }
+
+  export type EventReminderDeliveryCreateManySentByInputEnvelope = {
+    data: EventReminderDeliveryCreateManySentByInput | EventReminderDeliveryCreateManySentByInput[]
   }
 
   export type BlogCreateWithoutAuthorInput = {
@@ -27176,6 +28763,49 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"EventParticipant"> | Date | string
   }
 
+  export type EventReminderDeliveryUpsertWithWhereUniqueWithoutUserInput = {
+    where: EventReminderDeliveryWhereUniqueInput
+    update: XOR<EventReminderDeliveryUpdateWithoutUserInput, EventReminderDeliveryUncheckedUpdateWithoutUserInput>
+    create: XOR<EventReminderDeliveryCreateWithoutUserInput, EventReminderDeliveryUncheckedCreateWithoutUserInput>
+  }
+
+  export type EventReminderDeliveryUpdateWithWhereUniqueWithoutUserInput = {
+    where: EventReminderDeliveryWhereUniqueInput
+    data: XOR<EventReminderDeliveryUpdateWithoutUserInput, EventReminderDeliveryUncheckedUpdateWithoutUserInput>
+  }
+
+  export type EventReminderDeliveryUpdateManyWithWhereWithoutUserInput = {
+    where: EventReminderDeliveryScalarWhereInput
+    data: XOR<EventReminderDeliveryUpdateManyMutationInput, EventReminderDeliveryUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type EventReminderDeliveryScalarWhereInput = {
+    AND?: EventReminderDeliveryScalarWhereInput | EventReminderDeliveryScalarWhereInput[]
+    OR?: EventReminderDeliveryScalarWhereInput[]
+    NOT?: EventReminderDeliveryScalarWhereInput | EventReminderDeliveryScalarWhereInput[]
+    id?: StringFilter<"EventReminderDelivery"> | string
+    eventId?: StringFilter<"EventReminderDelivery"> | string
+    userId?: StringFilter<"EventReminderDelivery"> | string
+    sentById?: StringFilter<"EventReminderDelivery"> | string
+    sentAt?: DateTimeFilter<"EventReminderDelivery"> | Date | string
+  }
+
+  export type EventReminderDeliveryUpsertWithWhereUniqueWithoutSentByInput = {
+    where: EventReminderDeliveryWhereUniqueInput
+    update: XOR<EventReminderDeliveryUpdateWithoutSentByInput, EventReminderDeliveryUncheckedUpdateWithoutSentByInput>
+    create: XOR<EventReminderDeliveryCreateWithoutSentByInput, EventReminderDeliveryUncheckedCreateWithoutSentByInput>
+  }
+
+  export type EventReminderDeliveryUpdateWithWhereUniqueWithoutSentByInput = {
+    where: EventReminderDeliveryWhereUniqueInput
+    data: XOR<EventReminderDeliveryUpdateWithoutSentByInput, EventReminderDeliveryUncheckedUpdateWithoutSentByInput>
+  }
+
+  export type EventReminderDeliveryUpdateManyWithWhereWithoutSentByInput = {
+    where: EventReminderDeliveryScalarWhereInput
+    data: XOR<EventReminderDeliveryUpdateManyMutationInput, EventReminderDeliveryUncheckedUpdateManyWithoutSentByInput>
+  }
+
   export type BlogUpsertWithWhereUniqueWithoutAuthorInput = {
     where: BlogWhereUniqueInput
     update: XOR<BlogUpdateWithoutAuthorInput, BlogUncheckedUpdateWithoutAuthorInput>
@@ -27468,6 +29098,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileCreateNestedOneWithoutUserInput
     eventsCreated?: EventCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryCreateNestedManyWithoutUploadedByInput
@@ -27496,6 +29128,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedCreateNestedOneWithoutUserInput
     eventsCreated?: EventUncheckedCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogUncheckedCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryUncheckedCreateNestedManyWithoutUploadedByInput
@@ -27595,6 +29229,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUpdateManyWithoutUploadedByNestedInput
@@ -27622,6 +29258,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUncheckedUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUncheckedUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUncheckedUpdateManyWithoutUploadedByNestedInput
@@ -27701,6 +29339,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileCreateNestedOneWithoutUserInput
     eventsCreated?: EventCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryCreateNestedManyWithoutUploadedByInput
@@ -27729,6 +29369,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedCreateNestedOneWithoutUserInput
     eventsCreated?: EventUncheckedCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogUncheckedCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryUncheckedCreateNestedManyWithoutUploadedByInput
@@ -27772,6 +29414,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUpdateManyWithoutUploadedByNestedInput
@@ -27799,6 +29443,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUncheckedUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUncheckedUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUncheckedUpdateManyWithoutUploadedByNestedInput
@@ -28094,6 +29740,8 @@ export namespace Prisma {
     teacherProfile?: TeacherCreateNestedOneWithoutUserInput
     eventsCreated?: EventCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryCreateNestedManyWithoutUploadedByInput
@@ -28122,6 +29770,8 @@ export namespace Prisma {
     teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
     eventsCreated?: EventUncheckedCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogUncheckedCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryUncheckedCreateNestedManyWithoutUploadedByInput
@@ -28196,6 +29846,8 @@ export namespace Prisma {
     teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUpdateManyWithoutUploadedByNestedInput
@@ -28223,6 +29875,8 @@ export namespace Prisma {
     teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUncheckedUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUncheckedUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUncheckedUpdateManyWithoutUploadedByNestedInput
@@ -28286,6 +29940,8 @@ export namespace Prisma {
     teacherProfile?: TeacherCreateNestedOneWithoutUserInput
     alumniProfile?: AlumniProfileCreateNestedOneWithoutUserInput
     eventParticipations?: EventParticipantCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryCreateNestedManyWithoutUploadedByInput
@@ -28314,6 +29970,8 @@ export namespace Prisma {
     teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
     alumniProfile?: AlumniProfileUncheckedCreateNestedOneWithoutUserInput
     eventParticipations?: EventParticipantUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogUncheckedCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryUncheckedCreateNestedManyWithoutUploadedByInput
@@ -28353,6 +30011,29 @@ export namespace Prisma {
 
   export type EventParticipantCreateManyEventInputEnvelope = {
     data: EventParticipantCreateManyEventInput | EventParticipantCreateManyEventInput[]
+  }
+
+  export type EventReminderDeliveryCreateWithoutEventInput = {
+    id?: string
+    sentAt?: Date | string
+    user: UserCreateNestedOneWithoutEventRemindersReceivedInput
+    sentBy: UserCreateNestedOneWithoutEventRemindersSentInput
+  }
+
+  export type EventReminderDeliveryUncheckedCreateWithoutEventInput = {
+    id?: string
+    userId: string
+    sentById: string
+    sentAt?: Date | string
+  }
+
+  export type EventReminderDeliveryCreateOrConnectWithoutEventInput = {
+    where: EventReminderDeliveryWhereUniqueInput
+    create: XOR<EventReminderDeliveryCreateWithoutEventInput, EventReminderDeliveryUncheckedCreateWithoutEventInput>
+  }
+
+  export type EventReminderDeliveryCreateManyEventInputEnvelope = {
+    data: EventReminderDeliveryCreateManyEventInput | EventReminderDeliveryCreateManyEventInput[]
   }
 
   export type GalleryCreateWithoutEventInput = {
@@ -28448,6 +30129,8 @@ export namespace Prisma {
     teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
     alumniProfile?: AlumniProfileUpdateOneWithoutUserNestedInput
     eventParticipations?: EventParticipantUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUpdateManyWithoutUploadedByNestedInput
@@ -28475,6 +30158,8 @@ export namespace Prisma {
     teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
     alumniProfile?: AlumniProfileUncheckedUpdateOneWithoutUserNestedInput
     eventParticipations?: EventParticipantUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUncheckedUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUncheckedUpdateManyWithoutUploadedByNestedInput
@@ -28500,6 +30185,22 @@ export namespace Prisma {
   export type EventParticipantUpdateManyWithWhereWithoutEventInput = {
     where: EventParticipantScalarWhereInput
     data: XOR<EventParticipantUpdateManyMutationInput, EventParticipantUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type EventReminderDeliveryUpsertWithWhereUniqueWithoutEventInput = {
+    where: EventReminderDeliveryWhereUniqueInput
+    update: XOR<EventReminderDeliveryUpdateWithoutEventInput, EventReminderDeliveryUncheckedUpdateWithoutEventInput>
+    create: XOR<EventReminderDeliveryCreateWithoutEventInput, EventReminderDeliveryUncheckedCreateWithoutEventInput>
+  }
+
+  export type EventReminderDeliveryUpdateWithWhereUniqueWithoutEventInput = {
+    where: EventReminderDeliveryWhereUniqueInput
+    data: XOR<EventReminderDeliveryUpdateWithoutEventInput, EventReminderDeliveryUncheckedUpdateWithoutEventInput>
+  }
+
+  export type EventReminderDeliveryUpdateManyWithWhereWithoutEventInput = {
+    where: EventReminderDeliveryScalarWhereInput
+    data: XOR<EventReminderDeliveryUpdateManyMutationInput, EventReminderDeliveryUncheckedUpdateManyWithoutEventInput>
   }
 
   export type GalleryUpsertWithWhereUniqueWithoutEventInput = {
@@ -28534,6 +30235,368 @@ export namespace Prisma {
     data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyWithoutEventInput>
   }
 
+  export type EventCreateWithoutReminderDeliveriesInput = {
+    id?: string
+    title: string
+    description: string
+    date: Date | string
+    time: string
+    venue: string
+    organizer: string
+    banner: string
+    registrationDeadline: Date | string
+    allowedBatch?: EventCreateallowedBatchInput | string[]
+    participantLimit?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutEventsCreatedInput
+    participants?: EventParticipantCreateNestedManyWithoutEventInput
+    gallery?: GalleryCreateNestedManyWithoutEventInput
+    comments?: CommentCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutReminderDeliveriesInput = {
+    id?: string
+    title: string
+    description: string
+    date: Date | string
+    time: string
+    venue: string
+    organizer: string
+    banner: string
+    registrationDeadline: Date | string
+    allowedBatch?: EventCreateallowedBatchInput | string[]
+    participantLimit?: number | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participants?: EventParticipantUncheckedCreateNestedManyWithoutEventInput
+    gallery?: GalleryUncheckedCreateNestedManyWithoutEventInput
+    comments?: CommentUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutReminderDeliveriesInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutReminderDeliveriesInput, EventUncheckedCreateWithoutReminderDeliveriesInput>
+  }
+
+  export type UserCreateWithoutEventRemindersReceivedInput = {
+    id?: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    isVerified?: boolean
+    verificationCode?: string | null
+    verificationCodeExpires?: Date | string | null
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isDeleted?: boolean
+    studentProfile?: StudentCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherCreateNestedOneWithoutUserInput
+    alumniProfile?: AlumniProfileCreateNestedOneWithoutUserInput
+    eventsCreated?: EventCreateNestedManyWithoutCreatedByInput
+    eventParticipations?: EventParticipantCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryCreateNestedManyWithoutSentByInput
+    blogsWritten?: BlogCreateNestedManyWithoutAuthorInput
+    noticesCreated?: NoticeCreateNestedManyWithoutCreatedByInput
+    uploadedMedia?: GalleryCreateNestedManyWithoutUploadedByInput
+    comments?: CommentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput
+    resolvedMessages?: ContactMessageCreateNestedManyWithoutResolvedByInput
+    approvalLogs?: ApprovalHistoryCreateNestedManyWithoutPerformedByInput
+    activityLogs?: ActivityLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutEventRemindersReceivedInput = {
+    id?: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    isVerified?: boolean
+    verificationCode?: string | null
+    verificationCodeExpires?: Date | string | null
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isDeleted?: boolean
+    studentProfile?: StudentUncheckedCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
+    alumniProfile?: AlumniProfileUncheckedCreateNestedOneWithoutUserInput
+    eventsCreated?: EventUncheckedCreateNestedManyWithoutCreatedByInput
+    eventParticipations?: EventParticipantUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput
+    blogsWritten?: BlogUncheckedCreateNestedManyWithoutAuthorInput
+    noticesCreated?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
+    uploadedMedia?: GalleryUncheckedCreateNestedManyWithoutUploadedByInput
+    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+    resolvedMessages?: ContactMessageUncheckedCreateNestedManyWithoutResolvedByInput
+    approvalLogs?: ApprovalHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutEventRemindersReceivedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutEventRemindersReceivedInput, UserUncheckedCreateWithoutEventRemindersReceivedInput>
+  }
+
+  export type UserCreateWithoutEventRemindersSentInput = {
+    id?: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    isVerified?: boolean
+    verificationCode?: string | null
+    verificationCodeExpires?: Date | string | null
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isDeleted?: boolean
+    studentProfile?: StudentCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherCreateNestedOneWithoutUserInput
+    alumniProfile?: AlumniProfileCreateNestedOneWithoutUserInput
+    eventsCreated?: EventCreateNestedManyWithoutCreatedByInput
+    eventParticipations?: EventParticipantCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryCreateNestedManyWithoutUserInput
+    blogsWritten?: BlogCreateNestedManyWithoutAuthorInput
+    noticesCreated?: NoticeCreateNestedManyWithoutCreatedByInput
+    uploadedMedia?: GalleryCreateNestedManyWithoutUploadedByInput
+    comments?: CommentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput
+    resolvedMessages?: ContactMessageCreateNestedManyWithoutResolvedByInput
+    approvalLogs?: ApprovalHistoryCreateNestedManyWithoutPerformedByInput
+    activityLogs?: ActivityLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutEventRemindersSentInput = {
+    id?: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    isVerified?: boolean
+    verificationCode?: string | null
+    verificationCodeExpires?: Date | string | null
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isDeleted?: boolean
+    studentProfile?: StudentUncheckedCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
+    alumniProfile?: AlumniProfileUncheckedCreateNestedOneWithoutUserInput
+    eventsCreated?: EventUncheckedCreateNestedManyWithoutCreatedByInput
+    eventParticipations?: EventParticipantUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput
+    blogsWritten?: BlogUncheckedCreateNestedManyWithoutAuthorInput
+    noticesCreated?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
+    uploadedMedia?: GalleryUncheckedCreateNestedManyWithoutUploadedByInput
+    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+    resolvedMessages?: ContactMessageUncheckedCreateNestedManyWithoutResolvedByInput
+    approvalLogs?: ApprovalHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutEventRemindersSentInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutEventRemindersSentInput, UserUncheckedCreateWithoutEventRemindersSentInput>
+  }
+
+  export type EventUpsertWithoutReminderDeliveriesInput = {
+    update: XOR<EventUpdateWithoutReminderDeliveriesInput, EventUncheckedUpdateWithoutReminderDeliveriesInput>
+    create: XOR<EventCreateWithoutReminderDeliveriesInput, EventUncheckedCreateWithoutReminderDeliveriesInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutReminderDeliveriesInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutReminderDeliveriesInput, EventUncheckedUpdateWithoutReminderDeliveriesInput>
+  }
+
+  export type EventUpdateWithoutReminderDeliveriesInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    time?: StringFieldUpdateOperationsInput | string
+    venue?: StringFieldUpdateOperationsInput | string
+    organizer?: StringFieldUpdateOperationsInput | string
+    banner?: StringFieldUpdateOperationsInput | string
+    registrationDeadline?: DateTimeFieldUpdateOperationsInput | Date | string
+    allowedBatch?: EventUpdateallowedBatchInput | string[]
+    participantLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutEventsCreatedNestedInput
+    participants?: EventParticipantUpdateManyWithoutEventNestedInput
+    gallery?: GalleryUpdateManyWithoutEventNestedInput
+    comments?: CommentUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutReminderDeliveriesInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    time?: StringFieldUpdateOperationsInput | string
+    venue?: StringFieldUpdateOperationsInput | string
+    organizer?: StringFieldUpdateOperationsInput | string
+    banner?: StringFieldUpdateOperationsInput | string
+    registrationDeadline?: DateTimeFieldUpdateOperationsInput | Date | string
+    allowedBatch?: EventUpdateallowedBatchInput | string[]
+    participantLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participants?: EventParticipantUncheckedUpdateManyWithoutEventNestedInput
+    gallery?: GalleryUncheckedUpdateManyWithoutEventNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type UserUpsertWithoutEventRemindersReceivedInput = {
+    update: XOR<UserUpdateWithoutEventRemindersReceivedInput, UserUncheckedUpdateWithoutEventRemindersReceivedInput>
+    create: XOR<UserCreateWithoutEventRemindersReceivedInput, UserUncheckedCreateWithoutEventRemindersReceivedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutEventRemindersReceivedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutEventRemindersReceivedInput, UserUncheckedUpdateWithoutEventRemindersReceivedInput>
+  }
+
+  export type UserUpdateWithoutEventRemindersReceivedInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationCode?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationCodeExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    studentProfile?: StudentUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
+    alumniProfile?: AlumniProfileUpdateOneWithoutUserNestedInput
+    eventsCreated?: EventUpdateManyWithoutCreatedByNestedInput
+    eventParticipations?: EventParticipantUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUpdateManyWithoutSentByNestedInput
+    blogsWritten?: BlogUpdateManyWithoutAuthorNestedInput
+    noticesCreated?: NoticeUpdateManyWithoutCreatedByNestedInput
+    uploadedMedia?: GalleryUpdateManyWithoutUploadedByNestedInput
+    comments?: CommentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
+    resolvedMessages?: ContactMessageUpdateManyWithoutResolvedByNestedInput
+    approvalLogs?: ApprovalHistoryUpdateManyWithoutPerformedByNestedInput
+    activityLogs?: ActivityLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutEventRemindersReceivedInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationCode?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationCodeExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    studentProfile?: StudentUncheckedUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
+    alumniProfile?: AlumniProfileUncheckedUpdateOneWithoutUserNestedInput
+    eventsCreated?: EventUncheckedUpdateManyWithoutCreatedByNestedInput
+    eventParticipations?: EventParticipantUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput
+    blogsWritten?: BlogUncheckedUpdateManyWithoutAuthorNestedInput
+    noticesCreated?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
+    uploadedMedia?: GalleryUncheckedUpdateManyWithoutUploadedByNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+    resolvedMessages?: ContactMessageUncheckedUpdateManyWithoutResolvedByNestedInput
+    approvalLogs?: ApprovalHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+    activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutEventRemindersSentInput = {
+    update: XOR<UserUpdateWithoutEventRemindersSentInput, UserUncheckedUpdateWithoutEventRemindersSentInput>
+    create: XOR<UserCreateWithoutEventRemindersSentInput, UserUncheckedCreateWithoutEventRemindersSentInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutEventRemindersSentInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutEventRemindersSentInput, UserUncheckedUpdateWithoutEventRemindersSentInput>
+  }
+
+  export type UserUpdateWithoutEventRemindersSentInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationCode?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationCodeExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    studentProfile?: StudentUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
+    alumniProfile?: AlumniProfileUpdateOneWithoutUserNestedInput
+    eventsCreated?: EventUpdateManyWithoutCreatedByNestedInput
+    eventParticipations?: EventParticipantUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUpdateManyWithoutUserNestedInput
+    blogsWritten?: BlogUpdateManyWithoutAuthorNestedInput
+    noticesCreated?: NoticeUpdateManyWithoutCreatedByNestedInput
+    uploadedMedia?: GalleryUpdateManyWithoutUploadedByNestedInput
+    comments?: CommentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
+    resolvedMessages?: ContactMessageUpdateManyWithoutResolvedByNestedInput
+    approvalLogs?: ApprovalHistoryUpdateManyWithoutPerformedByNestedInput
+    activityLogs?: ActivityLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutEventRemindersSentInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationCode?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationCodeExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    studentProfile?: StudentUncheckedUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
+    alumniProfile?: AlumniProfileUncheckedUpdateOneWithoutUserNestedInput
+    eventsCreated?: EventUncheckedUpdateManyWithoutCreatedByNestedInput
+    eventParticipations?: EventParticipantUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput
+    blogsWritten?: BlogUncheckedUpdateManyWithoutAuthorNestedInput
+    noticesCreated?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
+    uploadedMedia?: GalleryUncheckedUpdateManyWithoutUploadedByNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+    resolvedMessages?: ContactMessageUncheckedUpdateManyWithoutResolvedByNestedInput
+    approvalLogs?: ApprovalHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+    activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type EventCreateWithoutParticipantsInput = {
     id?: string
     title: string
@@ -28549,6 +30612,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: UserCreateNestedOneWithoutEventsCreatedInput
+    reminderDeliveries?: EventReminderDeliveryCreateNestedManyWithoutEventInput
     gallery?: GalleryCreateNestedManyWithoutEventInput
     comments?: CommentCreateNestedManyWithoutEventInput
   }
@@ -28568,6 +30632,7 @@ export namespace Prisma {
     createdById: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    reminderDeliveries?: EventReminderDeliveryUncheckedCreateNestedManyWithoutEventInput
     gallery?: GalleryUncheckedCreateNestedManyWithoutEventInput
     comments?: CommentUncheckedCreateNestedManyWithoutEventInput
   }
@@ -28594,6 +30659,8 @@ export namespace Prisma {
     teacherProfile?: TeacherCreateNestedOneWithoutUserInput
     alumniProfile?: AlumniProfileCreateNestedOneWithoutUserInput
     eventsCreated?: EventCreateNestedManyWithoutCreatedByInput
+    eventRemindersReceived?: EventReminderDeliveryCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryCreateNestedManyWithoutUploadedByInput
@@ -28622,6 +30689,8 @@ export namespace Prisma {
     teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
     alumniProfile?: AlumniProfileUncheckedCreateNestedOneWithoutUserInput
     eventsCreated?: EventUncheckedCreateNestedManyWithoutCreatedByInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogUncheckedCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryUncheckedCreateNestedManyWithoutUploadedByInput
@@ -28663,6 +30732,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutEventsCreatedNestedInput
+    reminderDeliveries?: EventReminderDeliveryUpdateManyWithoutEventNestedInput
     gallery?: GalleryUpdateManyWithoutEventNestedInput
     comments?: CommentUpdateManyWithoutEventNestedInput
   }
@@ -28681,6 +30751,7 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reminderDeliveries?: EventReminderDeliveryUncheckedUpdateManyWithoutEventNestedInput
     gallery?: GalleryUncheckedUpdateManyWithoutEventNestedInput
     comments?: CommentUncheckedUpdateManyWithoutEventNestedInput
   }
@@ -28712,6 +30783,8 @@ export namespace Prisma {
     teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
     alumniProfile?: AlumniProfileUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUpdateManyWithoutCreatedByNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUpdateManyWithoutUploadedByNestedInput
@@ -28739,6 +30812,8 @@ export namespace Prisma {
     teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
     alumniProfile?: AlumniProfileUncheckedUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUncheckedUpdateManyWithoutCreatedByNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUncheckedUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUncheckedUpdateManyWithoutUploadedByNestedInput
@@ -28768,6 +30843,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileCreateNestedOneWithoutUserInput
     eventsCreated?: EventCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryCreateNestedManyWithoutSentByInput
     noticesCreated?: NoticeCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryCreateNestedManyWithoutUploadedByInput
     comments?: CommentCreateNestedManyWithoutUserInput
@@ -28796,6 +30873,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedCreateNestedOneWithoutUserInput
     eventsCreated?: EventUncheckedCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput
     noticesCreated?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryUncheckedCreateNestedManyWithoutUploadedByInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
@@ -28870,6 +30949,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUpdateManyWithoutSentByNestedInput
     noticesCreated?: NoticeUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUpdateManyWithoutUploadedByNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
@@ -28897,6 +30978,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUncheckedUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput
     noticesCreated?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUncheckedUpdateManyWithoutUploadedByNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
@@ -28941,6 +31024,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileCreateNestedOneWithoutUserInput
     eventsCreated?: EventCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogCreateNestedManyWithoutAuthorInput
     uploadedMedia?: GalleryCreateNestedManyWithoutUploadedByInput
     comments?: CommentCreateNestedManyWithoutUserInput
@@ -28969,6 +31054,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedCreateNestedOneWithoutUserInput
     eventsCreated?: EventUncheckedCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogUncheckedCreateNestedManyWithoutAuthorInput
     uploadedMedia?: GalleryUncheckedCreateNestedManyWithoutUploadedByInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
@@ -29043,6 +31130,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUpdateManyWithoutAuthorNestedInput
     uploadedMedia?: GalleryUpdateManyWithoutUploadedByNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
@@ -29070,6 +31159,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUncheckedUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUncheckedUpdateManyWithoutAuthorNestedInput
     uploadedMedia?: GalleryUncheckedUpdateManyWithoutUploadedByNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
@@ -29143,6 +31234,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     createdBy: UserCreateNestedOneWithoutEventsCreatedInput
     participants?: EventParticipantCreateNestedManyWithoutEventInput
+    reminderDeliveries?: EventReminderDeliveryCreateNestedManyWithoutEventInput
     comments?: CommentCreateNestedManyWithoutEventInput
   }
 
@@ -29162,6 +31254,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     participants?: EventParticipantUncheckedCreateNestedManyWithoutEventInput
+    reminderDeliveries?: EventReminderDeliveryUncheckedCreateNestedManyWithoutEventInput
     comments?: CommentUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -29188,6 +31281,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileCreateNestedOneWithoutUserInput
     eventsCreated?: EventCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeCreateNestedManyWithoutCreatedByInput
     comments?: CommentCreateNestedManyWithoutUserInput
@@ -29216,6 +31311,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedCreateNestedOneWithoutUserInput
     eventsCreated?: EventUncheckedCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogUncheckedCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
@@ -29323,6 +31420,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutEventsCreatedNestedInput
     participants?: EventParticipantUpdateManyWithoutEventNestedInput
+    reminderDeliveries?: EventReminderDeliveryUpdateManyWithoutEventNestedInput
     comments?: CommentUpdateManyWithoutEventNestedInput
   }
 
@@ -29341,6 +31439,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participants?: EventParticipantUncheckedUpdateManyWithoutEventNestedInput
+    reminderDeliveries?: EventReminderDeliveryUncheckedUpdateManyWithoutEventNestedInput
     comments?: CommentUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -29372,6 +31471,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUpdateManyWithoutCreatedByNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
@@ -29399,6 +31500,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUncheckedUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUncheckedUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
@@ -29443,6 +31546,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileCreateNestedOneWithoutUserInput
     eventsCreated?: EventCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryCreateNestedManyWithoutUploadedByInput
@@ -29471,6 +31576,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedCreateNestedOneWithoutUserInput
     eventsCreated?: EventUncheckedCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogUncheckedCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryUncheckedCreateNestedManyWithoutUploadedByInput
@@ -29537,6 +31644,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     createdBy: UserCreateNestedOneWithoutEventsCreatedInput
     participants?: EventParticipantCreateNestedManyWithoutEventInput
+    reminderDeliveries?: EventReminderDeliveryCreateNestedManyWithoutEventInput
     gallery?: GalleryCreateNestedManyWithoutEventInput
   }
 
@@ -29556,6 +31664,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     participants?: EventParticipantUncheckedCreateNestedManyWithoutEventInput
+    reminderDeliveries?: EventReminderDeliveryUncheckedCreateNestedManyWithoutEventInput
     gallery?: GalleryUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -29652,6 +31761,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUpdateManyWithoutUploadedByNestedInput
@@ -29679,6 +31790,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUncheckedUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUncheckedUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUncheckedUpdateManyWithoutUploadedByNestedInput
@@ -29754,6 +31867,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutEventsCreatedNestedInput
     participants?: EventParticipantUpdateManyWithoutEventNestedInput
+    reminderDeliveries?: EventReminderDeliveryUpdateManyWithoutEventNestedInput
     gallery?: GalleryUpdateManyWithoutEventNestedInput
   }
 
@@ -29772,6 +31886,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participants?: EventParticipantUncheckedUpdateManyWithoutEventNestedInput
+    reminderDeliveries?: EventReminderDeliveryUncheckedUpdateManyWithoutEventNestedInput
     gallery?: GalleryUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -29861,6 +31976,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileCreateNestedOneWithoutUserInput
     eventsCreated?: EventCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryCreateNestedManyWithoutUploadedByInput
@@ -29889,6 +32006,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedCreateNestedOneWithoutUserInput
     eventsCreated?: EventUncheckedCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogUncheckedCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryUncheckedCreateNestedManyWithoutUploadedByInput
@@ -29932,6 +32051,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUpdateManyWithoutUploadedByNestedInput
@@ -29959,6 +32080,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUncheckedUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUncheckedUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUncheckedUpdateManyWithoutUploadedByNestedInput
@@ -29987,6 +32110,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileCreateNestedOneWithoutUserInput
     eventsCreated?: EventCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryCreateNestedManyWithoutUploadedByInput
@@ -30015,6 +32140,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedCreateNestedOneWithoutUserInput
     eventsCreated?: EventUncheckedCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogUncheckedCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryUncheckedCreateNestedManyWithoutUploadedByInput
@@ -30058,6 +32185,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUpdateManyWithoutUploadedByNestedInput
@@ -30085,6 +32214,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUncheckedUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUncheckedUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUncheckedUpdateManyWithoutUploadedByNestedInput
@@ -30144,6 +32275,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileCreateNestedOneWithoutUserInput
     eventsCreated?: EventCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryCreateNestedManyWithoutUploadedByInput
@@ -30172,6 +32305,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedCreateNestedOneWithoutUserInput
     eventsCreated?: EventUncheckedCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogUncheckedCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryUncheckedCreateNestedManyWithoutUploadedByInput
@@ -30250,6 +32385,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUpdateManyWithoutUploadedByNestedInput
@@ -30277,6 +32414,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUncheckedUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUncheckedUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUncheckedUpdateManyWithoutUploadedByNestedInput
@@ -30305,6 +32444,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileCreateNestedOneWithoutUserInput
     eventsCreated?: EventCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryCreateNestedManyWithoutUploadedByInput
@@ -30333,6 +32474,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedCreateNestedOneWithoutUserInput
     eventsCreated?: EventUncheckedCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogUncheckedCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryUncheckedCreateNestedManyWithoutUploadedByInput
@@ -30376,6 +32519,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUpdateManyWithoutUploadedByNestedInput
@@ -30403,6 +32548,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUncheckedUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUncheckedUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUncheckedUpdateManyWithoutUploadedByNestedInput
@@ -30484,6 +32631,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileCreateNestedOneWithoutUserInput
     eventsCreated?: EventCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryCreateNestedManyWithoutUploadedByInput
@@ -30512,6 +32661,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedCreateNestedOneWithoutUserInput
     eventsCreated?: EventUncheckedCreateNestedManyWithoutCreatedByInput
     eventParticipations?: EventParticipantUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedCreateNestedManyWithoutUserInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedCreateNestedManyWithoutSentByInput
     blogsWritten?: BlogUncheckedCreateNestedManyWithoutAuthorInput
     noticesCreated?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     uploadedMedia?: GalleryUncheckedCreateNestedManyWithoutUploadedByInput
@@ -30612,6 +32763,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUpdateManyWithoutUploadedByNestedInput
@@ -30639,6 +32792,8 @@ export namespace Prisma {
     alumniProfile?: AlumniProfileUncheckedUpdateOneWithoutUserNestedInput
     eventsCreated?: EventUncheckedUpdateManyWithoutCreatedByNestedInput
     eventParticipations?: EventParticipantUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersReceived?: EventReminderDeliveryUncheckedUpdateManyWithoutUserNestedInput
+    eventRemindersSent?: EventReminderDeliveryUncheckedUpdateManyWithoutSentByNestedInput
     blogsWritten?: BlogUncheckedUpdateManyWithoutAuthorNestedInput
     noticesCreated?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     uploadedMedia?: GalleryUncheckedUpdateManyWithoutUploadedByNestedInput
@@ -30671,6 +32826,20 @@ export namespace Prisma {
     status?: $Enums.EventStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type EventReminderDeliveryCreateManyUserInput = {
+    id?: string
+    eventId: string
+    sentById: string
+    sentAt?: Date | string
+  }
+
+  export type EventReminderDeliveryCreateManySentByInput = {
+    id?: string
+    eventId: string
+    userId: string
+    sentAt?: Date | string
   }
 
   export type BlogCreateManyAuthorInput = {
@@ -30782,6 +32951,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participants?: EventParticipantUpdateManyWithoutEventNestedInput
+    reminderDeliveries?: EventReminderDeliveryUpdateManyWithoutEventNestedInput
     gallery?: GalleryUpdateManyWithoutEventNestedInput
     comments?: CommentUpdateManyWithoutEventNestedInput
   }
@@ -30800,6 +32970,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participants?: EventParticipantUncheckedUpdateManyWithoutEventNestedInput
+    reminderDeliveries?: EventReminderDeliveryUncheckedUpdateManyWithoutEventNestedInput
     gallery?: GalleryUncheckedUpdateManyWithoutEventNestedInput
     comments?: CommentUncheckedUpdateManyWithoutEventNestedInput
   }
@@ -30838,6 +33009,42 @@ export namespace Prisma {
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventReminderDeliveryUpdateWithoutUserInput = {
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutReminderDeliveriesNestedInput
+    sentBy?: UserUpdateOneRequiredWithoutEventRemindersSentNestedInput
+  }
+
+  export type EventReminderDeliveryUncheckedUpdateWithoutUserInput = {
+    eventId?: StringFieldUpdateOperationsInput | string
+    sentById?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventReminderDeliveryUncheckedUpdateManyWithoutUserInput = {
+    eventId?: StringFieldUpdateOperationsInput | string
+    sentById?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventReminderDeliveryUpdateWithoutSentByInput = {
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutReminderDeliveriesNestedInput
+    user?: UserUpdateOneRequiredWithoutEventRemindersReceivedNestedInput
+  }
+
+  export type EventReminderDeliveryUncheckedUpdateWithoutSentByInput = {
+    eventId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventReminderDeliveryUncheckedUpdateManyWithoutSentByInput = {
+    eventId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BlogUpdateWithoutAuthorInput = {
@@ -31373,6 +33580,13 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type EventReminderDeliveryCreateManyEventInput = {
+    id?: string
+    userId: string
+    sentById: string
+    sentAt?: Date | string
+  }
+
   export type GalleryCreateManyEventInput = {
     id?: string
     title: string
@@ -31415,6 +33629,24 @@ export namespace Prisma {
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventReminderDeliveryUpdateWithoutEventInput = {
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutEventRemindersReceivedNestedInput
+    sentBy?: UserUpdateOneRequiredWithoutEventRemindersSentNestedInput
+  }
+
+  export type EventReminderDeliveryUncheckedUpdateWithoutEventInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    sentById?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventReminderDeliveryUncheckedUpdateManyWithoutEventInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    sentById?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type GalleryUpdateWithoutEventInput = {

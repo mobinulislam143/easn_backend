@@ -19,9 +19,8 @@ const registerStudentSchema = z.object({
     shortBio: z.string().max(300, "Bio should be under 300 characters").optional(),
     facebookProfile: z.string().url("Invalid Facebook link").optional().or(z.literal("")),
     linkedInProfile: z.string().url("Invalid LinkedIn link").optional().or(z.literal("")),
-    agreeToJoinReunion: z.boolean().optional(),
   })
-    .strict("Registration cannot include admin or role fields."),
+    .strict("Registration cannot include admin, role, or reunion RSVP fields."),
 });
 
 const loginSchema = z.object({

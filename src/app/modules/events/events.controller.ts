@@ -87,9 +87,9 @@ const rsvpEvent = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const sendBatchReminder = catchAsync(async (req: Request, res: Response) => {
-  const { batchYear } = req.body;
-  const result = await EventService.sendBatchReminder(
+const getEventReminderStats = catchAsync(async (req: Request, res: Response) => {
+  const batchYear = req.query.batchYear as string | undefined;
+  const result = await EventService.getEventReminderStats(
     req.params.id,
     batchYear,
     req.user!.id,
@@ -99,7 +99,29 @@ const sendBatchReminder = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: `Successfully sent reminders to ${result.recipientsCount} students in batch ${result.batchYear}!`,
+    message: "Reminder stats retrieved.",
+    data: result,
+  });
+});
+
+const sendBatchReminder = catchAsync(async (req: Request, res: Response) => {
+  const { batchYear } = req.body;
+  const result = await EventService.sendBatchReminder(
+    req.params.id,
+    batchYear,
+    req.user!.id,
+    req.user!.role
+  );
+
+  const skippedNote =
+    result.skippedCount > 0
+      ? ` (${result.skippedCount} already reminded — skipped)`
+      : "";
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: `Sent reminders to ${result.recipientsCount} newly joined student(s) in batch ${result.batchYear}${skippedNote}.`,
     data: result,
   });
 });
@@ -126,6 +148,7 @@ export const EventController = {
   updateEvent,
   deleteEvent,
   rsvpEvent,
+  getEventReminderStats,
   sendBatchReminder,
   getEventParticipants,
 };

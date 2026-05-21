@@ -84,7 +84,7 @@ const registerStudent = async (payload: any) => {
         facebookProfile: payload.facebookProfile || null,
         linkedInProfile: payload.linkedInProfile || null,
         status: "PENDING",
-        agreeToJoinReunion: payload.agreeToJoinReunion === true,
+        agreeToJoinReunion: false,
       },
     });
 

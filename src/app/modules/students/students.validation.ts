@@ -12,8 +12,7 @@ const updateStudentProfileSchema = z.object({
     shortBio: z.string().max(300, "Bio should be under 300 characters").optional().nullable(),
     facebookProfile: z.string().url("Invalid Facebook link").optional().or(z.literal("")).nullable(),
     linkedInProfile: z.string().url("Invalid LinkedIn link").optional().or(z.literal("")).nullable(),
-    agreeToJoinReunion: z.boolean().optional(),
-  }),
+  }).strict("Reunion RSVP is managed from the Events page only."),
 });
 
 export const StudentValidation = {

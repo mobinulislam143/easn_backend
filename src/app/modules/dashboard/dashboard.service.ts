@@ -86,10 +86,29 @@ const getStudentDashboardSummary = async (userId: string) => {
     throw new AppError(404, "Student profile not found!");
   }
 
-  // Count joined events
-  const joinedEventsCount = await prisma.eventParticipant.count({
+  const joinedParticipations = await prisma.eventParticipant.findMany({
     where: { userId, status: "JOINED" },
+    include: {
+      event: {
+        select: {
+          id: true,
+          title: true,
+          date: true,
+          time: true,
+          venue: true,
+          banner: true,
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
   });
+
+  const joinedEvents = joinedParticipations.map((p) => ({
+    ...p.event,
+    rsvpStatus: p.status,
+    rsvpAt: p.createdAt,
+  }));
+  const joinedEventsCount = joinedEvents.length;
 
   // Get in-app notifications
   const notifications = await prisma.notification.findMany({
@@ -112,6 +131,7 @@ const getStudentDashboardSummary = async (userId: string) => {
 
   return {
     profile: student,
+    joinedEvents,
     joinedEventsCount,
     batchMembersCount,
     notifications,

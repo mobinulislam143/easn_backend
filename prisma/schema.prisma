@@ -82,6 +82,8 @@ model User {
   alumniProfile           AlumniProfile?
   eventsCreated           Event[]           @relation("EventsCreated")
   eventParticipations     EventParticipant[]
+  eventRemindersReceived  EventReminderDelivery[] @relation("ReminderRecipient")
+  eventRemindersSent      EventReminderDelivery[] @relation("ReminderSentBy")
   blogsWritten            Blog[]            @relation("BlogsWritten")
   noticesCreated          Notice[]          @relation("NoticesCreated")
   uploadedMedia           Gallery[]         @relation("UploadedMedia")
@@ -112,6 +114,7 @@ model Student {
   facebookProfile   String?
   linkedInProfile   String?
   status            StudentStatus     @default(PENDING)
+  /// Synced from EventParticipant JOINED — do not set via registration or profile edit
   agreeToJoinReunion Boolean          @default(false)
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
@@ -190,10 +193,25 @@ model Event {
   updatedAt           DateTime           @updatedAt
 
   // Relations
-  createdBy    User               @relation("EventsCreated", fields: [createdById], references: [id])
-  participants EventParticipant[]
-  gallery      Gallery[]
-  comments     Comment[]
+  createdBy            User                    @relation("EventsCreated", fields: [createdById], references: [id])
+  participants         EventParticipant[]
+  reminderDeliveries   EventReminderDelivery[]
+  gallery              Gallery[]
+  comments             Comment[]
+}
+
+model EventReminderDelivery {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  eventId  String   @db.ObjectId
+  userId   String   @db.ObjectId
+  sentById String   @db.ObjectId
+  sentAt   DateTime @default(now())
+
+  event  Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user   User  @relation("ReminderRecipient", fields: [userId], references: [id], onDelete: Cascade)
+  sentBy User  @relation("ReminderSentBy", fields: [sentById], references: [id])
+
+  @@unique([eventId, userId])
 }
 
 model EventParticipant {

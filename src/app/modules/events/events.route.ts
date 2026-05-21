@@ -21,6 +21,12 @@ router.get(
   EventController.getEventParticipants
 );
 
+router.get(
+  "/:id/reminder-stats",
+  auth("SUPER_ADMIN", "BATCH_ADMIN"),
+  EventController.getEventReminderStats
+);
+
 router.get("/:id", EventController.getEventById);
 
 router.put(

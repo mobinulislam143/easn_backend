@@ -5,6 +5,11 @@ import {
   getBatchAdminContext,
 } from "../../helpers/batchAdmin";
 import { sendEmail, getEventReminderTemplate } from "../../utils/sendEmail";
+import {
+  getJoinedParticipantsForReminder,
+  resolveReminderTargetBatch,
+} from "../../helpers/eventReminders";
+import { syncAgreeToJoinReunionFromEventRsvps } from "../../helpers/reunionRsvp";
 
 const getAllEvents = async (filters?: any) => {
   const page = Number(filters?.page) || 1;
@@ -175,18 +180,22 @@ const rsvpEvent = async (
     }
   }
 
-  return await prisma.eventParticipant.upsert({
+  const participation = await prisma.eventParticipant.upsert({
     where: {
       eventId_userId: { eventId, userId },
     },
     update: { status },
     create: { eventId, userId, status },
   });
+
+  await syncAgreeToJoinReunionFromEventRsvps(userId);
+
+  return participation;
 };
 
-const sendBatchReminder = async (
+const getEventReminderStats = async (
   eventId: string,
-  batchYear: string,
+  batchYear: string | undefined,
   userId: string,
   role: string
 ) => {
@@ -200,65 +209,103 @@ const sendBatchReminder = async (
 
   await assertBatchAdminCanAccessEvent(userId, role, event);
 
-  let targetBatch = batchYear;
-  if (role === "BATCH_ADMIN") {
-    const { sscBatch } = await getBatchAdminContext(userId);
-    targetBatch = sscBatch;
-  }
+  const targetBatch = await resolveReminderTargetBatch(userId, role, batchYear);
+  const { totalJoined, alreadyReminded, pendingCount } =
+    await getJoinedParticipantsForReminder(eventId, targetBatch);
 
-  const students = await prisma.student.findMany({
-    where: {
-      sscBatch: targetBatch,
-      status: "APPROVED",
-    },
-    include: {
-      user: true,
-    },
+  return {
+    batchYear: targetBatch,
+    totalJoined,
+    alreadyReminded,
+    pendingCount,
+  };
+};
+
+const sendBatchReminder = async (
+  eventId: string,
+  batchYear: string | undefined,
+  userId: string,
+  role: string
+) => {
+  const event = await prisma.event.findUnique({
+    where: { id: eventId },
   });
 
-  if (!students.length) {
-    throw new AppError(400, `No approved students found in batch ${targetBatch}.`);
+  if (!event) {
+    throw new AppError(404, "Event not found!");
+  }
+
+  await assertBatchAdminCanAccessEvent(userId, role, event);
+
+  const targetBatch = await resolveReminderTargetBatch(userId, role, batchYear);
+  const { pending, totalJoined, alreadyReminded, pendingCount } =
+    await getJoinedParticipantsForReminder(eventId, targetBatch);
+
+  if (totalJoined === 0) {
+    throw new AppError(
+      400,
+      `No students from batch ${targetBatch} have joined this event yet.`
+    );
+  }
+
+  if (pendingCount === 0) {
+    throw new AppError(
+      400,
+      `All ${totalJoined} joined student(s) in batch ${targetBatch} have already received a reminder for this event.`
+    );
   }
 
   const formattedDate =
     new Date(event.date).toLocaleDateString() + " " + event.time;
-  const organizerPhone =
-    students.find((s) => s.fullName === event.organizer)?.phone || "";
 
-  const emailPromises = students.map((std) => {
+  const emailPromises = pending.map((participant) => {
+    const profile = participant.user.studentProfile;
+    const email = participant.user.email;
+    const phone = profile?.phone || "";
+
     return sendEmail(
-      std.user.email,
+      email,
       `Event Reminder: ${event.title}`,
       getEventReminderTemplate(
         event.title,
         formattedDate,
         event.venue,
-        organizerPhone || std.phone
+        phone
       )
     ).catch((err) =>
-      console.error(`Failed to send event email to ${std.user.email}`, err)
+      console.error(`Failed to send event email to ${email}`, err)
     );
   });
 
   await Promise.all(emailPromises);
 
-  const notificationPromises = students.map((std) => {
-    return prisma.notification.create({
+  const notificationPromises = pending.map((participant) =>
+    prisma.notification.create({
       data: {
         title: `Reminder: ${event.title}`,
         message: `Join us for ${event.title} at ${event.venue} on ${formattedDate}.`,
-        userId: std.userId,
+        userId: participant.userId,
         type: "EVENT_REMINDER",
         link: `/events/${event.id}`,
       },
-    });
-  });
+    })
+  );
 
   await Promise.all(notificationPromises);
 
+  await prisma.eventReminderDelivery.createMany({
+    data: pending.map((participant) => ({
+      eventId,
+      userId: participant.userId,
+      sentById: userId,
+    })),
+  });
+
   return {
     success: true,
-    recipientsCount: students.length,
+    recipientsCount: pendingCount,
+    skippedCount: alreadyReminded,
+    totalJoined,
     batchYear: targetBatch,
   };
 };
@@ -293,6 +340,7 @@ export const EventService = {
   updateEvent,
   deleteEvent,
   rsvpEvent,
+  getEventReminderStats,
   sendBatchReminder,
   getEventParticipants,
 };
