@@ -4,7 +4,6 @@ import AppError from "../errors/AppError";
 import prisma from "../helpers/prisma";
 import catchAsync from "../utils/catchAsync";
 
-// Extend express Request interface to include user
 declare global {
   namespace Express {
     interface Request {

@@ -8,7 +8,6 @@ if (!moduleName) {
   process.exit(1);
 }
 
-// Convert to camelCase, PascalCase
 const lowercaseName = moduleName.toLowerCase();
 const capitalizedName = lowercaseName.charAt(0).toUpperCase() + lowercaseName.slice(1);
 
