@@ -4604,6 +4604,9 @@ export namespace Prisma {
       facebookProfile: string | null
       linkedInProfile: string | null
       status: $Enums.StudentStatus
+      /**
+       * Synced from EventParticipant JOINED — do not set via registration or profile edit
+       */
       agreeToJoinReunion: boolean
       createdAt: Date
       updatedAt: Date
