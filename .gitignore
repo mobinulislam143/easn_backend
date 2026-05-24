@@ -2,3 +2,6 @@
 /dist
 .vercel
 /src/generated
+.env
+.env.local
+.env.*.local
